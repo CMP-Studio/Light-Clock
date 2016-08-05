@@ -1,0 +1,10 @@
+<group>
+	<crop_left_right>1134</crop_left_right>
+	<crop_top>400</crop_top>
+	<crop_bottom>1271</crop_bottom>
+	<Cam_Up_Down>189</Cam_Up_Down>
+	<Cam_Zoom>66</Cam_Zoom>
+	<spin_max_speed>1404</spin_max_speed>
+	<Sound_frequency>445</Sound_frequency>
+<group/>
+</group>
