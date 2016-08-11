@@ -56,7 +56,7 @@ void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
     singleImg.clear();
     
     ofDirectory dir(dayDirectory);
-    dir.allowExt("jpg");
+    dir.allowExt("png");
     
     dir.listDir();
     dir.sort();
@@ -129,7 +129,7 @@ void DayFade::makeMsk(int posMsk , int posImg, int width){
          */
              // only wrap it if it is needed.
             // draw a second one with an offset to take care of the wrap.
-        /*
+       
             gradientMaker.begin();
                 gradientMaker.setUniform1i("begFadeStart",offset + posMsk);
                 gradientMaker.setUniform1i("begFadeEnd", offset + posMsk + interval );
@@ -137,7 +137,7 @@ void DayFade::makeMsk(int posMsk , int posImg, int width){
                 gradientMaker.setUniform1i("endFadeEnd",offset +posMsk + interval*3);
                 ofDrawRectangle(0, 0,imgWidth,imgHeight);
             gradientMaker.end();
-          */
+         
        
         mask.end();
         posMsk += interval;

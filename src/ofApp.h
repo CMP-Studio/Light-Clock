@@ -4,6 +4,8 @@
 #include "dayFade.h"
 #include "ofxGui.h"
 #include "ofxCameraSaveLoad.h"
+#include "Flocking.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -82,6 +84,8 @@ class ofApp : public ofBaseApp{
     ofSoundPlayer left;
     ofSoundPlayer right;
     ofSoundPlayer moment;
+    
+    Flocking flock2;
     
     
     
