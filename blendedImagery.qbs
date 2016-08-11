@@ -15,6 +15,10 @@ Project{
             'src/main.cpp',
             'src/ofApp.cpp',
             'src/ofApp.h',
+            'src/singleDay.cpp',
+            'src/singleDay.h',
+            'src/dayFade.cpp',
+            'src/dayFade.h'
         ]
 
         // This project is using addons.make to include the addons
