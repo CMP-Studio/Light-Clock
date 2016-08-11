@@ -18,6 +18,10 @@
 		0BA18EB71D552FAD00783235 /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18EAC1D552FAD00783235 /* ofxSlider.cpp */; };
 		0BA18EB81D552FAD00783235 /* ofxSliderGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18EAE1D552FAD00783235 /* ofxSliderGroup.cpp */; };
 		0BA18EB91D552FAD00783235 /* ofxToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18EB01D552FAD00783235 /* ofxToggle.cpp */; };
+		0BA18ED81D5C16F000783235 /* Boid_mod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18ED01D5C16F000783235 /* Boid_mod.cpp */; };
+		0BA18ED91D5C16F000783235 /* Flocking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18ED21D5C16F000783235 /* Flocking.cpp */; };
+		0BA18EDA1D5C16F000783235 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18ED41D5C16F000783235 /* Obstacle.cpp */; };
+		0BA18EDB1D5C16F000783235 /* singleBoid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18ED61D5C16F000783235 /* singleBoid.cpp */; };
 		0BBF77681D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF77661D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp */; };
 		0BC081751D1B032200BAB3F1 /* singleDay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC081731D1B032200BAB3F1 /* singleDay.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -75,6 +79,16 @@
 		0BA18EAF1D552FAD00783235 /* ofxSliderGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSliderGroup.h; sourceTree = "<group>"; };
 		0BA18EB01D552FAD00783235 /* ofxToggle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxToggle.cpp; sourceTree = "<group>"; };
 		0BA18EB11D552FAD00783235 /* ofxToggle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxToggle.h; sourceTree = "<group>"; };
+		0BA18ED01D5C16F000783235 /* Boid_mod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Boid_mod.cpp; path = flk/Boid_mod.cpp; sourceTree = "<group>"; };
+		0BA18ED11D5C16F000783235 /* Boid_mod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Boid_mod.h; path = flk/Boid_mod.h; sourceTree = "<group>"; };
+		0BA18ED21D5C16F000783235 /* Flocking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flocking.cpp; path = flk/Flocking.cpp; sourceTree = "<group>"; };
+		0BA18ED31D5C16F000783235 /* Flocking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Flocking.h; path = flk/Flocking.h; sourceTree = "<group>"; };
+		0BA18ED41D5C16F000783235 /* Obstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Obstacle.cpp; path = flk/Obstacle.cpp; sourceTree = "<group>"; };
+		0BA18ED51D5C16F000783235 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Obstacle.h; path = flk/Obstacle.h; sourceTree = "<group>"; };
+		0BA18ED61D5C16F000783235 /* singleBoid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = singleBoid.cpp; path = flk/singleBoid.cpp; sourceTree = "<group>"; };
+		0BA18ED71D5C16F000783235 /* singleBoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = singleBoid.h; path = flk/singleBoid.h; sourceTree = "<group>"; };
+		0BA18EDE1D5C17B100783235 /* easing_terms_of_use.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = easing_terms_of_use.html; sourceTree = "<group>"; };
+		0BA18EDF1D5C17B100783235 /* ofxEasing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxEasing.h; sourceTree = "<group>"; };
 		0BBF77661D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCameraSaveLoad.cpp; sourceTree = "<group>"; };
 		0BBF77671D42C49A00F08BE3 /* ofxCameraSaveLoad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCameraSaveLoad.h; sourceTree = "<group>"; };
 		0BC081731D1B032200BAB3F1 /* singleDay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = singleDay.cpp; sourceTree = "<group>"; };
@@ -131,6 +145,39 @@
 			path = ../../../addons/ofxGui/src;
 			sourceTree = "<group>";
 		};
+		0BA18ECF1D5C16DE00783235 /* flk */ = {
+			isa = PBXGroup;
+			children = (
+				0BA18ED01D5C16F000783235 /* Boid_mod.cpp */,
+				0BA18ED11D5C16F000783235 /* Boid_mod.h */,
+				0BA18ED21D5C16F000783235 /* Flocking.cpp */,
+				0BA18ED31D5C16F000783235 /* Flocking.h */,
+				0BA18ED41D5C16F000783235 /* Obstacle.cpp */,
+				0BA18ED51D5C16F000783235 /* Obstacle.h */,
+				0BA18ED61D5C16F000783235 /* singleBoid.cpp */,
+				0BA18ED71D5C16F000783235 /* singleBoid.h */,
+			);
+			name = flk;
+			sourceTree = "<group>";
+		};
+		0BA18EDC1D5C17B100783235 /* ofxEasing */ = {
+			isa = PBXGroup;
+			children = (
+				0BA18EDD1D5C17B100783235 /* src */,
+			);
+			name = ofxEasing;
+			sourceTree = "<group>";
+		};
+		0BA18EDD1D5C17B100783235 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0BA18EDE1D5C17B100783235 /* easing_terms_of_use.html */,
+				0BA18EDF1D5C17B100783235 /* ofxEasing.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxEasing/src;
+			sourceTree = "<group>";
+		};
 		0BBF77641D42C49A00F08BE3 /* ofxCameraSaveLoad */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +208,7 @@
 			children = (
 				0BBF77641D42C49A00F08BE3 /* ofxCameraSaveLoad */,
 				0BA18E9F1D552F2700783235 /* ofxGui */,
+				0BA18EDC1D5C17B100783235 /* ofxEasing */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -196,6 +244,7 @@
 				0B730FF81D134D9600DDC9DB /* dayFade.h */,
 				0BC081731D1B032200BAB3F1 /* singleDay.cpp */,
 				0BC081741D1B032200BAB3F1 /* singleDay.h */,
+				0BA18ECF1D5C16DE00783235 /* flk */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -316,10 +365,14 @@
 				0BA18EB31D552FAD00783235 /* ofxButton.cpp in Sources */,
 				0BBF77681D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp in Sources */,
 				0B730FF91D134D9600DDC9DB /* main.cpp in Sources */,
+				0BA18ED81D5C16F000783235 /* Boid_mod.cpp in Sources */,
+				0BA18ED91D5C16F000783235 /* Flocking.cpp in Sources */,
 				0BA18EB91D552FAD00783235 /* ofxToggle.cpp in Sources */,
 				0BA18EB61D552FAD00783235 /* ofxPanel.cpp in Sources */,
+				0BA18EDA1D5C16F000783235 /* Obstacle.cpp in Sources */,
 				0B730FFA1D134D9600DDC9DB /* ofApp.cpp in Sources */,
 				0BA18EB51D552FAD00783235 /* ofxLabel.cpp in Sources */,
+				0BA18EDB1D5C16F000783235 /* singleBoid.cpp in Sources */,
 				0BA18EB21D552FAD00783235 /* ofxBaseGui.cpp in Sources */,
 				0BA18EB71D552FAD00783235 /* ofxSlider.cpp in Sources */,
 				0BA18EB41D552FAD00783235 /* ofxGuiGroup.cpp in Sources */,

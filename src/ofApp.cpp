@@ -23,8 +23,8 @@ void ofApp::setup(){
      */
     
     gui.setup();
-    int width = 2700;
-    int height = 1429;
+    int width = 4130;
+    int height = 1984;
     
     gui.add(cropLeftRight.setup("crop left right",height/2,0,width));
     gui.add(cropTop.setup("crop top",height/2,0,height));
@@ -54,7 +54,7 @@ void ofApp::setup(){
     DayFade temp;
     //string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight
 
-    temp.setup( "sampleImages", 0, cropTop,cropBottom,cropLeftRight);
+    temp.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight);
     days.push_back(temp);
     
     int num1 = cropTop;
@@ -73,12 +73,12 @@ void ofApp::setup(){
     ellipseX = ofGetWidth()/2;
     speed = 3;
     
-    flock.load("flock.mov");
-    flock.setLoopState(OF_LOOP_NORMAL);
-    flock.play();
+    //flock.load("flock.mov");
+    //flock.setLoopState(OF_LOOP_NORMAL);
+    //flock.play();
     
-    curMoment.load("currentMoment.jpg");
-    
+    curMoment.load("currentMoment2.png");
+    flock2.setup(curMoment.getWidth(), curMoment.getHeight() );
     //dayOne.imgScrollX = (dayOne.imgWidth-(dayOne.windowWidth+speed))-1;
     
     
@@ -134,23 +134,28 @@ void ofApp::cropTrigger(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    
     for(int i=0; i< days.size(); i++){
         days.at(i).update();
     }
     
+    flock2.update();
+    curMoment.getTexture().setAlphaMask(flock2.drawIntoMe.getTexture());
     
+    /*
     flock.update();
     if(flock.isFrameNew()){
         ofLog()<<"this is happening";
         ofTexture curFrame = flock.getTexture();
-        ofFbo temp;
+      ofFbo temp;
         temp.allocate(curMoment.getWidth(),  curMoment.getHeight());
         temp.begin();
             curFrame.draw(0, 0, curMoment.getWidth(),  curMoment.getHeight());
         temp.end();
-        curMoment.getTexture().setAlphaMask(temp.getTexture());
-    }
-    
+        
+        
+    }*/
+ 
     getText.begin();
 
     ofEnableAlphaBlending();
@@ -161,7 +166,7 @@ void ofApp::update(){
     }
     
     
-
+   
     curMoment.draw(days.at(0).imgPos * -1 ,0);
 
     // draw circles at the crop positions
@@ -179,7 +184,7 @@ void ofApp::update(){
     }
     
     getText.end();
-    
+
     
     //cam.setPosition(0,0,0 );
     sphere.mapTexCoordsFromTexture( getText.getTexture() );
@@ -200,6 +205,7 @@ void ofApp::draw(){
    // getText.draw(-50,-500);
     //glDisable(GL_ALPHA_TEST);
     
+    
     ofBackground(0);
     cam.begin();
     //sphere.draw();
@@ -208,7 +214,7 @@ void ofApp::draw(){
     //sphere.drawWireframe();
     getText.getTexture().unbind();
     cam.end();
-
+    
  
  /*
     ofClear(0);
@@ -288,6 +294,9 @@ void ofApp::keyReleased(int key){
         begFrame = ofGetFrameNum();
         ofLog()<< "beg frame: " << begFrame;
         
+    }
+    else if(key == 'v'){
+        flock2.triggerSequence();
     }
 
     
