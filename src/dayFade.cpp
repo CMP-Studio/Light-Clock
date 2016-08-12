@@ -164,6 +164,7 @@ void DayFade::draw(int x, int y, int rightCropPos){
     for (int i = 0; i < singleImg.size()/divNumImgs; i++){
        if (((wrapIt(singleImg.at(i).startDay) < rightCropPos )& (wrapIt(singleImg.at(i).startDay) > 0)) | ((wrapIt(singleImg.at(i).endDay)  > 0 )&(wrapIt(singleImg.at(i).endDay)  < rightCropPos))){
            cnt ++;
+           //can I crop the image and the mask here before applying the shader to it
            alphaShader.begin();
                 alphaShader.setUniformTexture("imageMask", singleImg.at(i).msk, 1);
                 alphaShader.setUniform1i("mskXPos", mskPos);
@@ -200,17 +201,21 @@ void DayFade::draw(int x, int y, int rightCropPos){
     
     
 }
-
+// Thit keeps xPos within imageWidth
 int DayFade::wrapIt(int Xpos){
-    int wrappedMsk =mskPos;
-    wrappedMsk *= -1;
-    wrappedMsk += Xpos;
     
+    int wrappedMsk = Xpos - mskPos;
+    
+    // If starting position is less than the beginning of the image
     if (wrappedMsk <  0 ){
+        // Add as many imageWidths are needed to get back inside the image
         wrappedMsk += imgWidth * (abs(int( wrappedMsk / imgWidth))+1);
     }
+    // If starting position is more than the end of the image
     else if (wrappedMsk >  imgWidth ){
+        // Subtract as many image widths as needed to get back inside the image
         wrappedMsk -= imgWidth * (abs(int( wrappedMsk / imgWidth)));
+        //wrappedMsk = 0;
     }
     return wrappedMsk;
 }
