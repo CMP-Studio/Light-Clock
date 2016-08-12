@@ -5,6 +5,7 @@
 #include "ofxGui.h"
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
+#include "rot/rotationSensing.h"
 
 
 class ofApp : public ofBaseApp{
@@ -87,7 +88,7 @@ class ofApp : public ofBaseApp{
     
     Flocking flock2;
     
-    
+    rotationSensing rotSense;
     
     
 };

@@ -7,7 +7,7 @@ void ofApp::setup(){
     
     ofSetVerticalSync(true);
     
-    
+    rotSense.setup();
     
     ofLog()<< "get width: " << ofGetWindowWidth();
     
@@ -134,7 +134,7 @@ void ofApp::cropTrigger(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    
+    rotSense.update();
     for(int i=0; i< days.size(); i++){
         days.at(i).update();
     }
@@ -258,7 +258,7 @@ void ofApp::keyPressed(int key){
         showGui = !showGui; 
     }
     else if (key == ' '){
-        moment.play();
+
     }
 
 }
@@ -297,6 +297,8 @@ void ofApp::keyReleased(int key){
     }
     else if(key == 'v'){
         flock2.triggerSequence();
+        ofLog()<<"trigger sequence";
+        moment.play();
     }
 
     

@@ -18,7 +18,17 @@ Project{
             'src/singleDay.cpp',
             'src/singleDay.h',
             'src/dayFade.cpp',
-            'src/dayFade.h'
+            'src/dayFade.h',
+            'src/rot/rotationSensing.h',
+            'src/rot/rotationSensing.cpp',
+            'src/flk/Boid_mod.cpp',
+            'src/flk/Boid_mod.h',
+            'src/flk/Flocking.cpp',
+            'src/flk/Flocking.h',
+            'src/flk/Obstacle.cpp',
+            'src/flk/Obstacle.h',
+            'src/flk/singleBoid.h',
+            'src/flk/singleBoid.cpp',
         ]
 
         // This project is using addons.make to include the addons
@@ -26,10 +36,13 @@ Project{
         // the addons from the qbs file change the following lines to
         // the list of used addons in array format. eg:
         //
-        // of.addons: [
-        //     'ofxGui',
-        //     'ofxOpenCv',
-        // ]
+         of.addons: [
+             'ofxGui',
+             'ofxOpenCv',
+             'ofxEasing',
+             'ofxCameraSaveLoad',
+             'ofxOpticalFlowFarneback',
+         ]
 
         // additional flags for the project. the of module sets some
         // flags by default to add the core libraries, search paths...
