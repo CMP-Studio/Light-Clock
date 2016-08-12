@@ -20,7 +20,6 @@ public:
     static int imgWidth;
     static int imgHeight;
     static int originalImgHeight;
-    
     static float percentDay;
     
     static int mskPos;

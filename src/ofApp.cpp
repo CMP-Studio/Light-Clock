@@ -22,7 +22,13 @@ void ofApp::setup(){
     }
      */
     
+    
+    
     gui.setup();
+    ofLog()<<"loading old settings";
+   
+   // cac
+    
     int width = 4130;
     int height = 1984;
     
@@ -31,23 +37,30 @@ void ofApp::setup(){
     gui.add(cropBottom.setup("crop bottom",height/2,0,height));
     gui.add(reCropEveryThing.setup("Re-initialize Crop"));
     
-    gui.add(camUpDown.setup("Cam Up Down",0,-width,width));
+    
     gui.add(camZoom.setup("Cam Zoom",90,10,180));
+    gui.add(camUpDown.setup("Cam Y",0,-width,width));
+    gui.add(camZpos.setup("Cam Z",20,width,-width));
+    gui.add(camXpos.setup("Cam X",20,width,-width));
     gui.add(maxSpinTime.setup("spin max speed",height/2,0,width));
     gui.add(soundFrequency.setup("Sound frequency",height/2,0,width));
     
     
     reCropEveryThing.addListener(this, &ofApp::cropTrigger);
-    camUpDown.addListener(this, &ofApp::camPosChanged);
     camZoom.addListener(this, &ofApp::camZoomChanged);
+   
+    camUpDown.addListener(this, &ofApp::camPosChanged);
+    
+    camZpos.addListener(this, &ofApp::camZposChanged);
+    camXpos.addListener(this, &ofApp::camXposChanged);
     
     gui.loadFromFile("guiSettings.xml");
     
     cam.setFov(camZoom);
-    cam.setPosition(0,camUpDown,0);
     
-    ofxLoadCamera(cam, "ofEasyCamSettings");
-    
+    ofxLoadCamera(cam, "ofEasyCamSettings.xml");
+    cam.enableMouseInput();
+   
     
     cropLevel = 600; 
     
@@ -77,8 +90,7 @@ void ofApp::setup(){
     //flock.setLoopState(OF_LOOP_NORMAL);
     //flock.play();
     
-    curMoment.load("currentMoment2.png");
-    flock2.setup(curMoment.getWidth(), curMoment.getHeight() );
+    
     //dayOne.imgScrollX = (dayOne.imgWidth-(dayOne.windowWidth+speed))-1;
     
     
@@ -100,18 +112,48 @@ void ofApp::setup(){
     right.load("sounds/right.wav");
     moment.load("sounds/click.wav");
     
+    
+    curMoment.load("currentMoment2.png");
+    flock2.setup(curMoment.getWidth(), curMoment.getHeight() );
+    
+    momentAlphaShader.load("shader_alphaMsk2/shadersGL3/shader");
+    
+    momentAlphaShader.begin();
+    momentAlphaShader.setUniform1i("imgWidth", curMoment.getWidth() );
+    momentAlphaShader.end();
+    
+    // image to test full resolution
+    fullRes.load("bestStitch3.png");
+    isFullResTest = false;
+    
 }
 
 void ofApp::camZoomChanged(int &camZoom){
     ofLog()<< "zoom called";
-    cam.setFov(camZoom);
     
+    cam.setFov(camZoom);
 }
+
+void ofApp::camZposChanged(int &camZpos){
+    ofLog()<< "camera moved back";
+    ofVec3f startPos = cam.getPosition();
+    cam.setPosition(startPos.x, startPos.y, camZpos);
+}
+
+void ofApp::camXposChanged(int &camXpos){
+    ofLog()<< "camera moved back";
+    ofVec3f startPos = cam.getPosition();
+    cam.setPosition(camXpos, startPos.y,startPos.z );
+}
+
 
 void ofApp::camPosChanged(int &camYpos){
     ofLog()<< "camera zoomed";
-    cam.setPosition(0, camYpos, 0);
+    ofVec3f startPos = cam.getPosition();
+    cam.setPosition(startPos.x,  camYpos, startPos.z );
 }
+
+
 
 void ofApp::cropTrigger(){
     
@@ -140,7 +182,7 @@ void ofApp::update(){
     }
     
     flock2.update();
-    curMoment.getTexture().setAlphaMask(flock2.drawIntoMe.getTexture());
+    //curMoment.getTexture().setAlphaMask(flock2.drawIntoMe.getTexture());
     
     /*
     flock.update();
@@ -161,14 +203,20 @@ void ofApp::update(){
     ofEnableAlphaBlending();
     ofClear(0);
     ofBackground(0,0,255);
+    
     for(int i=0; i< days.size(); i++){
         days.at(i).draw(0,cropTop,cropLeftRight);
     }
     
     
-   
-    curMoment.draw(days.at(0).imgPos * -1 ,0);
-
+   // this isn't wrapping right now and I need it to.
+    momentAlphaShader.begin();
+        momentAlphaShader.setUniformTexture("imageMask", flock2.drawIntoMe.getTexture(), 1);
+        momentAlphaShader.setUniform1i("mskXPos", days.at(0).mskPos);
+        momentAlphaShader.setUniform1i("imgXPos", days.at(0).imgPos);
+        curMoment.draw(0 ,0);
+    momentAlphaShader.end();
+    
     // draw circles at the crop positions
     if (showGui){
         ofSetColor(255, 0, 0);
@@ -187,7 +235,13 @@ void ofApp::update(){
 
     
     //cam.setPosition(0,0,0 );
-    sphere.mapTexCoordsFromTexture( getText.getTexture() );
+    if (!isFullResTest){
+         sphere.mapTexCoordsFromTexture( getText.getTexture() );
+    }
+    else{
+        sphere.mapTexCoordsFromTexture( fullRes.getTexture() );
+    }
+   
 
 }
 
@@ -207,13 +261,25 @@ void ofApp::draw(){
     
     
     ofBackground(0);
-    cam.begin();
+    
     //sphere.draw();
-    getText.getTexture().bind();
-    sphere.draw();
-    //sphere.drawWireframe();
-    getText.getTexture().unbind();
-    cam.end();
+    if(!isFullResTest){
+        cam.begin();
+        getText.getTexture().bind();
+        sphere.draw();
+        //sphere.drawWireframe();
+        getText.getTexture().unbind();
+        cam.end();
+    }
+    else{
+        cam.begin();
+        fullRes.getTexture().bind();
+        sphere.draw();
+        //sphere.drawWireframe();
+        fullRes.getTexture().unbind();
+        cam.end();
+    }
+    
     
  
  /*
@@ -258,6 +324,10 @@ void ofApp::keyPressed(int key){
         showGui = !showGui; 
     }
     else if (key == ' '){
+        isFullResTest = !isFullResTest;
+    }
+    else if(key == 'v'){
+        flock2.triggerSequence();
         moment.play();
     }
 
@@ -295,9 +365,7 @@ void ofApp::keyReleased(int key){
         ofLog()<< "beg frame: " << begFrame;
         
     }
-    else if(key == 'v'){
-        flock2.triggerSequence();
-    }
+    
 
     
    

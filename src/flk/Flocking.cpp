@@ -87,7 +87,7 @@ void Flocking::update() {
         }
     }
     drawIntoMe.begin();
-    ofClear(0,0,0,255);
+    ofClear(0,0,0,0);
     for(int i = 0; i < boids.size(); i++) {
         boids[i].draw();
     }

@@ -25,8 +25,13 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
         void cropTrigger();
-        void camPosChanged(int & camYpos);
+    
         void camZoomChanged(int & camZoom);
+    
+        void camPosChanged(int & camYpos);
+        void camZposChanged(int & camZpos);
+        void camXposChanged(int & camXpos);
+    
         // t- current time
         // b- start value
         // c- change in value
@@ -76,6 +81,8 @@ class ofApp : public ofBaseApp{
     
     ofxIntSlider camUpDown;
     ofxIntSlider camZoom;
+    ofxIntSlider camZpos;
+    ofxIntSlider camXpos;
     ofxIntSlider maxSpinTime;
     ofxIntSlider soundFrequency;
     
@@ -87,7 +94,10 @@ class ofApp : public ofBaseApp{
     
     Flocking flock2;
     
+    ofShader momentAlphaShader;
     
+    ofImage fullRes;
+    bool isFullResTest; 
     
     
 };
