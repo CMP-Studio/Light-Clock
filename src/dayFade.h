@@ -69,4 +69,9 @@ private:
     
     ofShader alphaShader;
     
+    ofTexture gradientMask;
+    
+    ofFbo drawSliceOfImagery; 
+    
+    
 };

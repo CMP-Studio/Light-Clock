@@ -37,7 +37,6 @@ void ofApp::setup(){
     gui.add(cropBottom.setup("crop bottom",height/2,0,height));
     gui.add(reCropEveryThing.setup("Re-initialize Crop"));
     
-    
     gui.add(camZoom.setup("Cam Zoom",90,10,180));
     gui.add(camUpDown.setup("Cam Y",0,-width,width));
     gui.add(camZpos.setup("Cam Z",20,width,-width));
@@ -204,9 +203,15 @@ void ofApp::update(){
     ofClear(0);
     ofBackground(0,0,255);
     
+    ofPushMatrix();
+    
+    ofScale(-1,1,1);
+    ofTranslate(getText.getWidth() * -1 , 0);
+    
     for(int i=0; i< days.size(); i++){
         days.at(i).draw(0,cropTop,cropLeftRight);
     }
+    
     
     
    // this isn't wrapping right now and I need it to.
@@ -216,6 +221,8 @@ void ofApp::update(){
         momentAlphaShader.setUniform1i("imgXPos", days.at(0).imgPos);
         curMoment.draw(0 ,0);
     momentAlphaShader.end();
+
+    ofPopMatrix();
     
     // draw circles at the crop positions
     if (showGui){
