@@ -1,1 +1,5 @@
-newImagery
+bin/data/newImagery
+bin/blendedImagery_debug
+bin/data/guiSettings.xml
+bin/data/ofEasyCamSettings
+bin/data/ofEasyCamSettings.xml

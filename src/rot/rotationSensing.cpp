@@ -23,19 +23,52 @@ void rotationSensing::setup() {
   videoFeed.initGrabber(640, 480);
 #endif
   
+  // setup gui
+  gui.setup();
+  gui.setPosition(50, 400);
+  
+  // interaction constants
+  gui.add(samplingDensity.setup("Sampling density", 2, 1, 10));
+  gui.add(flowThreshold.setup("Flow threshold", 15, 0, 30));
+  gui.add(cwFlowConstant.setup("CW velocity", 0.8, 0.0, 2.0));
+  gui.add(cwAcceleration.setup("CW de-acceleration", 0.3, 0.0, 2.0));
+  gui.add(ccwFlowConstant.setup("CCW velocity", 0.8, 0.0, 2.0));
+  gui.add(ccwAcceleration.setup("CCW de-acceleration", 0.3, 0.0, 2.0));
+  
+  // optical flow constants
+  gui.add(pyramidScale.setup("Pyramid scale", 0.35, 0.0, .99));
+  pyramidScale.addListener(this, &rotationSensing::setPyramidScale);
+
+  gui.add(pyramidLevels.setup("Pyramid levels", 5, 1, 10));
+  pyramidLevels.addListener(this, &rotationSensing::setPyramidLevels);
+  
+  gui.add(windowSize.setup("Window size", 10, 1, 10));
+  windowSize.addListener(this, &rotationSensing::setWindowSize);
+  
+  gui.add(iterationsPerLevel.setup("Iterations per level", 1, 1, 10));
+  iterationsPerLevel.addListener(this, &rotationSensing::setIterationsPerLevel);
+  
+  gui.add(expansionArea.setup("Expansion area", 3, 1, 10));
+  expansionArea.addListener(this, &rotationSensing::setExpansionArea);
+  
+  gui.add(expansionSigma.setup("Expansion sigma", 2.25, 0.0, 10.0));
+  expansionSigma.addListener(this, &rotationSensing::setExpansionSigma);
+  
+  gui.loadFromFile("guiSettings.xml");
+  
   // setup optical flow
   opticalFlow.setup(
-                    videoFeed.getWidth(),
-                    videoFeed.getHeight(),
-                    pyramidScale,
-                    pyramidLevels,
-                    windowSize,
-                    iterationsPerLevel,
-                    expansionArea,
-                    expansionSigma,
-                    flowFeedback,
-                    gaussianFiltering
-                    );
+    2*interactionRadius,
+    2*interactionRadius,
+    pyramidScale,
+    pyramidLevels,
+    windowSize,
+    iterationsPerLevel,
+    expansionArea,
+    expansionSigma,
+    false,
+    false
+  );
   
   // setup interaction area
   interactionX = videoFeed.getWidth()/2;
@@ -48,12 +81,18 @@ void rotationSensing::update() {
   videoFeed.update();
   if(videoFeed.isFrameNew()) {
     
+    ofPixels feed = videoFeed.getPixels();
+    feed.crop(interactionX-interactionRadius,
+              interactionY-interactionRadius,
+              2*interactionRadius,
+              2*interactionRadius);
+    
     // grab frame
-    videoFrameColor.setFromPixels(videoFeed.getPixels());
+    videoFrameColor.setFromPixels(feed);
     
     // set to gray and increase contrast
     videoFrameGrayscale = videoFrameColor;
-    videoFrameGrayscale.contrastStretch();
+    //videoFrameGrayscale.contrastStretch();
     
     // handle background subtraction if enabled
     if (!backgroundLearned && backgroundSubtraction){
@@ -95,9 +134,9 @@ void rotationSensing::update() {
             double projectedFlow = flow.x * uvx + flow.y * uvy;
             
             if(projectedFlow > 0){
-              cwFlowSum += projectedFlow;
+              ccwFlowSum += abs(projectedFlow);
             } else {
-              ccwFlowSum -= projectedFlow;
+              cwFlowSum += abs(projectedFlow);
             }
             count += 1.0;
           }
@@ -122,10 +161,12 @@ void rotationSensing::update() {
 
 //--------------------------------------------------------------
 void rotationSensing::draw() {
+  ofPushMatrix();
+  ofTranslate(0, 400);
   ofSetColor(255);
   
   // draw video feed
-  videoFrameGrayscale.draw(0, 0, videoFeed.getWidth(), videoFeed.getHeight());
+  videoFeed.draw(0, 0, videoFeed.getWidth(), videoFeed.getHeight());
   
   // draw crosshairs and bounding box
   ofSetColor(255);
@@ -161,6 +202,16 @@ void rotationSensing::draw() {
   ofFill();
   ofDrawEllipse(0, 0, 80, 80);
   ofPopMatrix();
+
+  ofSetColor(255);
+  ofPopMatrix();
+  
+  // Gui
+  gui.draw();
+}
+
+void rotationSensing::saveSettings(){
+  gui.saveToFile("guiSettings.xml");
 }
 
 //--------------------------------------------------------------
@@ -187,75 +238,37 @@ void rotationSensing::grabNewBackground() {
   backgroundLearned = false;
 }
 
-
-
 //--------------------------------------------------------------
-//* INTERACTION CONSTANT GETTERS *//
-
-pair<int, int> rotationSensing::getInteractionCenter(){
-  return make_pair(interactionX, interactionY);
-}
-
-int rotationSensing::getInteractionRadius(){
-  return interactionRadius;
-}
-
-int rotationSensing::getSamplingDensity(){
-  return samplingDensity;
-}
-
-int rotationSensing::getFlowThreshold(){
-  return flowThreshold;
-}
-
-double rotationSensing::getCwFlowConstant(){
-  return cwFlowConstant;
-}
-
-double rotationSensing::getCcwFlowConstant(){
-  return ccwFlowConstant;
-}
-
-double rotationSensing::getCwAcceleration(){
-  return cwAcceleration;
-}
-
-double rotationSensing::getCcwAcceleration(){
-  return ccwAcceleration;
-}
-
-//*  INTERACTION CONSTANT SETTERS *//
+//*  INTERACTION CENTER SETTER *//
 void rotationSensing::setInteractionCenter(int x, int y){
+  saveSettings();
   interactionX = x;
   interactionY = y;
 }
 
-void rotationSensing::setInteractionRadius(int radius){
-  interactionRadius = max(0, radius);
+//*  OPTICAL FLOW SETTERS *//
+void rotationSensing::setPyramidScale(float &scale){
+  opticalFlow.setPyramidScale((double)scale);
 }
 
-void rotationSensing::setSamplingDensity(int density){
-  samplingDensity = max(0, density);
+void rotationSensing::setPyramidLevels(int &levels){
+  opticalFlow.setPyramidLevels(levels);
 }
 
-void rotationSensing::setFlowThreshold(int threshold){
-  flowThreshold = max(0, threshold);
+void rotationSensing::setWindowSize(int &size){
+  opticalFlow.setWindowSize(size);
 }
 
-void rotationSensing::setCwFlowConstant(double flowConstant){
-  cwFlowConstant = max(0.0, flowConstant);
+void rotationSensing::setIterationsPerLevel(int &iterations){
+  opticalFlow.setIterationsPerLevel(iterations);
 }
 
-void rotationSensing::setCcwFlowConstant(double flowConstant){
-  ccwFlowConstant = max(0.0, flowConstant);
+void rotationSensing::setExpansionArea(int &area){
+  opticalFlow.setExpansionArea(area);
 }
 
-void rotationSensing::setCwAcceleration(double acceleration){
-  cwAcceleration = max(0.0, acceleration);
-}
-
-void rotationSensing::setCcwAcceleration(double acceleration){
-  ccwAcceleration = max(0.0, acceleration);
+void rotationSensing::setExpansionSigma(float &sigma){
+  opticalFlow.setExpansionSigma((double)sigma);
 }
 
 //--------------------------------------------------------------

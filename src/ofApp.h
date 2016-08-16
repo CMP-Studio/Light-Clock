@@ -52,6 +52,7 @@ class ofApp : public ofBaseApp{
     
     bool isEaseOut;
     bool isSpin;
+    bool usingFlow;
     float beginningValue;
     int begFrame;
     
