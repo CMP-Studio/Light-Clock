@@ -24,5 +24,5 @@ void main()
         a = 1 - ((texCoord - endFadeStart) / (endFadeEnd - endFadeStart));
     }
     
-    outputColor = vec4(0.0,0.0,0.0, a);
+    outputColor = vec4(1.0,1.0,1.0, a);
 }

@@ -91,13 +91,16 @@ class ofApp : public ofBaseApp{
     ofSoundPlayer left;
     ofSoundPlayer right;
     ofSoundPlayer moment;
+    ofSoundPlayer gong;
+    ofSoundPlayer gongMultiple;
     
     Flocking flock2;
     
     ofShader momentAlphaShader;
     
     ofImage fullRes;
-    bool isFullResTest; 
+    bool isFullResTest;
     
-    
+    bool isLatent; 
+    int timeSinceInteract; 
 };

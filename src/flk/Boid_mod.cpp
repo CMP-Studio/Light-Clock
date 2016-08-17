@@ -20,6 +20,7 @@ void Boid_mod::setup(){
     maxspeed = 2.5;
     maxforce = 0.3;
     customBoid.setup();
+    customBoid.maxSpeed = maxspeed;
     maximumWidth = 500;
     isDoubleX = false;
     isDoubleY = false;
@@ -45,6 +46,9 @@ Boid_mod::Boid_mod(int wid, int height) {
 void Boid_mod::update(vector<Boid_mod> &boids) {
     
     customBoid.update();
+    
+    maxspeed = customBoid.maxSpeed;
+    
 	flock(boids);
 	
     vel += acc;   // Update velocity
@@ -108,6 +112,7 @@ void Boid_mod::update(vector<Boid_mod> &boids) {
     if (isSeeking){
         seek(ofVec2f(fboWidth/2, seekHeight));
     }
+    
 }
 
 void Boid_mod::seek(ofVec2f target) {
@@ -342,17 +347,27 @@ void Boid_mod::toTri(){
     customBoid.toTri();
     maxspeed = 2;
     maxforce = 0.5;
-    isSeeking = true;
-    seekHeight = int(ofRandom(0, fboHeight));
+    //isSeeking = true;
+    //seekHeight = int(ofRandom(0, fboHeight));
     
 }
 
 void Boid_mod::disappear(){
     customBoid.disappear();
+    //ease them to speed up
+}
+
+void Boid_mod::appear(float sz){
+    isSeeking = false;
+    customBoid.appear(sz);
+    // ease them slow down
 }
 
 void Boid_mod::appear(){
     isSeeking = false;
-    customBoid.appear(); 
+    customBoid.appear();
 }
 
+void Boid_mod::setRatio(int ratio){
+    customBoid.triToCircleRatio = ratio; 
+}

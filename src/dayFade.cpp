@@ -24,8 +24,8 @@ int DayFade::imgWidth = 0;
 int DayFade::imgHeight = 0;
 int DayFade::originalImgHeight = 0;
 float DayFade::percentDay = 1;
-int DayFade::mskPos = 0;
-int DayFade::imgPos = 0;
+float DayFade::mskPos = 0;
+float DayFade::imgPos = 0;
 //static int crpHeight;
 int DayFade::crpHeight = 0;
 
@@ -151,7 +151,7 @@ void DayFade::draw(int x, int y, int rightCropPos){
     //int imgPosTemp = imgPos;
     //imgPosTemp -= mskPos;
     //imgPosTemp = ;
-    int mskPosTemp = mskPos/2;
+    float mskPosTemp = mskPos/2;
     
     for (int i = 0; i < singleImg.size(); i++){
        if (((wrapIt(x + singleImg.at(i).startDay - mskPosTemp) < rightCropPos) & (wrapIt(x + singleImg.at(i).startDay - mskPosTemp) > 0)) | ( (wrapIt(x + singleImg.at(i).endDay- mskPosTemp)  > 0) & ( wrapIt(x + singleImg.at(i).endDay- mskPosTemp ) < rightCropPos))){
@@ -161,7 +161,7 @@ void DayFade::draw(int x, int y, int rightCropPos){
           
                drawSliceOfImagery.begin();
                ofClear(0);
-               int drawImgPos = wrapIt(singleImg.at(i).startDay + imgPos - mskPosTemp);
+               float drawImgPos = wrapIt(singleImg.at(i).startDay + imgPos - mskPosTemp);
                 if (drawImgPos+drawSliceOfImagery.getWidth() > imgWidth){
                     singleImg.at(i).img.draw( drawImgPos *-1,0, imgWidth , singleImg.at(i).img.getHeight());
                     singleImg.at(i).img.draw( drawImgPos *-1 +  imgWidth ,0,imgWidth , singleImg.at(i).img.getHeight());
@@ -219,9 +219,9 @@ void DayFade::draw(int x, int y, int rightCropPos){
     
 }
 // Thit keeps xPos within imageWidth
-int DayFade::wrapIt(int Xpos){
+float DayFade::wrapIt(float Xpos){
     
-    int wrappedMsk = Xpos - mskPos;
+    float wrappedMsk = Xpos - mskPos;
     
     // If starting position is less than the beginning of the image
     if (wrappedMsk <  0 ){
