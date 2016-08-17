@@ -24,8 +24,8 @@ int DayFade::imgWidth = 0;
 int DayFade::imgHeight = 0;
 int DayFade::originalImgHeight = 0;
 float DayFade::percentDay = 1;
-int DayFade::mskPos = 0;
-int DayFade::imgPos = 0;
+float DayFade::mskPos = 0;
+float DayFade::imgPos = 0;
 //static int crpHeight;
 int DayFade::crpHeight = 0;
 
@@ -82,9 +82,20 @@ void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
     divNumImgs = 1;
     
     makeMsk(mskStartPos, 0, widthOfDay);
+    int interval = widthOfDay/(singleImg.size()/divNumImgs)+3;
+    
     alphaShader.begin();
-    alphaShader.setUniform1i("imgWidth", imgWidth);
+        alphaShader.setUniform1i("imgWidth", interval*2);
+        alphaShader.setUniformTexture("imageMask", gradientMask, 1);
     alphaShader.end();
+    
+    
+    drawSliceOfImagery.allocate(interval*3, imgHeight,GL_RGB);
+    
+    drawSliceOfImagery.begin();
+        ofClear(0,0,0);
+    drawSliceOfImagery.end();
+    
 }
 
 void DayFade::makeMsk(int posMsk , int posImg, int width){
@@ -95,58 +106,33 @@ void DayFade::makeMsk(int posMsk , int posImg, int width){
     int interval = width/(singleImg.size()/divNumImgs)+3;
     int imgHeight = singleImg.at(0).img.getHeight();
     int offset = -imgWidth;
-    gradientMaker.begin();
-         gradientMaker.setUniform1i("width",imgWidth);
-    gradientMaker.end();
     
+    
+    // make just one gradient per day.
+    
+    ofFbo msk;
+    msk.allocate(interval*3, imgHeight);
+    msk.begin();
+        ofClear(0, 0, 0, 0);
+        gradientMaker.begin();
+            gradientMaker.setUniform1i("width",interval);
+            gradientMaker.setUniform1i("begFadeStart",0);
+            gradientMaker.setUniform1i("begFadeEnd", interval);
+            gradientMaker.setUniform1i("endFadeStart",interval*2 );
+            gradientMaker.setUniform1i("endFadeEnd", interval*3);
+            ofDrawRectangle(0, 0,interval*3,imgHeight);
+        gradientMaker.end();
+        //ofBackground(255,255);
+    msk.end();
+    gradientMask = msk.getTexture();
+    
+    // now fill in the start and end positions.
     for (int i=0; i < singleImg.size()/divNumImgs; i++){
-        //singleImg.at(i).isWrapped = false;
-        ofFbo mask;
-        mask.allocate(imgWidth, imgHeight);
-        mask.begin();
-            ofClear(0, 0, 0, 0);
-            gradientMaker.begin();
-                gradientMaker.setUniform1i("begFadeStart",posMsk);
-                singleImg.at(i).startDay = posMsk;
-                gradientMaker.setUniform1i("begFadeEnd", posMsk + interval);
-                gradientMaker.setUniform1i("endFadeStart",posMsk + interval*2 );
-                gradientMaker.setUniform1i("endFadeEnd",posMsk + interval*3);
-                singleImg.at(i).endDay = posMsk + interval*3;
-                ofDrawRectangle(0, 0,imgWidth,imgHeight);
-            gradientMaker.end();
-    
-        /*
-        if (posMsk + interval*3 > imgWidth ){
-            singleImg.at(i).isWrapped = true;
-            gradientMaker.begin();
-            gradientMaker.setUniform1i("begFadeStart",offset + posMsk);
-            gradientMaker.setUniform1i("begFadeEnd", offset + posMsk + interval );
-            gradientMaker.setUniform1i("endFadeStart",offset +posMsk + interval*2 );
-            gradientMaker.setUniform1i("endFadeEnd",offset +posMsk + interval*3);
-            ofDrawRectangle(0, 0,imgWidth,imgHeight);
-            gradientMaker.end();
-        }
-         */
-             // only wrap it if it is needed.
-            // draw a second one with an offset to take care of the wrap.
-       
-            gradientMaker.begin();
-                gradientMaker.setUniform1i("begFadeStart",offset + posMsk);
-                gradientMaker.setUniform1i("begFadeEnd", offset + posMsk + interval );
-                gradientMaker.setUniform1i("endFadeStart",offset +posMsk + interval*2 );
-                gradientMaker.setUniform1i("endFadeEnd",offset +posMsk + interval*3);
-                ofDrawRectangle(0, 0,imgWidth,imgHeight);
-            gradientMaker.end();
-         
-       
-        mask.end();
+        singleImg.at(i).startDay = posMsk;
+        singleImg.at(i).endDay = posMsk + interval*2;
         posMsk += interval;
-        ofLog()<< posMsk;
-        ofTexture temp = mask.getTexture();
-        singleImg.at(i).msk= temp;
-       
-        
     }
+
 }
 
 
@@ -160,17 +146,48 @@ void DayFade::draw(int x, int y, int rightCropPos){
   
     // turn msk pos into its wrapped version
     int cnt =0;
-   
-    for (int i = 0; i < singleImg.size()/divNumImgs; i++){
-       if (((wrapIt(singleImg.at(i).startDay) < rightCropPos )& (wrapIt(singleImg.at(i).startDay) > 0)) | ((wrapIt(singleImg.at(i).endDay)  > 0 )&(wrapIt(singleImg.at(i).endDay)  < rightCropPos))){
+    //calculate what msk Position and ImgPosition should be considering the movement of the mask
+
+    //int imgPosTemp = imgPos;
+    //imgPosTemp -= mskPos;
+    //imgPosTemp = ;
+    float mskPosTemp = mskPos/2;
+    
+    for (int i = 0; i < singleImg.size(); i++){
+       if (((wrapIt(x + singleImg.at(i).startDay - mskPosTemp) < rightCropPos) & (wrapIt(x + singleImg.at(i).startDay - mskPosTemp) > 0)) | ( (wrapIt(x + singleImg.at(i).endDay- mskPosTemp)  > 0) & ( wrapIt(x + singleImg.at(i).endDay- mskPosTemp ) < rightCropPos))){
            cnt ++;
+           
+           // challenge is figuring out where to sample from and where to draw to
+          
+               drawSliceOfImagery.begin();
+               ofClear(0);
+               float drawImgPos = wrapIt(singleImg.at(i).startDay + imgPos - mskPosTemp);
+                if (drawImgPos+drawSliceOfImagery.getWidth() > imgWidth){
+                    singleImg.at(i).img.draw( drawImgPos *-1,0, imgWidth , singleImg.at(i).img.getHeight());
+                    singleImg.at(i).img.draw( drawImgPos *-1 +  imgWidth ,0,imgWidth , singleImg.at(i).img.getHeight());
+                }
+                else{
+                    singleImg.at(i).img.draw( drawImgPos *-1,0,imgWidth , singleImg.at(i).img.getHeight());
+                }
+
+           
+               // ofBackground(int(ofRandom(255)), int(ofRandom(255)), int(ofRandom(255)));
+               drawSliceOfImagery.end();
+        
+           drawSliceOfImagery.getTexture().setAlphaMask(gradientMask);
+           drawSliceOfImagery.draw(wrapIt(x + singleImg.at(i).startDay - mskPosTemp) ,y);
+           //gradientMask.draw(x + singleImg.at(i).startDay,y);
            //can I crop the image and the mask here before applying the shader to it
+           // the wrapping will be tricky
+           // idk if I even need my special image now
+           /*
            alphaShader.begin();
                 alphaShader.setUniformTexture("imageMask", singleImg.at(i).msk, 1);
                 alphaShader.setUniform1i("mskXPos", mskPos);
                 alphaShader.setUniform1i("imgXPos", imgPos);
                 singleImg.at(i).img.draw(x,y, imgWidth , singleImg.at(i).img.getHeight() );
            alphaShader.end();
+            */
        }
     }
     
@@ -202,9 +219,9 @@ void DayFade::draw(int x, int y, int rightCropPos){
     
 }
 // Thit keeps xPos within imageWidth
-int DayFade::wrapIt(int Xpos){
+float DayFade::wrapIt(float Xpos){
     
-    int wrappedMsk = Xpos - mskPos;
+    float wrappedMsk = Xpos - mskPos;
     
     // If starting position is less than the beginning of the image
     if (wrappedMsk <  0 ){

@@ -10,13 +10,17 @@
 
 class singleBoid{
     public:
-    void setup();
-    void draw();
-    void update();
-    void toCirc();
-    void toTri();
-    void appear();
-    void disappear();
+        void setup();
+        void draw();
+        void update();
+        void toCirc();
+        void toTri();
+        void appear();
+        void appear(float toGrowTo);
+        void disappear();
+        float triToCircleRatio;
+        float maxSpeed;
+        int minSize;
     
     private:
     
@@ -28,7 +32,7 @@ class singleBoid{
         ofVec2f center;
         vector<ofVec2f> triangle;
         vector<int> triIndex;
-        float triToCircleRatio;
+    
         int direction;
         int currTriIndex;
     
@@ -41,14 +45,24 @@ class singleBoid{
         bool isPulse;
     
         int startTime;
-    
         int dur;
+    
         int lastR;
     
         bool isCirc;
     
         int randomNoiseSeed;
     
-        
+        float sizeToGrowTo;
+    
+        int delay;
+    
+        bool isWaitAppear;
+        bool isWaitDisappear;
+    
+        float fastSpeed;
+        float slowSpeed;
+    
+    
     
 };

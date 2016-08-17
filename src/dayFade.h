@@ -22,8 +22,8 @@ public:
     static int originalImgHeight;
     static float percentDay;
     
-    static int mskPos;
-    static int imgPos;
+    static float mskPos;
+    static float imgPos;
     
     static int crpHeight;
 
@@ -35,7 +35,7 @@ public:
     
     void addCroppedImages(int crpTop, int crpBottom, int cropLeftRight);
     
-    int wrapIt(int Xpos);
+    float wrapIt(float Xpos);
     
     string dayDirectory;
     int cropRight; 
@@ -68,5 +68,10 @@ private:
     ofVideoPlayer flk;
     
     ofShader alphaShader;
+    
+    ofTexture gradientMask;
+    
+    ofFbo drawSliceOfImagery; 
+    
     
 };

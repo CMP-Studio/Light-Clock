@@ -34,9 +34,12 @@ public:
     void toTri();
     
     void appear();
+    void appear(float sz);
     void disappear();
     
     void setup();
+    
+    void setRatio(int ration);
     
 	ofVec2f steer(ofVec2f target, bool slowdown);
 	ofVec2f separate(vector<Boid_mod> &boids);

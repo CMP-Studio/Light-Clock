@@ -61,6 +61,22 @@ void Flocking::update() {
             sequenceStep ++;
         }
     }
+    
+    if (isSequenceTwo){
+        int timeSince = ofGetElapsedTimeMillis() - startTime;
+        
+        if ((sequenceStep == 0)&(timeSince > 15000)){
+            toDisappear();
+            sequenceStep ++;
+        }
+        else if ((sequenceStep == 1)&(timeSince > 35000)){
+            isSequenceTwo = false;
+            removeAllBoids();
+            sequenceStep ++;
+        }
+
+    }
+
 
     
     for(int i = 0; i < boids.size(); i++) {
@@ -94,7 +110,31 @@ void Flocking::update() {
     drawIntoMe.end();
 }
 
+
+void Flocking::triggerSequenceTwo(){
+    isSequenceTwo = true;
+    isSequence = false;
+    startTime =ofGetElapsedTimeMillis();
+    sequenceStep = 0;
+    removeAllBoids();
+    
+    // add Boids
+    for (int i = 0; i < startCount; i++) {
+        addBoid();
+        // make them circles to begin with.
+        boids.at(i).setRatio(1);
+    }
+    for(int i = 0; i < boids.size(); i++) {
+        boids[i].appear(100);
+    }
+    
+    // appear (poping all over the place)
+    
+    // grow bigger
+}
+
 void Flocking::triggerSequence(){
+    isSequenceTwo = false;
     isSequence = true;
     startTime = ofGetElapsedTimeMillis();
     sequenceStep = 0;
@@ -106,6 +146,13 @@ void Flocking::triggerSequence(){
     
     toAppear();
 }
+
+void Flocking::setMinSize(int sz){
+    for (int i = 0; i < boids.size(); i++){
+        boids.at(i).customBoid.minSize = sz;
+    }
+}
+
 
 void Flocking::addBoid() {
     boids.push_back(Boid_mod(drawIntoMe.getWidth(), drawIntoMe.getHeight()));

@@ -10,7 +10,8 @@
 #include "ofxEasing.h"
 
 void singleBoid::setup(){
-    r = 20;
+    r = 0;
+    minSize = 0;
     triSize =20;
     circSize = 160;
     numOfPoint = 32;
@@ -57,11 +58,18 @@ void singleBoid::setup(){
 
     isAppear = false;
     isDisappear = false;
+    isWaitDisappear = false;
+    isWaitAppear = false;
     
     dur = 3000;
     isPulse = false;
     
     isCirc = false;
+    delay = int(ofRandom(0,3500));
+    
+    slowSpeed = .2;
+    fastSpeed = 2.5; 
+    
 }
 
 void singleBoid::draw(){
@@ -75,6 +83,8 @@ void singleBoid::draw(){
     for( int i =0; i < numOfPoint; i++){
         ofVec2f vertexTri = triangle.at(i);
         ofVec2f vertexCircle = circle.at(i);
+        
+        
         if (isGrow){
             vertex.x = ofxeasing::map(triToCircleRatio, 0, 1, vertexTri.x, vertexCircle.x, ofxeasing::quad::easeOut);
             vertex.y = ofxeasing::map(triToCircleRatio, 0, 1, vertexTri.y, vertexCircle.y, ofxeasing::quad::easeOut);
@@ -97,6 +107,17 @@ void singleBoid::draw(){
 }
 
 void singleBoid::update(){
+    
+    if(isWaitAppear & ((ofGetElapsedTimeMillis()-startTime) >= delay)){
+        isWaitAppear = false;
+        isAppear = true;
+        startTime = ofGetElapsedTimeMillis();
+    }
+    if(isWaitDisappear & ((ofGetElapsedTimeMillis()-startTime) >= delay)){
+        isWaitDisappear = false;
+        isDisappear = true;
+        startTime = ofGetElapsedTimeMillis();
+    }
 
     if (isShrink | isGrow){
         triToCircleRatio += .01 * direction;
@@ -112,30 +133,39 @@ void singleBoid::update(){
         }
     }
     
-    /*
-    if(!isShrink & !isGrow & !isAppear & !isDisappear & isPulse){
+  /*
+    if(!isWaitAppear & !isWaitDisappear & !isShrink & !isGrow & !isAppear & !isDisappear & isPulse){
         if (isCirc){
-            r = ofMap(ofNoise(randomNoiseSeed,ofGetElapsedTimef()),0,1,circSize,circSize + 15);
+            r = ofMap(ofNoise(randomNoiseSeed,ofGetElapsedTimef()/4),0,1,sizeToGrowTo,sizeToGrowTo + 15);
         }
         else{
-            r = ofMap(ofNoise(randomNoiseSeed, ofGetElapsedTimef()),0,1,triSize,triSize + 15);
+            r = ofMap(ofNoise(randomNoiseSeed, ofGetElapsedTimef()/4),0,1,sizeToGrowTo,sizeToGrowTo + 15);
         }
         
-    }*/ 
+    }
+   */
 
     if(isAppear){
-        r = ofMap(ofGetElapsedTimeMillis(), startTime, startTime + dur, 0, triSize);
-        if ( r >= triSize){
+        //r = ofxeasing::map(float(ofGetElapsedTimeMillis()), float(startTime), float(startTime + dur), 0.0f, float(sizeToGrowTo), ofxeasing::quad::easeIn);
+        //vertex.x = ofxeasing::map(triToCircleRatio, 0, 1, vertexTri.x, vertexCircle.x, ofxeasing::quad::easeIn);
+        maxSpeed = ofMap(ofGetElapsedTimeMillis(), startTime, startTime+dur,fastSpeed,slowSpeed);
+        
+        r = ofMap(ofGetElapsedTimeMillis(), startTime, startTime+dur,minSize, sizeToGrowTo);
+        if ( r >= sizeToGrowTo){
             isAppear = false;
             isPulse = true;
         }
     }
     
     else if(isDisappear){
-        r = ofMap(ofGetElapsedTimeMillis(), startTime, startTime + dur, lastR, 0);
-        if ( r <= 0){
+        //r = ofxeasing::map(float(ofGetElapsedTimeMillis()), float(startTime), float(startTime + dur), float(lastR), 0.0f, float(sizeToGrowTo), ofxeasing::quad::easeOut);
+        r = ofMap(ofGetElapsedTimeMillis(), startTime, startTime+dur,lastR,minSize);
+        maxSpeed = ofMap(ofGetElapsedTimeMillis(), startTime, startTime+dur,slowSpeed, fastSpeed);
+        
+        if ( r <= minSize){
             isDisappear = false;
-            isPulse = false; 
+            isPulse = false;
+            r = 0; 
         }
     }
     
@@ -159,13 +189,22 @@ void singleBoid::toCirc(){
     triToCircleRatio= 0;
 }
 
-void singleBoid::appear(){
-    isAppear = true;
+void singleBoid::appear(float toGrowTo){
+    isWaitAppear = true;
     startTime= ofGetElapsedTimeMillis();
+    sizeToGrowTo = toGrowTo;
+    
+}
+
+void singleBoid::appear(){
+    startTime= ofGetElapsedTimeMillis();
+    sizeToGrowTo = triSize;
+    isWaitAppear = true;
 }
 
 void singleBoid::disappear(){
-    isDisappear = true;
     startTime= ofGetElapsedTimeMillis();
     lastR = r;
+    isWaitDisappear = true;
 }
+

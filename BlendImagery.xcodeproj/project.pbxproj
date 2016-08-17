@@ -148,14 +148,14 @@
 		0BA18ECF1D5C16DE00783235 /* flk */ = {
 			isa = PBXGroup;
 			children = (
+				0BA18ED61D5C16F000783235 /* singleBoid.cpp */,
+				0BA18ED71D5C16F000783235 /* singleBoid.h */,
 				0BA18ED01D5C16F000783235 /* Boid_mod.cpp */,
 				0BA18ED11D5C16F000783235 /* Boid_mod.h */,
 				0BA18ED21D5C16F000783235 /* Flocking.cpp */,
 				0BA18ED31D5C16F000783235 /* Flocking.h */,
 				0BA18ED41D5C16F000783235 /* Obstacle.cpp */,
 				0BA18ED51D5C16F000783235 /* Obstacle.h */,
-				0BA18ED61D5C16F000783235 /* singleBoid.cpp */,
-				0BA18ED71D5C16F000783235 /* singleBoid.h */,
 			);
 			name = flk;
 			sourceTree = "<group>";

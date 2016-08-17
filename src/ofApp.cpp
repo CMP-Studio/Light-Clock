@@ -39,7 +39,6 @@ void ofApp::setup(){
     gui.add(cropBottom.setup("crop bottom",height/2,0,height));
     gui.add(reCropEveryThing.setup("Re-initialize Crop"));
     
-    
     gui.add(camZoom.setup("Cam Zoom",90,10,180));
     gui.add(camUpDown.setup("Cam Y",0,-width,width));
     gui.add(camZpos.setup("Cam Z",20,width,-width));
@@ -113,9 +112,10 @@ void ofApp::setup(){
     left.load("sounds/left.wav");
     right.load("sounds/right.wav");
     moment.load("sounds/click.wav");
+    gong.load("sounds/gong.mp3");
+    gongMultiple.load("sounds/gongMultiple.wav");
     
-    
-    curMoment.load("currentMoment2.png");
+    curMoment.load("current.png");
     flock2.setup(curMoment.getWidth(), curMoment.getHeight() );
     
     momentAlphaShader.load("shader_alphaMsk2/shadersGL3/shader");
@@ -127,6 +127,9 @@ void ofApp::setup(){
     // image to test full resolution
     fullRes.load("bestStitch3.png");
     isFullResTest = false;
+    
+    timeSinceInteract = ofGetElapsedTimeMillis();
+    isLatent = true; 
     
 }
 
@@ -178,11 +181,27 @@ void ofApp::cropTrigger(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
+
     if(usingFlow){
         rotSense.update();
         days.at(0).imgPos += rotSense.getCwVelocity();
         days.at(0).mskPos += rotSense.getCcwVelocity();
     }
+
+
+    
+    if((!isLatent)&((ofGetElapsedTimeMillis()- timeSinceInteract) >= 5000)){
+        isLatent = true;
+    }
+    else if (isLatent){
+         float output =ofMap(ofNoise(1,ofGetElapsedTimef()/10),0,1,-1,1);
+        ofLog()<< output;
+        days.at(0).mskPos -= output;
+        
+        days.at(0).imgPos += ofMap(ofNoise(50, ofGetElapsedTimef()/14),0,1,-1,1);
+    }
+    
+    
 
     for(int i=0; i< days.size(); i++){
         days.at(i).update();
@@ -211,9 +230,15 @@ void ofApp::update(){
     ofClear(0);
     ofBackground(0,0,255);
     
+    ofPushMatrix();
+    
+    ofScale(-1,1,1);
+    ofTranslate(getText.getWidth() * -1 , 0);
+    
     for(int i=0; i< days.size(); i++){
         days.at(i).draw(0,cropTop,cropLeftRight);
     }
+    
     
     
    // this isn't wrapping right now and I need it to.
@@ -223,6 +248,12 @@ void ofApp::update(){
         momentAlphaShader.setUniform1i("imgXPos", days.at(0).imgPos);
         curMoment.draw(0 ,0);
     momentAlphaShader.end();
+
+    if(isFullResTest){
+        fullRes.draw(0,0);
+    }
+    
+    ofPopMatrix();
     
     // draw circles at the crop positions
     if (showGui){
@@ -242,12 +273,8 @@ void ofApp::update(){
 
     
     //cam.setPosition(0,0,0 );
-    if (!isFullResTest){
          sphere.mapTexCoordsFromTexture( getText.getTexture() );
-    }
-    else{
-        sphere.mapTexCoordsFromTexture( fullRes.getTexture() );
-    }
+    
    
 
 }
@@ -270,22 +297,12 @@ void ofApp::draw(){
     ofBackground(0);
     
     //sphere.draw();
-    if(!isFullResTest){
         cam.begin();
         getText.getTexture().bind();
         sphere.draw();
         //sphere.drawWireframe();
         getText.getTexture().unbind();
         cam.end();
-    }
-    else{
-        cam.begin();
-        fullRes.getTexture().bind();
-        sphere.draw();
-        //sphere.drawWireframe();
-        fullRes.getTexture().unbind();
-        cam.end();
-    }
     
     
  
@@ -313,25 +330,22 @@ void ofApp::draw(){
 
 //-------------------------w-------------------------------------
 void ofApp::keyPressed(int key){
-    if(key == 'w'){
-        isSpin = true;
-    }
-    else if (key == 'o'){
+
+
+    if (key == 'o'){
         usingFlow = !usingFlow;
     }
-    else if (key == 'e'){
+    else if (key == 'q'){
         days.at(0).imgPos +=10;
         left.play();
+        isLatent = false;
+        timeSinceInteract = ofGetElapsedTimeMillis();
     }
-    else if(key == 'r'){
-        days.at(0).imgPos -=10;
-    }
-    else if (key == 'd'){
-        days.at(0).mskPos +=10;
-    }
-    else if(key == 'f'){
+    else if(key == 'w'){
         days.at(0).mskPos -=10;
         right.play();
+        isLatent = false;
+        timeSinceInteract = ofGetElapsedTimeMillis();
     }
     else if (key == 'h'){
         showGui = !showGui; 
@@ -341,10 +355,33 @@ void ofApp::keyPressed(int key){
         isFullResTest = !isFullResTest;
     }
     else if(key == 'v'){
+        flock2.setMinSize(0);
         flock2.triggerSequence();
         moment.play();
 
     }
+    else if(key == 'b'){
+        flock2.setMinSize(0);
+        flock2.triggerSequenceTwo();
+        moment.play(); 
+    }
+    else if(key == 'n'){
+        flock2.setMinSize(0);
+        flock2.triggerSequenceTwo();
+        gong.play();
+    }
+    else if(key == 'm'){
+        flock2.setMinSize(0);
+        flock2.triggerSequenceTwo();
+        gongMultiple.play();
+    }
+    else if(key == ','){
+        
+        flock2.triggerSequenceTwo();
+        flock2.setMinSize(30);
+        gongMultiple.play();
+    }
+
 
 }
 
