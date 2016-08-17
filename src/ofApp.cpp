@@ -43,7 +43,17 @@ void ofApp::setup(){
     gui.add(camXpos.setup("Cam X",20,width,-width));
     gui.add(maxSpinTime.setup("spin max speed",height/2,0,width));
     gui.add(soundFrequency.setup("Sound frequency",height/2,0,width));
+    gui.add(noiseParameters.setup("latent state",""));
+    gui.add(rangeImgMove.setup("Image movement range", ofVec2f(-1,1), ofVec2f(-6,-6),ofVec2f(6,6)));
+    gui.add(imgMoveSpeed.setup("speed of image", 4 , 0,30 ));
+    gui.add(rangeMskMove.setup("Mask movement range", ofVec2f(-1,1), ofVec2f(-6,-6),ofVec2f(6,6)));
+    gui.add(mskMoveSpeed.setup("speed of msk", 4 , 0,30 ));
+   
+    //ofxLabel noiseParameters;
+    //
     
+    
+  
     
     reCropEveryThing.addListener(this, &ofApp::cropTrigger);
     camZoom.addListener(this, &ofApp::camZoomChanged);
@@ -184,11 +194,10 @@ void ofApp::update(){
         isLatent = true;
     }
     else if (isLatent){
-         float output =ofMap(ofNoise(1,ofGetElapsedTimef()/10),0,1,-1,1);
-        ofLog()<< output;
+         float output =ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,rangeMskMove->x,rangeMskMove->y);
         days.at(0).mskPos -= output;
         
-        days.at(0).imgPos += ofMap(ofNoise(50, ofGetElapsedTimef()/14),0,1,-1,1);
+        days.at(0).imgPos += ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
     }
     
     

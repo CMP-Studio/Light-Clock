@@ -86,6 +86,15 @@ class ofApp : public ofBaseApp{
     ofxIntSlider maxSpinTime;
     ofxIntSlider soundFrequency;
     
+    //adjust the latent state
+    ofxLabel noiseParameters;
+    ofxVec2Slider rangeImgMove;
+    ofxIntSlider imgMoveSpeed;
+    ofxVec2Slider rangeMskMove;
+    ofxIntSlider mskMoveSpeed;
+    
+    
+    
     bool showGui;
     
     ofSoundPlayer left;
