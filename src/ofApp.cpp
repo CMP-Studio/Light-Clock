@@ -2,13 +2,15 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-
-    ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight()); 
+    
+    isMuteMode = false;
+    
+    ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
     
     ofSetVerticalSync(true);
     
     usingFlow=true;
-    rotSense.setup();
+    //rotSense.setup();
     
     ofLog()<< "get width: " << ofGetWindowWidth();
     
@@ -191,12 +193,13 @@ void ofApp::cropTrigger(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
-
+    /*
     if(usingFlow){
         rotSense.update();
         days.at(0).imgPos += rotSense.getCwVelocity();
         days.at(0).mskPos += rotSense.getCcwVelocity();
     }
+     */
 
 
     
@@ -305,7 +308,8 @@ void ofApp::draw(){
     
     ofBackground(0);
     
-    //sphere.draw();
+    
+    if(!isMuteMode){
         cam.begin();
         getText.getTexture().bind();
         sphere.draw();
@@ -314,25 +318,17 @@ void ofApp::draw(){
         cam.end();
     
     
- 
- /*
-    ofClear(0);
-    ofBackground(0,0,255);
-    for(int i=0; i< days.size(); i++){
-        days.at(i).draw(0,0,cropLeftRight);
-    }
-  */
-   
-    
     ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()),40, ofGetHeight()-40,0);
-
 
     
     if(showGui){
         gui.draw();
     }
     if(usingFlow){
-        rotSense.draw();
+        //rotSense.draw();
+    }
+    } else{
+        // 
     }
 
 }
@@ -389,6 +385,21 @@ void ofApp::keyPressed(int key){
         flock2.triggerSequenceTwo();
         flock2.setMinSize(30);
         gongMultiple.play();
+    }
+    else if(key == 'x'){
+        isMuteMode = !isMuteMode;
+        if (isMuteMode){
+            left.setVolume(0);
+            right.setVolume(0);
+            gong.setVolume(0);
+            gongMultiple.setVolume(0);
+        }
+        else{
+            left.setVolume(1);
+            right.setVolume(1);
+            gong.setVolume(1);
+            gongMultiple.setVolume(1);
+        }
     }
 
 

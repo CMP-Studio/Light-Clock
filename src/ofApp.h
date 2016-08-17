@@ -5,7 +5,7 @@
 #include "ofxGui.h"
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
-#include "rot/rotationSensing.h"
+#include "rotationSensing.h"
 
 
 class ofApp : public ofBaseApp{
@@ -107,7 +107,7 @@ class ofApp : public ofBaseApp{
     
     Flocking flock2;
     
-    rotationSensing rotSense;
+    //rotationSensing rotSense;
 
     ofShader momentAlphaShader;
     
@@ -118,5 +118,7 @@ class ofApp : public ofBaseApp{
 
     
     bool isLatent; 
-    int timeSinceInteract; 
+    int timeSinceInteract;
+    
+    bool isMuteMode;
 };
