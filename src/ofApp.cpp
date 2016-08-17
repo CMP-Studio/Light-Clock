@@ -7,7 +7,8 @@ void ofApp::setup(){
     
     ofSetVerticalSync(true);
     
-    
+    usingFlow=true;
+    rotSense.setup();
     
     ofLog()<< "get width: " << ofGetWindowWidth();
     
@@ -25,6 +26,7 @@ void ofApp::setup(){
     
     
     gui.setup();
+    gui.setPosition(50, 50);
     ofLog()<<"loading old settings";
    
    // cac
@@ -189,6 +191,14 @@ void ofApp::cropTrigger(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
+
+    if(usingFlow){
+        rotSense.update();
+        days.at(0).imgPos += rotSense.getCwVelocity();
+        days.at(0).mskPos += rotSense.getCcwVelocity();
+    }
+
+
     
     if((!isLatent)&((ofGetElapsedTimeMillis()- timeSinceInteract) >= 5000)){
         isLatent = true;
@@ -201,6 +211,7 @@ void ofApp::update(){
     }
     
     
+
     for(int i=0; i< days.size(); i++){
         days.at(i).update();
     }
@@ -314,22 +325,26 @@ void ofApp::draw(){
    
     
     ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()),40, ofGetHeight()-40,0);
+
+
     
     if(showGui){
         gui.draw();
+    }
+    if(usingFlow){
+        rotSense.draw();
     }
 
 }
 
 //-------------------------w-------------------------------------
 void ofApp::keyPressed(int key){
-    
-    
-    
-  
-    
-    if (key == 'q'){
-        
+
+
+    if (key == 'o'){
+        usingFlow = !usingFlow;
+    }
+    else if (key == 'q'){
         days.at(0).imgPos +=10;
         left.play();
         isLatent = false;
@@ -345,12 +360,14 @@ void ofApp::keyPressed(int key){
         showGui = !showGui; 
     }
     else if (key == ' '){
+
         isFullResTest = !isFullResTest;
     }
     else if(key == 'v'){
         flock2.setMinSize(0);
         flock2.triggerSequence();
         moment.play();
+
     }
     else if(key == 'b'){
         flock2.setMinSize(0);
@@ -409,7 +426,7 @@ void ofApp::keyReleased(int key){
         ofLog()<< "beg frame: " << begFrame;
         
     }
-    
+
 
     
    

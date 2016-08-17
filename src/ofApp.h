@@ -5,6 +5,7 @@
 #include "ofxGui.h"
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
+#include "rot/rotationSensing.h"
 
 
 class ofApp : public ofBaseApp{
@@ -51,6 +52,7 @@ class ofApp : public ofBaseApp{
     
     bool isEaseOut;
     bool isSpin;
+    bool usingFlow;
     float beginningValue;
     int begFrame;
     
@@ -105,10 +107,15 @@ class ofApp : public ofBaseApp{
     
     Flocking flock2;
     
+    rotationSensing rotSense;
+
     ofShader momentAlphaShader;
     
     ofImage fullRes;
-    bool isFullResTest;
+
+    bool isFullResTest; 
+
+
     
     bool isLatent; 
     int timeSinceInteract; 
