@@ -328,7 +328,7 @@ void ofApp::draw(){
         //rotSense.draw();
     }
     } else{
-        // 
+        // draw video for the mute mode
     }
 
 }
