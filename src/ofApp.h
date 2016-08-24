@@ -6,14 +6,14 @@
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
 #include "rotationSensing.h"
-#include "ofxThreadedImageLoader.h"
+//#include "oneImage.h"
+#include "fileManager.h"
 
 
 class ofApp : public ofBaseApp{
 
 	public:
     
-        ofxThreadedImageLoader loader;
     
 		void setup();
 		void update();
@@ -121,7 +121,7 @@ class ofApp : public ofBaseApp{
     
     ofImage fullRes;
 
-    bool isFullResTest; 
+    bool isFullResTest;
 
 
     
@@ -129,4 +129,7 @@ class ofApp : public ofBaseApp{
     int timeSinceInteract;
     
     bool isMuteMode;
+    
+    fileManager manager;
+    //oneImage testing;
 };

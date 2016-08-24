@@ -29,7 +29,7 @@ float DayFade::imgPos = 0;
 //static int crpHeight;
 int DayFade::crpHeight = 0;
 
-void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight, ofxThreadedImageLoader *load){
+void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight){
 #ifdef TARGET_OPENGLES
     gradientMaker.load("shader_gradient/shadersES2/shader");
     alphaShader.load("shader_alphaMsk2/shadersES2");

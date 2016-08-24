@@ -8,7 +8,6 @@
 
 #include "ofMain.h"
 #include "singleDay.h"
-#include "ofxThreadedImageLoader.h"
 
 class DayFade{
     
@@ -29,7 +28,7 @@ public:
 
     
     
-    void setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight, ofxThreadedImageLoader *load );
+    void setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight);
     void update();
     void draw(int x, int y ,int rightCropPos);
     void addCroppedImages(int crpTop, int crpBottom, int cropLeftRight);

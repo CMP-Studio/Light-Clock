@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    manager.setup();
     
     isMuteMode = false;
     
@@ -79,7 +80,7 @@ void ofApp::setup(){
     DayFade temp;
     //string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight
 
-    temp.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight,&loader);
+    temp.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight);
     days.push_back(temp);
     
     int num1 = cropTop;
@@ -327,7 +328,7 @@ void ofApp::update(){
          sphere.mapTexCoordsFromTexture( getText.getTexture() );
     
    
-
+    manager.update();
 }
 
 //--------------------------------------------------------------
@@ -369,6 +370,7 @@ void ofApp::draw(){
     } else{
         // draw video for the mute mode
     }
+    manager.draw(); 
 
 }
 
@@ -509,7 +511,7 @@ void ofApp::exit(){
         days.at(i).cleanUp(); 
     }
     
-    loader.stopThread();
+    //loader.stopThread();
 }
 
 

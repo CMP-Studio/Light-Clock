@@ -22,7 +22,6 @@ public:
     int startDay;
     bool isWhat;
     int endDay;
-    int explainThisToMePlease;
     
     //bool isWrapped;
     
