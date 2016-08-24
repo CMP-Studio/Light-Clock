@@ -6,11 +6,15 @@
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
 #include "rotationSensing.h"
+#include "ofxThreadedImageLoader.h"
 
 
 class ofApp : public ofBaseApp{
 
 	public:
+    
+        ofxThreadedImageLoader loader;
+    
 		void setup();
 		void update();
 		void draw();
@@ -39,8 +43,12 @@ class ofApp : public ofBaseApp{
         // d- duration
         float easeOut();
         void exit();
+    
+    float wrapCurrentMoment(float Xpos);
 
     ofFbo currentMoment;
+    ofFbo currentMomentMask;
+    
     ofImage curMoment;
     ofImage momentMsk;
     

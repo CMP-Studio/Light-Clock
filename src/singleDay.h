@@ -15,7 +15,6 @@ public:
     void setup(string imgToLoad, int crpTop, int crpBottom);
     //int isWrapped;
     //ofImage image1;
-    
     ofImage img;
     ofTexture msk;
     int originalHeight;

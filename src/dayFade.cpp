@@ -29,7 +29,7 @@ float DayFade::imgPos = 0;
 //static int crpHeight;
 int DayFade::crpHeight = 0;
 
-void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight){
+void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight, ofxThreadedImageLoader *load){
 #ifdef TARGET_OPENGLES
     gradientMaker.load("shader_gradient/shadersES2/shader");
     alphaShader.load("shader_alphaMsk2/shadersES2");
@@ -48,6 +48,10 @@ void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int 
     numberDay = numDay;
     windowWidth = ofGetWidth();
     addCroppedImages (crpTop,crpBottom, cropLeftRight);
+    
+    
+    //ofImage test;
+    //load->loadFromDisk(test, "currentMoment5.png");
     
 }
 
@@ -235,4 +239,10 @@ float DayFade::wrapIt(float Xpos){
         //wrappedMsk = 0;
     }
     return wrappedMsk;
+}
+
+void DayFade::cleanUp(){
+    for (int i =0; i < singleImg.size(); i++){
+       // singleImg.at(i).loader.stopThread();
+    }
 }

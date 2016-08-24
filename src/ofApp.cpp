@@ -6,7 +6,6 @@ void ofApp::setup(){
     isMuteMode = false;
     
     ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
-    
     ofSetVerticalSync(true);
     
     usingFlow=true;
@@ -80,7 +79,7 @@ void ofApp::setup(){
     DayFade temp;
     //string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight
 
-    temp.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight);
+    temp.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight,&loader);
     days.push_back(temp);
     
     int num1 = cropTop;
@@ -122,6 +121,7 @@ void ofApp::setup(){
     //getText.enableAlphaBlending();
     
     left.load("sounds/left.wav");
+    left.setVolume(0.3f);
     right.load("sounds/right.wav");
     moment.load("sounds/click.wav");
     gong.load("sounds/gong.mp3");
@@ -136,12 +136,17 @@ void ofApp::setup(){
     momentAlphaShader.setUniform1i("imgWidth", curMoment.getWidth() );
     momentAlphaShader.end();
     
+    currentMoment.allocate( curMoment.getWidth(), curMoment.getHeight() );
+    currentMomentMask.allocate(curMoment.getWidth(), curMoment.getHeight() );
+    
     // image to test full resolution
     fullRes.load("bestStitch3.png");
     isFullResTest = false;
     
     timeSinceInteract = ofGetElapsedTimeMillis();
-    isLatent = true; 
+    isLatent = true;
+    
+    
     
 }
 
@@ -192,7 +197,7 @@ void ofApp::cropTrigger(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    
+    left.setVolume(0.3f);
     /*
     if(usingFlow){
         rotSense.update();
@@ -253,14 +258,48 @@ void ofApp::update(){
     
     
     
-   // this isn't wrapping right now and I need it to.
+    
+    
+    // current moment
+    // this isn't wrapping right now and I need it to.
+    /*
     momentAlphaShader.begin();
         momentAlphaShader.setUniformTexture("imageMask", flock2.drawIntoMe.getTexture(), 1);
         momentAlphaShader.setUniform1i("mskXPos", days.at(0).mskPos);
         momentAlphaShader.setUniform1i("imgXPos", days.at(0).imgPos);
         curMoment.draw(0 ,0);
     momentAlphaShader.end();
+     */
 
+    currentMoment.begin();
+        ofClear(0);
+        float drawImgPos = wrapCurrentMoment( days.at(0).imgPos);
+        if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
+            curMoment.draw( drawImgPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
+            curMoment.draw( drawImgPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
+        }
+        else{
+            curMoment.draw( drawImgPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
+        }
+    currentMoment.end();
+    
+    
+    currentMomentMask.begin();
+        ofClear(0);
+        float drawMskPos =  wrapCurrentMoment( days.at(0).mskPos);
+        if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
+            flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
+            flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
+        }
+        else{
+            flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
+        }
+    currentMomentMask.end();
+    
+    currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
+    currentMoment.draw(0,0);
+    
+    
     if(isFullResTest){
         fullRes.draw(0,0);
     }
@@ -331,6 +370,24 @@ void ofApp::draw(){
         // draw video for the mute mode
     }
 
+}
+
+
+float ofApp::wrapCurrentMoment(float Xpos){
+    
+    float wrappedMsk = Xpos;
+    // If starting position is less than the beginning of the image
+    if (wrappedMsk <  0 ){
+        // Add as many imageWidths are needed to get back inside the image
+        wrappedMsk += currentMoment.getWidth() * (abs(int( wrappedMsk / currentMoment.getWidth()))+1);
+    }
+    // If starting position is more than the end of the image
+    else if (wrappedMsk >  currentMoment.getWidth() ){
+        // Subtract as many image widths as needed to get back inside the image
+        wrappedMsk -= currentMoment.getWidth() * (abs(int( wrappedMsk / currentMoment.getWidth())));
+        //wrappedMsk = 0;
+    }
+    return wrappedMsk;
 }
 
 //-------------------------w-------------------------------------
@@ -447,6 +504,12 @@ void ofApp::keyReleased(int key){
 void ofApp::exit(){
     ofxSaveCamera(cam, "ofEasyCamSettings.xml");
     gui.saveToFile("guiSettings.xml");
+    
+    for (int i =0; i < days.size(); i++){
+        days.at(i).cleanUp(); 
+    }
+    
+    loader.stopThread();
 }
 
 

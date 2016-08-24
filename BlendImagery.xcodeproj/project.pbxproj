@@ -33,6 +33,7 @@
 		0BC2024E1D64176300C72DD7 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC201751D64176300C72DD7 /* ofxCvImage.cpp */; };
 		0BC2024F1D64176300C72DD7 /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC201771D64176300C72DD7 /* ofxCvShortImage.cpp */; };
 		0BC202501D64176300C72DD7 /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BC202461D64176300C72DD7 /* opencv.a */; };
+		0BC202631D67852200C72DD7 /* ofxThreadedImageLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC202611D67852200C72DD7 /* ofxThreadedImageLoader.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 /* End PBXBuildFile section */
 
@@ -284,6 +285,8 @@
 		0BC202321D64176300C72DD7 /* videostab.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = videostab.hpp; sourceTree = "<group>"; };
 		0BC202461D64176300C72DD7 /* opencv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = opencv.a; sourceTree = "<group>"; };
 		0BC202481D64176300C72DD7 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		0BC202611D67852200C72DD7 /* ofxThreadedImageLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxThreadedImageLoader.cpp; sourceTree = "<group>"; };
+		0BC202621D67852200C72DD7 /* ofxThreadedImageLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxThreadedImageLoader.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* BlendImageryDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlendImageryDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
@@ -842,6 +845,24 @@
 			path = license;
 			sourceTree = "<group>";
 		};
+		0BC2025F1D67852200C72DD7 /* ofxThreadedImageLoader */ = {
+			isa = PBXGroup;
+			children = (
+				0BC202601D67852200C72DD7 /* src */,
+			);
+			name = ofxThreadedImageLoader;
+			sourceTree = "<group>";
+		};
+		0BC202601D67852200C72DD7 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0BC202611D67852200C72DD7 /* ofxThreadedImageLoader.cpp */,
+				0BC202621D67852200C72DD7 /* ofxThreadedImageLoader.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxThreadedImageLoader/src;
+			sourceTree = "<group>";
+		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -857,6 +878,7 @@
 				0BA18EDC1D5C17B100783235 /* ofxEasing */,
 				0BC2015F1D6416D900C72DD7 /* ofxOpticalFlowFarneback */,
 				0BC201671D64176300C72DD7 /* ofxOpenCv */,
+				0BC2025F1D67852200C72DD7 /* ofxThreadedImageLoader */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1033,6 +1055,7 @@
 				0BA18EB21D552FAD00783235 /* ofxBaseGui.cpp in Sources */,
 				0BA18EB71D552FAD00783235 /* ofxSlider.cpp in Sources */,
 				0BA18EB41D552FAD00783235 /* ofxGuiGroup.cpp in Sources */,
+				0BC202631D67852200C72DD7 /* ofxThreadedImageLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

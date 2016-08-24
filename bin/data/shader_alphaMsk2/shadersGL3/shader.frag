@@ -40,5 +40,5 @@ void main()
     vec4 texel1 = texture(imageMask, texCoordMsk);
     // blend together
     outputColor = vec4(texel0.rgb, texel0.a * texel1.a);
-
+    
 }
