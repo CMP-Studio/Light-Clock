@@ -216,10 +216,13 @@ void ofApp::update(){
         isLatent = true;
     }
     else if (isLatent){
+        /*
          float output =ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,rangeMskMove->x,rangeMskMove->y);
         day.mskPos -= output;
         
         day.imgPos += ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
+         */
+    
     }
     
     

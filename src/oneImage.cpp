@@ -10,7 +10,7 @@
 
 
 
-void oneImage::setup(string fPath,int cropBottom, int cropTop){
+void oneImage::setup(string fPath, int cropBottom, int cropTop){
     crpTp = cropTop;
     crpBttm = cropBottom; 
     filePath = fPath;
@@ -24,7 +24,7 @@ void oneImage::threadedFunction(){
     ofLoadImage(img, filePath);
     if (img.isAllocated()){
         //img.getWidth(), (crpBottom - crpTop)
-        img.crop(0,0,img.getWidth(),(crpBttm - crpTp));
+        img.crop(0,crpTp,img.getWidth(),(crpBttm - crpTp));
     }
 }
 

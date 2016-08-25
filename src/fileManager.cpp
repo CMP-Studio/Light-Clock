@@ -40,8 +40,9 @@ void fileManager::update(){
 
 
 bool fileManager::check(int xPos, int thresh){
-    if (xPos < thresh){
-        return true;
+
+    if (xPos > thresh){
+        return false;
     }
     else {
         // take out the one that just disapeared from the left
@@ -50,7 +51,7 @@ bool fileManager::check(int xPos, int thresh){
         testQ.push_back(move(unique_ptr<oneImage>(new oneImage)));
         testQ.back()->setup(nextFileToLoad, crpT, crpB);
         nextMoment();
-        return false;
+        return true;
     }
 }
 

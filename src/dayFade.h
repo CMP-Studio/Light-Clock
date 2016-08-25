@@ -45,10 +45,11 @@ private:
     //vector<singleDay> singleImg;
     // make the gradient mask
     ofShader gradientMaker;
-    void makeMsk(int posMsk , int posImg, int width);
+    void makeMsk(int posImg, int width);
     ofTexture gradientMask;
     // will soon be irrelevant
     int mskStartPos;
+    int posMsk; 
     // slice to draw into
     ofFbo drawSliceOfImagery;
     

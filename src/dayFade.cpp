@@ -41,7 +41,7 @@ void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int 
 void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
     
     int sz = 20;
-    manager.setup(sz, crpTop, crpBottom);
+    manager.setup(sz, crpBottom,crpTop);
     
     //might be irrelevant eventually
     int widthOfDay = imgWidth * percentDay;
@@ -51,12 +51,12 @@ void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
     // to reduce the number of images
     divNumImgs = 1;
     
-    // make single gradient to draw over all others
-    makeMsk(mskStartPos, 0, widthOfDay);
-    
     // how thin the slices are is decided here
     interval = widthOfDay/(sz/divNumImgs)+3;
     
+    // make single gradient to draw over all others
+    posMsk = mskStartPos;
+    makeMsk( 0, widthOfDay);
 
     // where I will draw the imagery into
     drawSliceOfImagery.allocate(interval*3, imgHeight,GL_RGB);
@@ -66,7 +66,7 @@ void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
     
 }
 
-void DayFade::makeMsk(int posMsk , int posImg, int width){
+void DayFade::makeMsk(int posImg, int width){
     
     int offset = -imgWidth;
     
@@ -112,11 +112,14 @@ void DayFade::draw(int x, int y, int rightCropPos ){
     
     //calculate what msk Position and ImgPosition should be considering the movement of the mask
     float mskPosTemp = mskPos/2;
-    
+    ofLog() << "starting To Draw";
     // go through each image there is to draw
     for (int i = 0; i < manager.testQ.size(); i++){
+        
+       // decide on it's position base on I
        if (((wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp) < rightCropPos) & (wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp) > 0)) | ( (wrapIt(x + manager.testQ.at(i)->endDay- mskPosTemp)  > 0) & ( wrapIt(x + manager.testQ.at(i)->endDay- mskPosTemp ) < rightCropPos))){
-           cnt ++;
+        
+            cnt ++;
            
                // draw the imagery into a fbo that is just big enough for the slice
             drawSliceOfImagery.begin();
@@ -134,11 +137,21 @@ void DayFade::draw(int x, int y, int rightCropPos ){
                     manager.draw(i,drawImgPos *-1,0);
                     //singleImg.at(i).img.draw( drawImgPos *-1,0,imgWidth , singleImg.at(i).img.getHeight());
                 }
-            drawSliceOfImagery.end();
+           drawSliceOfImagery.end();
+        
+        
         
            drawSliceOfImagery.getTexture().setAlphaMask(gradientMask);
+           //bool addingNew = manager.check(x + manager.testQ.at(i)->startDay - mskPosTemp, rightCropPos);
+        
+           //if(addingNew){
+              // manager.testQ.at(i)->startDay = posMsk;
+              // manager.testQ.at(i)->endDay = posMsk + interval*2;
+              // posMsk += interval;
+           //}
+           ofLog() << "this is my X position: " << wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp);
            drawSliceOfImagery.draw(wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp) ,y);
-
+           
        }
     }
 }

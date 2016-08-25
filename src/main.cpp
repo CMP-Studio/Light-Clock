@@ -5,8 +5,8 @@
 int main( ){
   
     ofGLFWWindowSettings settings;
-    settings.windowMode = OF_FULLSCREEN;
-    settings.multiMonitorFullScreen = true;
+    settings.windowMode = OF_WINDOW;
+   // settings.multiMonitorFullScreen = true;
     settings.setGLVersion(3,2);
     ofCreateWindow(settings);
 
