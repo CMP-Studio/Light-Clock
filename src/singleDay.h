@@ -13,17 +13,10 @@ class singleDay{
 public:
    
     void setup(string imgToLoad, int crpTop, int crpBottom);
-    //int isWrapped;
-    //ofImage image1;
     ofImage img;
-    ofTexture msk;
-    int originalHeight;
-    int originalWidth;
     int startDay;
-    bool isWhat;
     int endDay;
-    
-    //bool isWrapped;
+
     
 private:
 

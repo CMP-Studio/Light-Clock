@@ -13,14 +13,19 @@
 class fileManager{
     public:
     
-        void setup();
+        void setup( int numOfImgToLoad, int crpTop, int crpBot);
         void update();
-        void draw();
+        void draw(int index, int x, int y);
+        bool check(int xPos, int thresh);
+        int crpT;
+        int crpB;
+        deque<unique_ptr<oneImage>> testQ;
+    
     
     private:
     
     
-    string startPath; 
+    string startPath;
     
     //variables about the file path
     string nextFileToLoad;
@@ -48,7 +53,6 @@ class fileManager{
     oneImage test;
     
     // the deque
-    deque<unique_ptr<oneImage>> testQ;
     int imgWidth;
     int imgHeight;
     // the current moment

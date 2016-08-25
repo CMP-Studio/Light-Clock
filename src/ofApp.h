@@ -7,7 +7,7 @@
 #include "Flocking.h"
 #include "rotationSensing.h"
 //#include "oneImage.h"
-#include "fileManager.h"
+
 
 
 class ofApp : public ofBaseApp{
@@ -56,8 +56,10 @@ class ofApp : public ofBaseApp{
     //Day dayOne;
     //Day dayTwo;
     
-    vector <DayFade>days;
+    //vector <DayFade>days;
     
+    
+    DayFade day;
     bool isEaseOut;
     bool isSpin;
     bool usingFlow;
@@ -130,6 +132,6 @@ class ofApp : public ofBaseApp{
     
     bool isMuteMode;
     
-    fileManager manager;
+    
     //oneImage testing;
 };

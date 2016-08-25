@@ -18,14 +18,20 @@ public:
     //ofxThreadedImageLoader loader;
     
     //ofxThreadedImageLoader* loadTwo;
-    void setup(string fPath);
+    void setup(string fPath, int cropBottom, int cropTop);
     void threadedFunction();
-    void draw(int x, int y, int wid, int hght);
+    void draw(int x, int y);
     
     string filePath;
     ofPixels img;
     ofImage image;
     bool isLoading;
-    bool isLoaded; 
+    bool isLoaded;
+    
+    int startDay;
+    int endDay;
+private:
+    int crpBttm;
+    int crpTp;
     
 };

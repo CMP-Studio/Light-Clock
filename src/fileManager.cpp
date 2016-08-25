@@ -9,7 +9,10 @@
 
 #include "fileManager.h"
 
-void fileManager::setup(){
+void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
+    
+    crpT = crpTop;
+    crpB = crpBot;
     
     startPath = "sampleImages/sample";
     
@@ -20,10 +23,10 @@ void fileManager::setup(){
     testSz.load(nextFileToLoad);
     imgWidth = testSz.getWidth()/15;
     imgHeight = testSz.getHeight()/15;
-    for(int i =0; i < 3; i++){
+    for(int i =0; i < numOfImgToLoad; i++){
         testQ.push_back(move(unique_ptr<oneImage>(new oneImage)));
         string temp = nextFileToLoad;
-        testQ.back()->setup(temp);
+        testQ.back()->setup(temp, crpT, crpB);
         nextMoment();
     }
     posX = 0;
@@ -32,35 +35,28 @@ void fileManager::setup(){
 void fileManager::update(){
     checkNewDay();
     checkNewMoment();
-    posX-=5;
+    //posX-=5;
 }
 
-void fileManager::draw(){
-    //test.draw(0,0,1000,1000);
-    
-    for(int i=0; i < testQ.size(); i++){
-        
-        float  xPosition = i*imgWidth+posX;
-        
-        if (xPosition + imgWidth > 0){
-            
-            testQ.at(i)->draw(xPosition, 0, imgWidth, imgHeight);
-        }
-        else{
-            // take out the one that just disapeared from the left
-            testQ.pop_front();
-            // insert the one from the rights
-            testQ.push_back(move(unique_ptr<oneImage>(new oneImage)));
-            testQ.back()->setup(nextFileToLoad);
-            nextMoment();
-            
-            posX += imgWidth;
-            xPosition = i*imgWidth+posX;
-            testQ.at(i)->draw(xPosition, 0, imgWidth, imgHeight);
-        }
+
+bool fileManager::check(int xPos, int thresh){
+    if (xPos < thresh){
+        return true;
     }
-    
-    curMoment.draw(500, 500, imgWidth, imgHeight);
+    else {
+        // take out the one that just disapeared from the left
+        testQ.pop_front();
+        // insert the one from the rights
+        testQ.push_back(move(unique_ptr<oneImage>(new oneImage)));
+        testQ.back()->setup(nextFileToLoad, crpT, crpB);
+        nextMoment();
+        return false;
+    }
+}
+
+void fileManager::draw(int index, int x, int y){
+    //test.draw(0,0,1000,1000);
+    testQ.at(index)->draw(x,y);
 }
 
 
@@ -176,7 +172,7 @@ void fileManager::checkNewMoment(){
         numOfMoments = dirToCheck.size();
         // new Image - so draw it.
         string currentMomentPath =dirToCheck.getPath(dirToCheck.size()-1);
-        curMoment.setup(currentMomentPath);
+        curMoment.setup(currentMomentPath, crpT, crpB);
         insertMomentCheck(currentMomentPath);
     }
 }
@@ -210,7 +206,7 @@ void fileManager::insertMomentCheck(string momentPath){
             if (momentId == momentIdCur-1){
                 // put it after I in the deque
                 testQ.insert(testQ.begin()+i+1,move(unique_ptr<oneImage>(new oneImage)) );
-                testQ.at(i+1)->setup(momentPath);
+                testQ.at(i+1)->setup(momentPath, crpT, crpB);
                 break;
             }
             ofLog()<< momentId;

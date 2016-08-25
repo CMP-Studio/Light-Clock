@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    manager.setup();
     
     isMuteMode = false;
     
@@ -77,11 +76,12 @@ void ofApp::setup(){
     
     cropLevel = 600; 
     
-    DayFade temp;
-    //string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight
 
-    temp.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight);
-    days.push_back(temp);
+    ofImage testSz;
+    testSz.load("sampleImages/sample/000_2016-08-19_C/002_00-40-01.png");
+    getText.allocate( testSz.getWidth(), testSz.getHeight(), GL_RGB);
+    
+    day.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight,testSz.getWidth(), testSz.getHeight());
     
     int num1 = cropTop;
     ofLog() << "cropTop: " << ofToString(num1);
@@ -90,7 +90,10 @@ void ofApp::setup(){
     int num3 = cropLeftRight;
     ofLog() << "cropLeftRight: " << ofToString(num3);
     
-    getText.allocate( days.at(0).imgWidth, days.at(0).originalImgHeight, GL_RGB);
+    // get sample image to get size
+    // eventually replace this with something smarter
+    
+    
 
     int blue = ofGetFrameNum();
     
@@ -188,9 +191,9 @@ void ofApp::cropTrigger(){
     ofLog() << "cropLeftRight: " << ofToString(num3);
     
     ofLog()<<"ping";
-    for(int i=0; i < days.size(); i++){
-        days.at(i).addCroppedImages(cropTop,cropBottom,cropLeftRight);
-    }
+    //for(int i=0; i < days.size(); i++){
+    day.addCroppedImages(cropTop,cropBottom,cropLeftRight);
+    //}
     
     
 
@@ -214,16 +217,14 @@ void ofApp::update(){
     }
     else if (isLatent){
          float output =ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,rangeMskMove->x,rangeMskMove->y);
-        days.at(0).mskPos -= output;
+        day.mskPos -= output;
         
-        days.at(0).imgPos += ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
+        day.imgPos += ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
     }
     
     
 
-    for(int i=0; i< days.size(); i++){
-        days.at(i).update();
-    }
+        day.update();
     
     flock2.update();
     //curMoment.getTexture().setAlphaMask(flock2.drawIntoMe.getTexture());
@@ -253,9 +254,7 @@ void ofApp::update(){
     ofScale(-1,1,1);
     ofTranslate(getText.getWidth() * -1 , 0);
     
-    for(int i=0; i< days.size(); i++){
-        days.at(i).draw(0,cropTop,cropLeftRight);
-    }
+    day.draw(0,cropTop,cropLeftRight);
     
     
     
@@ -274,7 +273,7 @@ void ofApp::update(){
 
     currentMoment.begin();
         ofClear(0);
-        float drawImgPos = wrapCurrentMoment( days.at(0).imgPos);
+        float drawImgPos = wrapCurrentMoment( day.imgPos);
         if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
             curMoment.draw( drawImgPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
             curMoment.draw( drawImgPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
@@ -287,7 +286,7 @@ void ofApp::update(){
     
     currentMomentMask.begin();
         ofClear(0);
-        float drawMskPos =  wrapCurrentMoment( days.at(0).mskPos);
+        float drawMskPos =  wrapCurrentMoment( day.mskPos);
         if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
             flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
             flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
@@ -327,8 +326,6 @@ void ofApp::update(){
     //cam.setPosition(0,0,0 );
          sphere.mapTexCoordsFromTexture( getText.getTexture() );
     
-   
-    manager.update();
 }
 
 //--------------------------------------------------------------
@@ -370,7 +367,6 @@ void ofApp::draw(){
     } else{
         // draw video for the mute mode
     }
-    manager.draw(); 
 
 }
 
@@ -400,13 +396,13 @@ void ofApp::keyPressed(int key){
         usingFlow = !usingFlow;
     }
     else if (key == 'q'){
-        days.at(0).imgPos +=10;
+        day.imgPos +=10;
         left.play();
         isLatent = false;
         timeSinceInteract = ofGetElapsedTimeMillis();
     }
     else if(key == 'w'){
-        days.at(0).mskPos -=10;
+        day.mskPos -=10;
         right.play();
         isLatent = false;
         timeSinceInteract = ofGetElapsedTimeMillis();
@@ -507,9 +503,6 @@ void ofApp::exit(){
     ofxSaveCamera(cam, "ofEasyCamSettings.xml");
     gui.saveToFile("guiSettings.xml");
     
-    for (int i =0; i < days.size(); i++){
-        days.at(i).cleanUp(); 
-    }
     
     //loader.stopThread();
 }

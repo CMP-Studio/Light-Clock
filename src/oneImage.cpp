@@ -10,7 +10,9 @@
 
 
 
-void oneImage::setup(string fPath){
+void oneImage::setup(string fPath,int cropBottom, int cropTop){
+    crpTp = cropTop;
+    crpBttm = cropBottom; 
     filePath = fPath;
     startThread();
     isLoading = true;
@@ -21,11 +23,12 @@ void oneImage::setup(string fPath){
 void oneImage::threadedFunction(){
     ofLoadImage(img, filePath);
     if (img.isAllocated()){
-        img.crop(0,0,img.getWidth(),img.getHeight()/2);
+        //img.getWidth(), (crpBottom - crpTop)
+        img.crop(0,0,img.getWidth(),(crpBttm - crpTp));
     }
 }
 
-void oneImage::draw(int x, int y,int wid, int hght){
+void oneImage::draw(int x, int y){
     
         if(!isThreadRunning() && isLoading){
             if(img.isAllocated()){
@@ -38,7 +41,7 @@ void oneImage::draw(int x, int y,int wid, int hght){
             }
         }
         if (isLoaded){
-            image.draw( x, y, wid, hght);
+            image.draw( x, y);
         }
  
 }
