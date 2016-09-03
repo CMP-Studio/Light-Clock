@@ -150,7 +150,8 @@ void ofApp::setup(){
     timeSinceInteract = ofGetElapsedTimeMillis();
     isLatent = true;
     
-    
+    mskPosContinuous = 0;
+    imgPosContinuous = 0;
     
 }
 
@@ -283,7 +284,7 @@ void ofApp::update(){
 
     currentMoment.begin();
         ofClear(0);
-        float drawImgPos = wrapCurrentMoment( day.imgPos);
+        float drawImgPos = wrapCurrentMoment( imgPosContinuous);
         if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
             curMoment.draw( drawImgPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
             curMoment.draw( drawImgPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
@@ -296,7 +297,7 @@ void ofApp::update(){
     if(flock2.isSequenceTwo){
         currentMomentMask.begin();
             ofClear(0);
-            float drawMskPos =  wrapCurrentMoment( day.mskPos);
+            float drawMskPos =  wrapCurrentMoment( mskPosContinuous);
             if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
                 flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
                 flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
@@ -408,11 +409,13 @@ void ofApp::keyPressed(int key){
     }
     else if (key == 'q'){
         day.imgPos +=10;
+        imgPosContinuous +=10;
         left.play();
         isLatent = false;
         timeSinceInteract = ofGetElapsedTimeMillis();
     }
     else if(key == 'w'){
+        mskPosContinuous -= 10;
         day.mskPos -=10;
         right.play();
         isLatent = false;

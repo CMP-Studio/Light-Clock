@@ -133,5 +133,10 @@ class ofApp : public ofBaseApp{
     bool isMuteMode;
     
     
+    // since day.imgPos / .mskPos is no longer continuous
+    // these are needed for the current moment.
+    float imgPosContinuous;
+    float mskPosContinuous;
+    
     //oneImage testing;
 };
