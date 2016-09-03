@@ -35,6 +35,7 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
 void fileManager::update(){
     checkNewDay();
     checkNewMoment();
+    curMoment.update(); 
     //posX-=5;
 }
 
@@ -57,6 +58,7 @@ bool fileManager::check(int xPos, int thresh){
 
 void fileManager::draw(int index, int x, int y){
     //test.draw(0,0,1000,1000);
+    testQ.at(index)->update();
     testQ.at(index)->draw(x,y);
 }
 

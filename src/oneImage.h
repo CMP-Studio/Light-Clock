@@ -21,6 +21,7 @@ public:
     void setup(string fPath, int cropBottom, int cropTop);
     void threadedFunction();
     void draw(int x, int y);
+    void update(); 
     
     string filePath;
     ofPixels img;

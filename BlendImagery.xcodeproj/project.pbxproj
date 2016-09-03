@@ -25,7 +25,6 @@
 		0BA18EDA1D5C16F000783235 /* Obstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18ED41D5C16F000783235 /* Obstacle.cpp */; };
 		0BA18EDB1D5C16F000783235 /* singleBoid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA18ED61D5C16F000783235 /* singleBoid.cpp */; };
 		0BBF77681D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BBF77661D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp */; };
-		0BC081751D1B032200BAB3F1 /* singleDay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC081731D1B032200BAB3F1 /* singleDay.cpp */; };
 		0BC201631D6416D900C72DD7 /* ofxOpticalFlowFarneback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC201611D6416D900C72DD7 /* ofxOpticalFlowFarneback.cpp */; };
 		0BC202491D64176300C72DD7 /* ofxCvColorImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2016A1D64176300C72DD7 /* ofxCvColorImage.cpp */; };
 		0BC2024A1D64176300C72DD7 /* ofxCvContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2016D1D64176300C72DD7 /* ofxCvContourFinder.cpp */; };
@@ -106,8 +105,6 @@
 		0BA18EDF1D5C17B100783235 /* ofxEasing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxEasing.h; sourceTree = "<group>"; };
 		0BBF77661D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCameraSaveLoad.cpp; sourceTree = "<group>"; };
 		0BBF77671D42C49A00F08BE3 /* ofxCameraSaveLoad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCameraSaveLoad.h; sourceTree = "<group>"; };
-		0BC081731D1B032200BAB3F1 /* singleDay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = singleDay.cpp; sourceTree = "<group>"; };
-		0BC081741D1B032200BAB3F1 /* singleDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = singleDay.h; sourceTree = "<group>"; };
 		0BC201611D6416D900C72DD7 /* ofxOpticalFlowFarneback.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOpticalFlowFarneback.cpp; sourceTree = "<group>"; };
 		0BC201621D6416D900C72DD7 /* ofxOpticalFlowFarneback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxOpticalFlowFarneback.h; sourceTree = "<group>"; };
 		0BC201651D6416EE00C72DD7 /* rotationSensing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = rotationSensing.cpp; sourceTree = "<group>"; };
@@ -896,8 +893,6 @@
 				0B730FF01D134D9600DDC9DB /* ofApp.h */,
 				0B730FF71D134D9600DDC9DB /* dayFade.cpp */,
 				0B730FF81D134D9600DDC9DB /* dayFade.h */,
-				0BC081731D1B032200BAB3F1 /* singleDay.cpp */,
-				0BC081741D1B032200BAB3F1 /* singleDay.h */,
 				0B9210C71D6E6119002230CA /* oneImage.cpp */,
 				0B9210C81D6E6119002230CA /* oneImage.h */,
 				0B9210C51D6E6119002230CA /* fileManager.cpp */,
@@ -1021,7 +1016,6 @@
 				0BA18EB81D552FAD00783235 /* ofxSliderGroup.cpp in Sources */,
 				0B730FFE1D134D9600DDC9DB /* dayFade.cpp in Sources */,
 				0BC2024D1D64176300C72DD7 /* ofxCvHaarFinder.cpp in Sources */,
-				0BC081751D1B032200BAB3F1 /* singleDay.cpp in Sources */,
 				0BA18EB31D552FAD00783235 /* ofxButton.cpp in Sources */,
 				0BBF77681D42C49A00F08BE3 /* ofxCameraSaveLoad.cpp in Sources */,
 				0BC2024F1D64176300C72DD7 /* ofxCvShortImage.cpp in Sources */,

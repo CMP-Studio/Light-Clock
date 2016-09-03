@@ -35,6 +35,8 @@ void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int 
     numberDay = numDay;
     windowWidth = ofGetWidth();
     addCroppedImages (crpTop,crpBottom, cropLeftRight);
+    currentMomentTrig = false;
+    lastLoadedState = false;
 
 }
 
@@ -69,8 +71,6 @@ void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
 void DayFade::makeMsk(int posImg, int width){
     
     int offset = -imgWidth;
-    
-    
     // make just one gradient per day.
     
     ofFbo msk;
@@ -100,60 +100,75 @@ void DayFade::makeMsk(int posImg, int width){
 
 
 void DayFade::update(){
+    manager.update();
+    if (!lastLoadedState & manager.curMoment.isLoaded){
+        currentMomentTrig = true;
+    }
+    lastLoadedState =  manager.curMoment.isLoaded;
+    
 }
 
 
 
 
 void DayFade::draw(int x, int y, int rightCropPos ){
-  
-    // turn msk pos into its wrapped version
-    int cnt =0;
+
     
-    //calculate what msk Position and ImgPosition should be considering the movement of the mask
-    float mskPosTemp = mskPos/2;
-    ofLog() << "starting To Draw";
     // go through each image there is to draw
     for (int i = 0; i < manager.testQ.size(); i++){
         
-       // decide on it's position base on I
-       if (((wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp) < rightCropPos) & (wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp) > 0)) | ( (wrapIt(x + manager.testQ.at(i)->endDay- mskPosTemp)  > 0) & ( wrapIt(x + manager.testQ.at(i)->endDay- mskPosTemp ) < rightCropPos))){
+        int mskPosNew = (interval)*i + mskPos;
+        bool addingNew =  manager.check(mskPosNew,-1);
         
-            cnt ++;
-           
+        if(addingNew){
+            mskPos += interval;
+            mskPosNew = (interval)*i + mskPos;
+        }   
                // draw the imagery into a fbo that is just big enough for the slice
             drawSliceOfImagery.begin();
                ofClear(0);
-               float drawImgPos = wrapIt(manager.testQ.at(i)->startDay + imgPos - mskPosTemp);
-                //wrap it if it needs to be wrapped
-                if (drawImgPos+drawSliceOfImagery.getWidth() > imgWidth){
-                    manager.draw(i,drawImgPos *-1,0);
-                    manager.draw(i,drawImgPos *-1 +  imgWidth ,0);
-                    //singleImg.at(i).img.draw( drawImgPos *-1,0, imgWidth , singleImg.at(i).img.getHeight());
-                    //singleImg.at(i).img.draw( drawImgPos *-1 +  imgWidth ,0,imgWidth , singleImg.at(i).img.getHeight());
+
+                // position the image within the slice
+                float XpositionToDraw  = -mskPosNew + imgPos;
+                // wrap  imgPos so it doesn't go beyond the bounds of the image width
+                if (XpositionToDraw < -imgWidth){
+                    imgPos += imgWidth;
+                    XpositionToDraw  = -mskPosNew + imgPos;
                 }
-                // or just draw the one image.
+                else if (XpositionToDraw > imgWidth) {
+                    imgPos -= imgWidth;
+                    XpositionToDraw  = -mskPosNew + imgPos;
+                }
+        
+                // draw the image twice if need this is needed to create the wrap
+        
+                // the left edge of the image is showing
+                if (XpositionToDraw > 0){
+                    // draw it in its regular position.
+                    manager.draw(i,XpositionToDraw,0);
+                    // draw another one behind it
+                    manager.draw(i,XpositionToDraw - imgWidth,0);
+                }
+                // the right edge of the image is showing
+                else if (XpositionToDraw + imgWidth < drawSliceOfImagery.getWidth() ){
+                    manager.draw(i,XpositionToDraw,0);
+                    // draw another one behind it
+                    manager.draw(i,XpositionToDraw + imgWidth,0);
+                }
+        
+                // just one will do it
                 else{
-                    manager.draw(i,drawImgPos *-1,0);
-                    //singleImg.at(i).img.draw( drawImgPos *-1,0,imgWidth , singleImg.at(i).img.getHeight());
+                    manager.draw(i,XpositionToDraw,0);
                 }
-           drawSliceOfImagery.end();
+        drawSliceOfImagery.end();
         
+        drawSliceOfImagery.getTexture().setAlphaMask(gradientMask);
         
-        
-           drawSliceOfImagery.getTexture().setAlphaMask(gradientMask);
-           //bool addingNew = manager.check(x + manager.testQ.at(i)->startDay - mskPosTemp, rightCropPos);
-        
-           //if(addingNew){
-              // manager.testQ.at(i)->startDay = posMsk;
-              // manager.testQ.at(i)->endDay = posMsk + interval*2;
-              // posMsk += interval;
-           //}
-           ofLog() << "this is my X position: " << wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp);
-           drawSliceOfImagery.draw(wrapIt(x + manager.testQ.at(i)->startDay - mskPosTemp) ,y);
+        drawSliceOfImagery.draw(mskPosNew ,y);
+
            
        }
-    }
+    //}
 }
 
 
@@ -161,6 +176,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
 // This keeps xPos within imageWidth
 float DayFade::wrapIt(float Xpos){
     float wrappedMsk = Xpos - mskPos;
+    ofLog() << imgWidth;
     // If starting position is less than the beginning of the image
     if (wrappedMsk <  0 ){
         // Add as many imageWidths are needed to get back inside the image

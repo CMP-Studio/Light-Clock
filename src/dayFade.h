@@ -34,6 +34,11 @@ public:
     
     string dayDirectory;
     
+    bool currentMomentTrig;
+    bool lastLoadedState;
+    
+    fileManager manager;
+    
 private:
     
     // reduce the number of images it is loading.
@@ -53,7 +58,7 @@ private:
     // slice to draw into
     ofFbo drawSliceOfImagery;
     
-    fileManager manager;
+    
     
     int interval; 
     

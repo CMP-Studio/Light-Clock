@@ -28,18 +28,22 @@ void oneImage::threadedFunction(){
     }
 }
 
+void oneImage::update(){
+    if(!isThreadRunning() && isLoading){
+        if(img.isAllocated()){
+            image.setFromPixels(img);
+            image.update();
+            isLoading = false;
+            isLoaded = true;
+            img.clear();
+            stopThread();
+        }
+    }
+
+}
+
 void oneImage::draw(int x, int y){
     
-        if(!isThreadRunning() && isLoading){
-            if(img.isAllocated()){
-                image.setFromPixels(img);
-                image.update();
-                isLoading = false;
-                isLoaded = true;
-                img.clear();
-                stopThread();
-            }
-        }
         if (isLoaded){
             image.draw( x, y);
         }

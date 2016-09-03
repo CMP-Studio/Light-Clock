@@ -202,6 +202,15 @@ void ofApp::cropTrigger(){
 //--------------------------------------------------------------
 void ofApp::update(){
     left.setVolume(0.3f);
+    
+    if(day.currentMomentTrig){
+        ofLog()<< "trigger!! Timeese";
+        day.currentMomentTrig = false;
+        flock2.setMinSize(0);
+        flock2.triggerSequenceTwo();
+        gong.play();
+    }
+    
     /*
     if(usingFlow){
         rotSense.update();
@@ -211,7 +220,7 @@ void ofApp::update(){
      */
 
 
-    
+    //ofLog() << "is flocking happening: " << flock2.isSequenceTwo;
     if((!isLatent)&((ofGetElapsedTimeMillis()- timeSinceInteract) >= 5000)){
         isLatent = true;
     }
@@ -225,11 +234,9 @@ void ofApp::update(){
     
     }
     
-    
-
-        day.update();
-    
+    day.update();
     flock2.update();
+    //day.
     //curMoment.getTexture().setAlphaMask(flock2.drawIntoMe.getTexture());
     
     /*
@@ -254,8 +261,8 @@ void ofApp::update(){
     
     ofPushMatrix();
     
-    ofScale(-1,1,1);
-    ofTranslate(getText.getWidth() * -1 , 0);
+    //ofScale(-1,1,1);
+    //ofTranslate(getText.getWidth() * -1 , 0);
     
     day.draw(0,cropTop,cropLeftRight);
     
@@ -286,22 +293,23 @@ void ofApp::update(){
         }
     currentMoment.end();
     
+    if(flock2.isSequenceTwo){
+        currentMomentMask.begin();
+            ofClear(0);
+            float drawMskPos =  wrapCurrentMoment( day.mskPos);
+            if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
+                flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
+                flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
+            }
+            else{
+                flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
+            }
+        currentMomentMask.end();
     
-    currentMomentMask.begin();
-        ofClear(0);
-        float drawMskPos =  wrapCurrentMoment( day.mskPos);
-        if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
-            flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
-            flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
-        }
-        else{
-            flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
-        }
-    currentMomentMask.end();
-    
-    currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
-    currentMoment.draw(0,0);
-    
+        day.manager.curMoment.image.getTexture().setAlphaMask(currentMomentMask.getTexture());
+        //currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
+        day.manager.curMoment.draw(0,0);
+    }
     
     if(isFullResTest){
         fullRes.draw(0,0);

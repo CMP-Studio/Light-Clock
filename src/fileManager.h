@@ -20,7 +20,8 @@ class fileManager{
         int crpT;
         int crpB;
         deque<unique_ptr<oneImage>> testQ;
-    
+        // the current moment
+        oneImage curMoment;
     
     private:
     
@@ -55,8 +56,7 @@ class fileManager{
     // the deque
     int imgWidth;
     int imgHeight;
-    // the current moment
-    oneImage curMoment;
+    
     
     int posX; 
     
