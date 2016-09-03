@@ -139,4 +139,5 @@ class ofApp : public ofBaseApp{
     float mskPosContinuous;
     
     //oneImage testing;
+    ofPixels test; 
 };

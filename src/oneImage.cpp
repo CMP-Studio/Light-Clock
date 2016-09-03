@@ -10,21 +10,42 @@
 
 
 
-void oneImage::setup(string fPath, int cropBottom, int cropTop){
+void oneImage::setup(string fPath, int cropBottom, int cropTop, bool toCrop){
     crpTp = cropTop;
     crpBttm = cropBottom; 
     filePath = fPath;
     startThread();
     isLoading = true;
     isLoaded = false;
+    isCrop = true;
+}
+
+
+void oneImage::reImageLoad(){
+    ofLoadImage(img, filePath);
+    // is it less than ten seconds. Do not recurse longer than that.
+    
+    bool isTimeOut = (ofGetElapsedTimeMillis() - startTime) > 10000;
+    if (!img.isAllocated() & !isTimeOut ){
+        sleep(100);
+        img.clear(); 
+        reImageLoad();
+    }
     
 }
 
+
 void oneImage::threadedFunction(){
-    ofLoadImage(img, filePath);
+    
+    startTime = ofGetElapsedTimeMillis();
+    reImageLoad();
+    //ofLoadImage(img, filePath);
     if (img.isAllocated()){
-        //img.getWidth(), (crpBottom - crpTop)
-        img.crop(0,crpTp,img.getWidth(),(crpBttm - crpTp));
+        if (isCrop){
+            //img.getWidth(), (crpBottom - crpTop)
+            img.crop(0,crpTp,img.getWidth(),(crpBttm - crpTp));
+       
+        }
     }
 }
 

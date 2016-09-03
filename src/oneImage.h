@@ -18,10 +18,12 @@ public:
     //ofxThreadedImageLoader loader;
     
     //ofxThreadedImageLoader* loadTwo;
-    void setup(string fPath, int cropBottom, int cropTop);
+    void setup(string fPath, int cropBottom, int cropTop, bool toCrop = true);
     void threadedFunction();
     void draw(int x, int y);
-    void update(); 
+    void update();
+    // recursive image load for images that are forming themselves.
+    void reImageLoad();
     
     string filePath;
     ofPixels img;
@@ -31,8 +33,11 @@ public:
     
     int startDay;
     int endDay;
+
 private:
+    
+    bool isCrop;
     int crpBttm;
     int crpTp;
-    
+    int startTime; 
 };

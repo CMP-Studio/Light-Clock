@@ -3,6 +3,9 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    ofLoadImage(test,"test.png");
+    ofLog() << "Is allocated: " << test.isAllocated();
+    
     isMuteMode = false;
     
     ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
@@ -132,16 +135,16 @@ void ofApp::setup(){
     gongMultiple.load("sounds/gongMultiple.wav");
     
     curMoment.load("current.png");
-    flock2.setup(curMoment.getWidth(), curMoment.getHeight() );
+    flock2.setup(testSz.getWidth(), testSz.getHeight());
     
     momentAlphaShader.load("shader_alphaMsk2/shadersGL3/shader");
     
     momentAlphaShader.begin();
-    momentAlphaShader.setUniform1i("imgWidth", curMoment.getWidth() );
+    momentAlphaShader.setUniform1i("imgWidth", testSz.getWidth());
     momentAlphaShader.end();
     
-    currentMoment.allocate( curMoment.getWidth(), curMoment.getHeight() );
-    currentMomentMask.allocate(curMoment.getWidth(), curMoment.getHeight() );
+    currentMoment.allocate( testSz.getWidth(), testSz.getHeight() );
+    currentMomentMask.allocate(testSz.getWidth(), testSz.getHeight() );
     
     // image to test full resolution
     fullRes.load("bestStitch3.png");
@@ -250,8 +253,6 @@ void ofApp::update(){
         temp.begin();
             curFrame.draw(0, 0, curMoment.getWidth(),  curMoment.getHeight());
         temp.end();
-        
-        
     }*/
  
     getText.begin();
@@ -262,8 +263,8 @@ void ofApp::update(){
     
     ofPushMatrix();
     
-    //ofScale(-1,1,1);
-    //ofTranslate(getText.getWidth() * -1 , 0);
+    ofScale(-1,1,1);
+    ofTranslate(getText.getWidth() * -1 , 0);
     
     day.draw(0,cropTop,cropLeftRight);
     
@@ -282,34 +283,38 @@ void ofApp::update(){
     momentAlphaShader.end();
      */
 
+    if(flock2.isSequenceTwo){
+        
     currentMoment.begin();
         ofClear(0);
         float drawImgPos = wrapCurrentMoment( imgPosContinuous);
+        ofLog()<< "Image position: " << imgPosContinuous;
+        ofLog()<< "Image position wrapped: " << drawImgPos;
         if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
-            curMoment.draw( drawImgPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
-            curMoment.draw( drawImgPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
+            day.manager.curMoment.image.draw( drawImgPos *-1,0 );
+            day.manager.curMoment.image.draw( drawImgPos *-1 +  currentMoment.getWidth(),0);
         }
         else{
-            curMoment.draw( drawImgPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
+            day.manager.curMoment.image.draw( drawImgPos *-1,0);
         }
     currentMoment.end();
     
-    if(flock2.isSequenceTwo){
-        currentMomentMask.begin();
+    
+     currentMomentMask.begin();
             ofClear(0);
             float drawMskPos =  wrapCurrentMoment( mskPosContinuous);
-            if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
-                flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMoment.getWidth() , currentMoment.getHeight() );
-                flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMoment.getWidth() ,0,currentMoment.getWidth() , currentMoment.getHeight());
+            if (drawMskPos + currentMomentMask.getWidth() > currentMomentMask.getWidth()){
+                flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMomentMask.getWidth() , currentMomentMask.getHeight() );
+                flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMomentMask.getWidth() ,0,currentMomentMask.getWidth() , currentMomentMask.getHeight());
             }
             else{
                 flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
             }
         currentMomentMask.end();
     
-        day.manager.curMoment.image.getTexture().setAlphaMask(currentMomentMask.getTexture());
+        currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
         //currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
-        day.manager.curMoment.draw(0,0);
+        currentMoment.draw(0,0);
     }
     
     if(isFullResTest){
@@ -408,7 +413,7 @@ void ofApp::keyPressed(int key){
         usingFlow = !usingFlow;
     }
     else if (key == 'q'){
-        day.imgPos +=10;
+        day.imgPos -=10;
         imgPosContinuous +=10;
         left.play();
         isLatent = false;
@@ -416,7 +421,7 @@ void ofApp::keyPressed(int key){
     }
     else if(key == 'w'){
         mskPosContinuous -= 10;
-        day.mskPos -=10;
+        day.mskPos +=10;
         right.play();
         isLatent = false;
         timeSinceInteract = ofGetElapsedTimeMillis();

@@ -175,7 +175,7 @@ void fileManager::checkNewMoment(){
         numOfMoments = dirToCheck.size();
         // new Image - so draw it.
         string currentMomentPath =dirToCheck.getPath(dirToCheck.size()-1);
-        curMoment.setup(currentMomentPath, crpT, crpB);
+        curMoment.setup(currentMomentPath, crpT, crpB, false);
         insertMomentCheck(currentMomentPath);
     }
 }
