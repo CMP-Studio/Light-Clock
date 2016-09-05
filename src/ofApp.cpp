@@ -2,6 +2,9 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    if(ofIsGLProgrammableRenderer()) {
+        brcosa.load("shader_brcosa/shadersGL3/shader");
+    }
 
     ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight()); 
     
@@ -50,12 +53,13 @@ void ofApp::setup(){
     gui.add(imgMoveSpeed.setup("speed of image", 4 , 0,30 ));
     gui.add(rangeMskMove.setup("Mask movement range", ofVec2f(-1,1), ofVec2f(-6,-6),ofVec2f(6,6)));
     gui.add(mskMoveSpeed.setup("speed of msk", 4 , 0,30 ));
-   
+
+    gui.add(brightness.setup("Brightness", 1, 0, 2));
+    gui.add(contrast.setup("Contrast", 1, 0, 2));
+    gui.add(saturation.setup("Saturation", 1, 0, 2));
+
     //ofxLabel noiseParameters;
     //
-    
-    
-  
     
     reCropEveryThing.addListener(this, &ofApp::cropTrigger);
     camZoom.addListener(this, &ofApp::camZoomChanged);
@@ -89,6 +93,7 @@ void ofApp::setup(){
     ofLog() << "cropLeftRight: " << ofToString(num3);
     
     getText.allocate( days.at(0).imgWidth, days.at(0).originalImgHeight, GL_RGB);
+    filteredText.allocate( days.at(0).imgWidth, days.at(0).originalImgHeight, OF_IMAGE_COLOR);
 
     int blue = ofGetFrameNum();
     
@@ -120,8 +125,11 @@ void ofApp::setup(){
     //getText.enableAlphaBlending();
     
     left.load("sounds/left.wav");
+    left.setVolume(1.0f);
     right.load("sounds/right.wav");
-    moment.load("sounds/click.wav");
+    right.setVolume(1.0f);
+    moment.load("sounds/click2.mp3");
+    moment.setVolume(1.0f);
     gong.load("sounds/gong.mp3");
     gongMultiple.load("sounds/gongMultiple.wav");
     
@@ -191,11 +199,16 @@ void ofApp::cropTrigger(){
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    left.setVolume(1.0f);
+    right.setVolume(1.0f);
+    moment.setVolume(1.0f);
 
     if(usingFlow){
         rotSense.update();
         days.at(0).imgPos += rotSense.getCwVelocity();
         days.at(0).mskPos += rotSense.getCcwVelocity();
+        isLatent = false;
+        timeSinceInteract = ofGetElapsedTimeMillis();
     }
 
 
@@ -280,16 +293,33 @@ void ofApp::update(){
     
     getText.end();
 
+    filteredText = getText;
+    filteredText.begin();
+    brcosa.begin();
+    brcosa.setUniform1f("brightness", brightness);
+    brcosa.setUniform1f("contrast", contrast);
+    brcosa.setUniform1f("saturation", saturation);
+    getText.draw(0, 0);
+    brcosa.end();
+    filteredText.end();
     
     //cam.setPosition(0,0,0 );
-         sphere.mapTexCoordsFromTexture( getText.getTexture() );
+     sphere.mapTexCoordsFromTexture( filteredText.getTexture() );
     
-   
+         left.setVolume(1.0f);
+         right.setVolume(1.0f);
+         moment.setVolume(1.0f);
 
 }
 
+
 //--------------------------------------------------------------
 void ofApp::draw(){
+
+    left.setVolume(1.0f);
+    right.setVolume(1.0f);
+    moment.setVolume(1.0f);
+
 
     //ofSetColor(255,255,255,255);
     // ofEnableAlphaBlending();
@@ -335,6 +365,9 @@ void ofApp::draw(){
         rotSense.draw();
     }
 
+    left.setVolume(1.0f);
+    right.setVolume(1.0f);
+    moment.setVolume(1.0f);
 }
 
 //-------------------------w-------------------------------------
@@ -344,15 +377,17 @@ void ofApp::keyPressed(int key){
     if (key == 'o'){
         usingFlow = !usingFlow;
     }
-    else if (key == 'q'){
+    if (key == 'q'){
         days.at(0).imgPos +=10;
         left.play();
+        left.setVolume(1.0f);
         isLatent = false;
         timeSinceInteract = ofGetElapsedTimeMillis();
     }
-    else if(key == 'w'){
+    if(key == 'w'){
         days.at(0).mskPos -=10;
         right.play();
+        right.setVolume(1.0f);
         isLatent = false;
         timeSinceInteract = ofGetElapsedTimeMillis();
     }
@@ -380,9 +415,12 @@ void ofApp::keyPressed(int key){
         gong.play();
     }
     else if(key == 'm'){
+        moment.play();
+        moment.setVolume(0.9f);
         flock2.setMinSize(0);
         flock2.triggerSequenceTwo();
-        gongMultiple.play();
+        //gongMultiple.play();
+
     }
     else if(key == ','){
         

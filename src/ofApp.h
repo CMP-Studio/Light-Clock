@@ -71,9 +71,11 @@ class ofApp : public ofBaseApp{
     ofMaterial material;
     
     ofFbo getText;
-    
+
+    ofShader brcosa;
+    ofFbo filteredText;
+
     int cropLevel;
-    
     
     ofxPanel gui;
     ofxIntSlider cropLeftRight;
@@ -95,7 +97,9 @@ class ofApp : public ofBaseApp{
     ofxVec2Slider rangeMskMove;
     ofxIntSlider mskMoveSpeed;
     
-    
+    ofxFloatSlider brightness;
+    ofxFloatSlider contrast;
+    ofxFloatSlider saturation;
     
     bool showGui;
     
