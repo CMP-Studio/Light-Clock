@@ -27,22 +27,24 @@ float DayFade::mskPos = 0;
 float DayFade::imgPos = 0;
 int DayFade::crpHeight = 0;
 
-void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight,  int wid, int hght){
+void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight,   int intervl,  int wid, int hght){
+    mskPos = 0;
     imgWidth = wid;
     imgHeight = hght;
     gradientMaker.load("shader_gradient/shadersGL3/shader");
     dayDirectory = dirName;
     numberDay = numDay;
     windowWidth = ofGetWidth();
-    addCroppedImages (crpTop,crpBottom, cropLeftRight);
+    addCroppedImages (crpTop,crpBottom, cropLeftRight,intervl);
     currentMomentTrig = false;
     lastLoadedState = false;
 
 }
 
-void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
-    
-    int sz = 20;
+void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight, int intervl){
+    interval = intervl;
+    int sz = int(cropLeftRight/interval);
+    ofLog()<< "how big deck should be " << sz; 
     manager.setup(sz, crpBottom,crpTop);
     
     //might be irrelevant eventually
@@ -54,7 +56,7 @@ void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight){
     divNumImgs = 1;
     
     // how thin the slices are is decided here
-    interval = widthOfDay/(sz/divNumImgs)+3;
+   // interval = widthOfDay/(sz/divNumImgs)+3;
     
     // make single gradient to draw over all others
     posMsk = mskStartPos;
@@ -106,6 +108,9 @@ void DayFade::update(){
     }
     lastLoadedState =  manager.curMoment.isLoaded;
     
+    
+    
+    
 }
 
 
@@ -113,15 +118,34 @@ void DayFade::update(){
 
 void DayFade::draw(int x, int y, int rightCropPos ){
 
+    // check that the number in testQ match what it should be and correct it if not.
+    /*
+    int bestSize = int (rightCropPos/interval);
+    if (manager.testQ.size() > bestSize){
+        int difference = manager.testQ.size() - bestSize;
+        for(int i=0; i < difference; i++){
+            bool isLoaded =  manager.testQ.back()->isLoaded;
+            if (isLoaded){
+                manager.testQ.pop_back();
+            }
+        }
+    }
+     */
+    
     
     // go through each image there is to draw
     for (int i = 0; i < manager.testQ.size(); i++){
-        
+        //if ( manager.testQ.at(i)->isLoaded){
         int mskPosNew = (interval)*i + mskPos;
-        bool addingNew =  manager.check(mskPosNew,-1);
+        
+        // if I want time to be counter clock wise
+        //bool addingNew =  manager.check(mskPosNew,-1);
+        
+        // time moving clock wise
+        bool addingNew =  manager.check(mskPosNew,rightCropPos, interval);
         
         if(addingNew){
-            mskPos += interval;
+            mskPos -= interval;
             mskPosNew = (interval)*i + mskPos;
         }   
                // draw the imagery into a fbo that is just big enough for the slice
@@ -163,10 +187,9 @@ void DayFade::draw(int x, int y, int rightCropPos ){
         drawSliceOfImagery.end();
         
         drawSliceOfImagery.getTexture().setAlphaMask(gradientMask);
-        
         drawSliceOfImagery.draw(mskPosNew ,y);
 
-           
+        //}
        }
     //}
 }

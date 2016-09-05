@@ -65,11 +65,11 @@ void Flocking::update() {
     if (isSequenceTwo){
         int timeSince = ofGetElapsedTimeMillis() - startTime;
         
-        if ((sequenceStep == 0)&(timeSince > 15000)){
+        if ((sequenceStep == 0)&(timeSince > lengthOfMoment - 3000)){
             toDisappear();
             sequenceStep ++;
         }
-        else if ((sequenceStep == 1)&(timeSince > 35000)){
+        else if ((sequenceStep == 1)&(timeSince > lengthOfMoment + 5000)){
             isSequenceTwo = false;
             removeAllBoids();
             sequenceStep ++;
@@ -111,7 +111,8 @@ void Flocking::update() {
 }
 
 
-void Flocking::triggerSequenceTwo(){
+void Flocking::triggerSequenceTwo(int duration){
+    lengthOfMoment = duration;
     isSequenceTwo = true;
     isSequence = false;
     startTime =ofGetElapsedTimeMillis();

@@ -26,10 +26,10 @@ public:
     
     static int crpHeight;
 
-    void setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight,  int wid, int hght);
+    void setup( string dirName, int numDay, int crpTop, int crpBottom, int cropLeftRight, int intervl,  int wid, int hght);
     void update();
     void draw(int x, int y ,int rightCropPos);
-    void addCroppedImages(int crpTop, int crpBottom, int cropLeftRight);
+    void addCroppedImages(int crpTop, int crpBottom, int cropLeftRight, int intervl);
     float wrapIt(float Xpos);
     
     string dayDirectory;

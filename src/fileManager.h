@@ -16,7 +16,7 @@ class fileManager{
         void setup( int numOfImgToLoad, int crpTop, int crpBot);
         void update();
         void draw(int index, int x, int y);
-        bool check(int xPos, int thresh);
+        bool check(int xPos, int thresh, int interval);
         int crpT;
         int crpB;
         deque<unique_ptr<oneImage>> testQ;

@@ -27,8 +27,6 @@ class ofApp : public ofBaseApp{
 		void mouseEntered(int x, int y);
 		void mouseExited(int x, int y);
 		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
         void cropTrigger();
     
         void camZoomChanged(int & camZoom);
@@ -37,11 +35,6 @@ class ofApp : public ofBaseApp{
         void camZposChanged(int & camZpos);
         void camXposChanged(int & camXpos);
     
-        // t- current time
-        // b- start value
-        // c- change in value
-        // d- duration
-        float easeOut();
         void exit();
     
     float wrapCurrentMoment(float Xpos);
@@ -49,46 +42,25 @@ class ofApp : public ofBaseApp{
     ofFbo currentMoment;
     ofFbo currentMomentMask;
     
-    ofImage curMoment;
-    ofImage momentMsk;
-    
-    
-    //Day dayOne;
-    //Day dayTwo;
-    
-    //vector <DayFade>days;
-    
-    
-    DayFade day;
-    bool isEaseOut;
-    bool isSpin;
-    bool usingFlow;
-    float beginningValue;
-    int begFrame;
-    
-    float ellipseX;
-    int speed; 
 
     
-    ofVideoPlayer flock;
-    
-    ofImage bgrnd;
-    
+    DayFade day;
+
+    bool usingFlow;
+
     // map to 3D
     ofSpherePrimitive sphere;
     ofEasyCam cam;
-    ofImage texture;
     ofMaterial material;
     
     ofFbo getText;
-    
-    int cropLevel;
-    
+        
     
     ofxPanel gui;
     ofxIntSlider cropLeftRight;
     ofxIntSlider cropTop;
     ofxIntSlider cropBottom;
+    ofxIntSlider intervalSize;
     ofxButton reCropEveryThing;
     
     ofxIntSlider camUpDown;
@@ -105,7 +77,10 @@ class ofApp : public ofBaseApp{
     ofxVec2Slider rangeMskMove;
     ofxIntSlider mskMoveSpeed;
     
-    
+    // adjust the current moment
+    ofxLabel currentMomentParams;
+    ofxIntSlider delayTime;
+    ofxIntSlider curMomentLength;
     
     bool showGui;
     
@@ -118,8 +93,6 @@ class ofApp : public ofBaseApp{
     Flocking flock2;
     
     //rotationSensing rotSense;
-
-    ofShader momentAlphaShader;
     
     ofImage fullRes;
 
@@ -137,7 +110,20 @@ class ofApp : public ofBaseApp{
     // these are needed for the current moment.
     float imgPosContinuous;
     float mskPosContinuous;
+
+    // the coming soon video
+    ofVideoPlayer comingSoonVideo;
     
-    //oneImage testing;
-    ofPixels test; 
+    
+    int startCurMoment;
+    bool isWaitForMoment;
+    
+    int startTimeRight;
+    int startTimeLeft;
+    
+    int timeToWaitRight;
+    int timeToWaitLeft;
+    
+    
+    
 };

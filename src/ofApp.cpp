@@ -2,45 +2,32 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
-    ofLoadImage(test,"test.png");
-    ofLog() << "Is allocated: " << test.isAllocated();
-    
+        
     isMuteMode = false;
     
     ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
-    ofSetVerticalSync(true);
+    //ofSetVerticalSync(true);
     
     usingFlow=true;
     //rotSense.setup();
     
     ofLog()<< "get width: " << ofGetWindowWidth();
-    
-   //dayOne.setup("dayOneOne.png", "day1");
-   //dayTwo.setup("dayTwoTwo.png", "day2");
 
-    /*
-    for (int i=0; i< 4; i++){
-        DayFade temp;
-        temp.setup( "day" + ofToString(i), i);
-        days.push_back(temp);
-    }
-     */
-    
-    
-    
     gui.setup();
     gui.setPosition(50, 50);
-    ofLog()<<"loading old settings";
-   
-   // cac
     
-    int width = 4130;
-    int height = 1984;
+    // load a random image to get the size that we are working with
+    ofImage testSz;
+    testSz.load("sampleImages/sample/007_2016-08-19_R/174_14-34-38.tif");
+    int width = testSz.getWidth();
+    int height = testSz.getHeight();
     
-    gui.add(cropLeftRight.setup("crop left right",height/2,0,width));
+    gui.add(cropLeftRight.setup("crop left right",width/2,0,width));
     gui.add(cropTop.setup("crop top",height/2,0,height));
     gui.add(cropBottom.setup("crop bottom",height/2,0,height));
+    //intervalSize
+    gui.add(intervalSize.setup("interval size",60,10,600));
+    
     gui.add(reCropEveryThing.setup("Re-initialize Crop"));
     
     gui.add(camZoom.setup("Cam Zoom",90,10,180));
@@ -48,18 +35,16 @@ void ofApp::setup(){
     gui.add(camZpos.setup("Cam Z",20,width,-width));
     gui.add(camXpos.setup("Cam X",20,width,-width));
     gui.add(maxSpinTime.setup("spin max speed",height/2,0,width));
-    gui.add(soundFrequency.setup("Sound frequency",height/2,0,width));
+    gui.add(soundFrequency.setup("Sound frequency",1990,0,3000));
     gui.add(noiseParameters.setup("latent state",""));
     gui.add(rangeImgMove.setup("Image movement range", ofVec2f(-1,1), ofVec2f(-6,-6),ofVec2f(6,6)));
-    gui.add(imgMoveSpeed.setup("speed of image", 4 , 0,30 ));
+    gui.add(imgMoveSpeed.setup("speed of image", 4 , 0,100 ));
     gui.add(rangeMskMove.setup("Mask movement range", ofVec2f(-1,1), ofVec2f(-6,-6),ofVec2f(6,6)));
-    gui.add(mskMoveSpeed.setup("speed of msk", 4 , 0,30 ));
-   
-    //ofxLabel noiseParameters;
-    //
+    gui.add(mskMoveSpeed.setup("speed of msk", 4 , 0,100 ));
+    gui.add(currentMomentParams.setup("Current Moment",""));
+    gui.add(delayTime.setup("delay", 0 , 0,12000 ));
+    gui.add(curMomentLength.setup("dur", 20000 , 20000,120000 ));
     
-    
-  
     
     reCropEveryThing.addListener(this, &ofApp::cropTrigger);
     camZoom.addListener(this, &ofApp::camZoomChanged);
@@ -75,76 +60,33 @@ void ofApp::setup(){
     
     ofxLoadCamera(cam, "ofEasyCamSettings.xml");
     cam.enableMouseInput();
-   
-    
-    cropLevel = 600; 
-    
 
-    ofImage testSz;
-    testSz.load("sampleImages/sample/000_2016-08-19_C/002_00-40-01.png");
     getText.allocate( testSz.getWidth(), testSz.getHeight(), GL_RGB);
     
-    day.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight,testSz.getWidth(), testSz.getHeight());
-    
-    int num1 = cropTop;
-    ofLog() << "cropTop: " << ofToString(num1);
-    int num2 = cropBottom;
-    ofLog() << "cropBottom: " << ofToString(num2);
-    int num3 = cropLeftRight;
-    ofLog() << "cropLeftRight: " << ofToString(num3);
-    
-    // get sample image to get size
-    // eventually replace this with something smarter
-    
-    
-
-    int blue = ofGetFrameNum();
-    
-    isEaseOut = false;
-    isSpin = false;
-    ellipseX = ofGetWidth()/2;
-    speed = 3;
-    
-    //flock.load("flock.mov");
-    //flock.setLoopState(OF_LOOP_NORMAL);
-    //flock.play();
-    
-    
-    //dayOne.imgScrollX = (dayOne.imgWidth-(dayOne.windowWidth+speed))-1;
-    
+    day.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight,intervalSize, testSz.getWidth(), testSz.getHeight());
     
     // set up 3D sphere
     sphere.setRadius(ofGetWidth());
     sphere.setPosition( 0,0,0 );
-    //sphere.set
     ofSetSphereResolution(24);
     
-    //texture.load("blended.jpg");
-   // texture.getTexture().setTextureWrap( GL_REPEAT, GL_REPEAT );
-    
+
     ofEnableLighting();
-    showGui = true;
+    showGui = false;
     
-    //getText.enableAlphaBlending();
-    
+    // load sounds
     left.load("sounds/left.wav");
-    left.setVolume(0.3f);
     right.load("sounds/right.wav");
     moment.load("sounds/click.wav");
     gong.load("sounds/gong.mp3");
     gongMultiple.load("sounds/gongMultiple.wav");
+    startCurMoment = 0;
     
-    curMoment.load("current.png");
     flock2.setup(testSz.getWidth(), testSz.getHeight());
-    
-    momentAlphaShader.load("shader_alphaMsk2/shadersGL3/shader");
-    
-    momentAlphaShader.begin();
-    momentAlphaShader.setUniform1i("imgWidth", testSz.getWidth());
-    momentAlphaShader.end();
     
     currentMoment.allocate( testSz.getWidth(), testSz.getHeight() );
     currentMomentMask.allocate(testSz.getWidth(), testSz.getHeight() );
+    isWaitForMoment = false;
     
     // image to test full resolution
     fullRes.load("bestStitch3.png");
@@ -156,6 +98,13 @@ void ofApp::setup(){
     mskPosContinuous = 0;
     imgPosContinuous = 0;
     
+    comingSoonVideo.load("comingSoon.mov");
+    
+    startTimeRight =0;
+    startTimeLeft =0;
+    
+    timeToWaitRight =0;
+    timeToWaitLeft =0;
 }
 
 void ofApp::camZoomChanged(int &camZoom){
@@ -196,7 +145,7 @@ void ofApp::cropTrigger(){
     
     ofLog()<<"ping";
     //for(int i=0; i < days.size(); i++){
-    day.addCroppedImages(cropTop,cropBottom,cropLeftRight);
+    day.addCroppedImages(cropTop,cropBottom,cropLeftRight,intervalSize);
     //}
     
     
@@ -205,55 +154,59 @@ void ofApp::cropTrigger(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    left.setVolume(0.3f);
+    
+    // Audio stuff - to hook up to sam's stuff
+    /*
+    timeToWaitRight = int(ofMap(1-rightSpin,0,1,2000-soundFrequency,1500));
+    if(ofGetElapsedTimeMillis()> (startTimeRight + timeToWaitRight)){
+        right.play();
+        startTimeRight = ofGetElapsedTimeMillis();
+        isLatent = false;
+        timeSinceInteract = ofGetElapsedTimeMillis();
+    }
+    
+    timeToWaitLeft = int(ofMap(1-leftSpin,0,1,2000-soundFrequency,1500));
+    if(ofGetElapsedTimeMillis()> (startTimeLeft + timeToWaitLeft)){
+            left.play();
+            startTimeLeft = ofGetElapsedTimeMillis();
+            isLatent = false;
+            timeSinceInteract = ofGetElapsedTimeMillis();
+    }
+     */
+    
     
     if(day.currentMomentTrig){
         ofLog()<< "trigger!! Timeese";
+        isWaitForMoment = true;
+        startCurMoment = ofGetElapsedTimeMillis();
         day.currentMomentTrig = false;
+    }
+    else if (isWaitForMoment & (ofGetElapsedTimeMillis() - startCurMoment >= delayTime ) ) {
         flock2.setMinSize(0);
-        flock2.triggerSequenceTwo();
+        flock2.triggerSequenceTwo(curMomentLength);
         gong.play();
+        isWaitForMoment=false;
     }
     
-    /*
-    if(usingFlow){
-        rotSense.update();
-        days.at(0).imgPos += rotSense.getCwVelocity();
-        days.at(0).mskPos += rotSense.getCcwVelocity();
-    }
-     */
-
-
-    //ofLog() << "is flocking happening: " << flock2.isSequenceTwo;
     if((!isLatent)&((ofGetElapsedTimeMillis()- timeSinceInteract) >= 5000)){
         isLatent = true;
     }
     else if (isLatent){
-        /*
-         float output =ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,rangeMskMove->x,rangeMskMove->y);
-        day.mskPos -= output;
         
-        day.imgPos += ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
-         */
+        float noise1 =ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,rangeMskMove->x,rangeMskMove->y);
+        noise1 = ofClamp(noise1, 0, 6);
+        day.mskPos += noise1;
+        mskPosContinuous -= noise1;
+        
+        float noise2 = ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
+        day.imgPos -= noise2;
+        imgPosContinuous += noise2;
+    
     
     }
     
     day.update();
     flock2.update();
-    //day.
-    //curMoment.getTexture().setAlphaMask(flock2.drawIntoMe.getTexture());
-    
-    /*
-    flock.update();
-    if(flock.isFrameNew()){
-        ofLog()<<"this is happening";
-        ofTexture curFrame = flock.getTexture();
-      ofFbo temp;
-        temp.allocate(curMoment.getWidth(),  curMoment.getHeight());
-        temp.begin();
-            curFrame.draw(0, 0, curMoment.getWidth(),  curMoment.getHeight());
-        temp.end();
-    }*/
  
     getText.begin();
 
@@ -268,20 +221,6 @@ void ofApp::update(){
     
     day.draw(0,cropTop,cropLeftRight);
     
-    
-    
-    
-    
-    // current moment
-    // this isn't wrapping right now and I need it to.
-    /*
-    momentAlphaShader.begin();
-        momentAlphaShader.setUniformTexture("imageMask", flock2.drawIntoMe.getTexture(), 1);
-        momentAlphaShader.setUniform1i("mskXPos", days.at(0).mskPos);
-        momentAlphaShader.setUniform1i("imgXPos", days.at(0).imgPos);
-        curMoment.draw(0 ,0);
-    momentAlphaShader.end();
-     */
 
     if(flock2.isSequenceTwo){
         
@@ -291,11 +230,11 @@ void ofApp::update(){
         ofLog()<< "Image position: " << imgPosContinuous;
         ofLog()<< "Image position wrapped: " << drawImgPos;
         if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
-            day.manager.curMoment.image.draw( drawImgPos *-1,0 );
-            day.manager.curMoment.image.draw( drawImgPos *-1 +  currentMoment.getWidth(),0);
+            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop );
+            day.manager.curMoment.image.draw( drawImgPos *-1 +  currentMoment.getWidth(),cropTop);
         }
         else{
-            day.manager.curMoment.image.draw( drawImgPos *-1,0);
+            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop);
         }
     currentMoment.end();
     
@@ -313,7 +252,6 @@ void ofApp::update(){
         currentMomentMask.end();
     
         currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
-        //currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
         currentMoment.draw(0,0);
     }
     
@@ -329,8 +267,10 @@ void ofApp::update(){
         ofDrawEllipse(0, cropBottom, 50,50);
         ofSetColor(0, 255, 0);
         ofDrawEllipse(0, cropTop, 50,50);
-        ofSetColor(0, 0, 255);
+        ofSetColor(0, 100, 100);
         ofDrawEllipse(cropLeftRight, cropTop , 50,50);
+        ofSetColor(255);
+        ofDrawRectangle(50,0,intervalSize, getText.getHeight());
         ofShowCursor();
     }
     else{
@@ -348,18 +288,6 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    //ofSetColor(255,255,255,255);
-    // ofEnableAlphaBlending();
-    // ofDisableAlphaBlending();
-    
-    
-   // glEnable(GL_ALPHA_TEST);
-   // glAlphaFunc(GL_GREATER, 0.0f);
-    //fbo.draw(0, 0, 500, 500);
-   // getText.draw(-50,-500);
-    //glDisable(GL_ALPHA_TEST);
-    
-    
     ofBackground(0);
     
     
@@ -370,19 +298,27 @@ void ofApp::draw(){
         //sphere.drawWireframe();
         getText.getTexture().unbind();
         cam.end();
-    
-    
-    ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()),40, ofGetHeight()-40,0);
 
     
     if(showGui){
         gui.draw();
+        ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()),40, ofGetHeight()-40,0);
     }
     if(usingFlow){
         //rotSense.draw();
     }
     } else{
         // draw video for the mute mode
+        ofBackground(31,29,29);
+        comingSoonVideo.update();
+        if(comingSoonVideo.isFrameNew()){
+            int wid = ofGetWindowWidth();
+            int proportionalHeight = (wid/comingSoonVideo.getWidth()) * comingSoonVideo.getHeight();
+            int xPos = 0;
+            int yPos = (ofGetWindowHeight() - proportionalHeight)/2;
+            //int yPos = 0;
+            comingSoonVideo.draw(xPos, yPos, wid, proportionalHeight);
+        }
     }
 
 }
@@ -429,35 +365,9 @@ void ofApp::keyPressed(int key){
     else if (key == 'h'){
         showGui = !showGui; 
     }
-    else if (key == ' '){
-
-        isFullResTest = !isFullResTest;
-    }
-    else if(key == 'v'){
-        flock2.setMinSize(0);
-        flock2.triggerSequence();
-        moment.play();
-
-    }
-    else if(key == 'b'){
-        flock2.setMinSize(0);
-        flock2.triggerSequenceTwo();
-        moment.play(); 
-    }
-    else if(key == 'n'){
-        flock2.setMinSize(0);
-        flock2.triggerSequenceTwo();
-        gong.play();
-    }
     else if(key == 'm'){
         flock2.setMinSize(0);
-        flock2.triggerSequenceTwo();
-        gongMultiple.play();
-    }
-    else if(key == ','){
-        
-        flock2.triggerSequenceTwo();
-        flock2.setMinSize(30);
+        flock2.triggerSequenceTwo(curMomentLength);
         gongMultiple.play();
     }
     else if(key == 'x'){
@@ -467,8 +377,11 @@ void ofApp::keyPressed(int key){
             right.setVolume(0);
             gong.setVolume(0);
             gongMultiple.setVolume(0);
+            comingSoonVideo.play();
+            comingSoonVideo.setLoopState(OF_LOOP_NORMAL);
         }
         else{
+            comingSoonVideo.stop();
             left.setVolume(1);
             right.setVolume(1);
             gong.setVolume(1);
@@ -480,41 +393,10 @@ void ofApp::keyPressed(int key){
 }
 
 
-// t- current time //
-// b- start value
-// c- change in value
-// d- duration
-float ofApp::easeOut(){
-    float t = ofGetFrameNum();
-    float d = 80;
-    float percent = ofMap(t, begFrame, begFrame+d, 0,1);
-    float r = 1.0f - ( percent - 1.0f) * (percent - 1.0f);
-    float toReturn = ofMap(r, 0,1,speed,0 );
-    
-    if (t >= begFrame + d){
-        isEaseOut = false;
-    }
-    
-    //ofLog() << toReturn;
-    return toReturn;
-}
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-    if(key == 'w'){
 
-        isSpin = false;
-        isEaseOut = true;
-        //beginningValue = dayOne.mskScrollX;
-        //beginningValue = ellipseX;
-        begFrame = ofGetFrameNum();
-        ofLog()<< "beg frame: " << begFrame;
-        
-    }
-
-
-    
-   
 }
 
 //--------------------------------------------------------------
@@ -562,12 +444,4 @@ void ofApp::windowResized(int w, int h){
 
 }
 
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
 
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
-}

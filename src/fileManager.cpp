@@ -23,6 +23,7 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     testSz.load(nextFileToLoad);
     imgWidth = testSz.getWidth()/15;
     imgHeight = testSz.getHeight()/15;
+    testQ.clear(); 
     for(int i =0; i < numOfImgToLoad; i++){
         testQ.push_back(move(unique_ptr<oneImage>(new oneImage)));
         string temp = nextFileToLoad;
@@ -35,13 +36,53 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
 void fileManager::update(){
     checkNewDay();
     checkNewMoment();
-    curMoment.update(); 
+    curMoment.update();
     //posX-=5;
 }
 
 
-bool fileManager::check(int xPos, int thresh){
+bool fileManager::check(int xPos, int thresh, int interval){
 
+    if (xPos < thresh){
+        return false;
+    }
+    else {
+        // take out the one that just disapeared from the right
+        testQ.pop_back();
+        // insert the one to the left
+
+        testQ.push_front(move(unique_ptr<oneImage>(new oneImage)));
+        testQ.front()->setup(nextFileToLoad, crpT, crpB);
+        nextMoment();
+        ofLog() << "adding one to the front: " << testQ.size();
+        return true;
+    }
+    
+    /*
+     if (xPos < -1){
+     testQ.pop_front();
+     return false;
+     //removing one from the left
+     }
+     else if (xPos < thresh){
+     return false;
+     }
+     else {
+     // take out the one that just disapeared from the right
+     testQ.pop_back();
+     // insert the one to the left
+     
+     testQ.push_front(move(unique_ptr<oneImage>(new oneImage)));
+     testQ.front()->setup(nextFileToLoad, crpT, crpB);
+     nextMoment();
+     ofLog() << "adding one to the front: " << testQ.size();
+     return true;
+     
+     }
+     */
+    
+    // if I want time to move counter clock wise
+    /*
     if (xPos > thresh){
         return false;
     }
@@ -54,6 +95,7 @@ bool fileManager::check(int xPos, int thresh){
         nextMoment();
         return true;
     }
+     */
 }
 
 void fileManager::draw(int index, int x, int y){
@@ -68,6 +110,7 @@ void fileManager::setUpDays(){
     lastWeather = "";
     dayCount = 0;
     day.listDir(startPath);
+    day.sort();
     numOfDays = day.size();
     vector<string> parts;
     parts = ofSplitString(day.getPath(day.size()-1), "_");
@@ -75,9 +118,11 @@ void fileManager::setUpDays(){
     makeUnusedDaysMap();
     //moment.allowExt(".tif");
     moment.listDir(day.getPath(day.size()-1));
+    // not necessary to sort bc I am just getting a count.
     numOfMoments = moment.size();
     indexDay =selectDay();
     moment.listDir(day.getPath(indexDay));
+    moment.sort();
     indexMoment = 0;
     nextFileToLoad = moment.getPath(indexMoment);
     ofLog()<< "how big" << moment.size();
@@ -145,6 +190,7 @@ void fileManager::nextMoment(){
         indexMoment =0;
         indexDay = selectDay();
         moment.listDir(day.getPath( indexDay ));
+        moment.sort();
     }
     // check if the file has a flag on it
     string nextPotentialFile = moment.getPath(indexMoment);
@@ -162,6 +208,7 @@ void fileManager::nextMoment(){
 
 void fileManager::checkNewDay(){
     dirToCheck.listDir(startPath);
+    // not necessary to sort because it is only to get a count
     if(numOfDays < dirToCheck.size()){
         ofLog() << "new day";
         setUpDays();
@@ -169,13 +216,15 @@ void fileManager::checkNewDay(){
 }
 
 void fileManager::checkNewMoment(){
+
     dirToCheck.listDir(day.getPath(day.size()-1));
+    
     if (numOfMoments < dirToCheck.size() ){
-        ofLog()<< "new moment";
+        dirToCheck.sort();
         numOfMoments = dirToCheck.size();
         // new Image - so draw it.
         string currentMomentPath =dirToCheck.getPath(dirToCheck.size()-1);
-        curMoment.setup(currentMomentPath, crpT, crpB, false);
+        curMoment.setup(currentMomentPath, crpT, crpB);
         insertMomentCheck(currentMomentPath);
     }
 }
@@ -186,6 +235,7 @@ void fileManager::insertMomentCheck(string momentPath){
     // if the current day is the one being processed then re-initialize the list so it will include that new image
     if(indexDay == day.size()-1){
         moment.listDir(day.getPath(indexDay));
+        moment.sort();
     }
     // need to check if it should be inserted into the deque or whether it will just happen the next the current day is in active circulation
     // loop through all the days currently in the deque
@@ -210,6 +260,9 @@ void fileManager::insertMomentCheck(string momentPath){
                 // put it after I in the deque
                 testQ.insert(testQ.begin()+i+1,move(unique_ptr<oneImage>(new oneImage)) );
                 testQ.at(i+1)->setup(momentPath, crpT, crpB);
+                // also take one off the end to compensate so this doesn't grow the deck beyond what it should be
+                testQ.pop_back();
+                
                 break;
             }
             ofLog()<< momentId;
