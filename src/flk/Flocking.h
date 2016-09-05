@@ -21,9 +21,10 @@ public:
     void setup(int width, int height);
 	void draw();
     void triggerSequence();
-    void triggerSequenceTwo();
+    void triggerSequenceTwo(int duration);
     ofFbo drawIntoMe;
-    void setMinSize(int sz); 
+    void setMinSize(int sz);
+    bool isSequenceTwo;
     
 private:
 	void addBoid();
@@ -43,8 +44,9 @@ private:
     
     int startTime;
     bool isSequence;
-    bool isSequenceTwo;
+    
     int sequenceStep;
+    int lengthOfMoment;
     
     
 };

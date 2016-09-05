@@ -5,12 +5,16 @@
 #include "ofxGui.h"
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
-#include "rot/rotationSensing.h"
+#include "rotationSensing.h"
+//#include "oneImage.h"
+
 
 
 class ofApp : public ofBaseApp{
 
 	public:
+    
+    
 		void setup();
 		void update();
 		void draw();
@@ -23,8 +27,6 @@ class ofApp : public ofBaseApp{
 		void mouseEntered(int x, int y);
 		void mouseExited(int x, int y);
 		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
         void cropTrigger();
     
         void camZoomChanged(int & camZoom);
@@ -33,54 +35,37 @@ class ofApp : public ofBaseApp{
         void camZposChanged(int & camZpos);
         void camXposChanged(int & camXpos);
     
-        // t- current time
-        // b- start value
-        // c- change in value
-        // d- duration
-        float easeOut();
         void exit();
+    
+    float wrapCurrentMoment(float Xpos);
 
     ofFbo currentMoment;
-    ofImage curMoment;
-    ofImage momentMsk;
+    ofFbo currentMomentMask;
     
-    
-    //Day dayOne;
-    //Day dayTwo;
-    
-    vector <DayFade>days;
-    
-    bool isEaseOut;
-    bool isSpin;
-    bool usingFlow;
-    float beginningValue;
-    int begFrame;
-    
-    float ellipseX;
-    int speed; 
 
     
-    ofVideoPlayer flock;
-    
-    ofImage bgrnd;
-    
+    DayFade day;
+
+    bool usingFlow;
+
     // map to 3D
     ofSpherePrimitive sphere;
     ofEasyCam cam;
-    ofImage texture;
     ofMaterial material;
     
     ofFbo getText;
 
+
     ofShader brcosa;
     ofFbo filteredText;
 
-    int cropLevel;
+
     
     ofxPanel gui;
     ofxIntSlider cropLeftRight;
     ofxIntSlider cropTop;
     ofxIntSlider cropBottom;
+    ofxIntSlider intervalSize;
     ofxButton reCropEveryThing;
     
     ofxIntSlider camUpDown;
@@ -97,9 +82,16 @@ class ofApp : public ofBaseApp{
     ofxVec2Slider rangeMskMove;
     ofxIntSlider mskMoveSpeed;
     
+
     ofxFloatSlider brightness;
     ofxFloatSlider contrast;
     ofxFloatSlider saturation;
+
+    // adjust the current moment
+    ofxLabel currentMomentParams;
+    ofxIntSlider delayTime;
+    ofxIntSlider curMomentLength;
+
     
     bool showGui;
     
@@ -111,16 +103,38 @@ class ofApp : public ofBaseApp{
     
     Flocking flock2;
     
-    rotationSensing rotSense;
-
-    ofShader momentAlphaShader;
+    //rotationSensing rotSense;
     
     ofImage fullRes;
 
-    bool isFullResTest; 
+    bool isFullResTest;
 
 
     
     bool isLatent; 
-    int timeSinceInteract; 
+    int timeSinceInteract;
+    
+    bool isMuteMode;
+    
+    
+    // since day.imgPos / .mskPos is no longer continuous
+    // these are needed for the current moment.
+    float imgPosContinuous;
+    float mskPosContinuous;
+
+    // the coming soon video
+    ofVideoPlayer comingSoonVideo;
+    
+    
+    int startCurMoment;
+    bool isWaitForMoment;
+    
+    int startTimeRight;
+    int startTimeLeft;
+    
+    int timeToWaitRight;
+    int timeToWaitLeft;
+    
+    
+    
 };
