@@ -19,10 +19,11 @@ class fileManager{
         bool check(int xPos, int thresh, int interval);
         int crpT;
         int crpB;
-        deque<unique_ptr<oneImage>> testQ;
+        deque<shared_ptr<oneImage>> testQ;
         // the current moment
         oneImage curMoment;
-    
+        int lengthOfDeck;
+
     private:
     
     
@@ -59,5 +60,7 @@ class fileManager{
     
     
     int posX; 
+
+
     
 };

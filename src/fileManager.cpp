@@ -14,7 +14,7 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     crpT = crpTop;
     crpB = crpBot;
     
-    startPath = "sampleImages/sample";
+    startPath = "/media/caroline/Storage/pano/";
     
     setUpDays();
     //test.setup("005_2016-08-19_R/016_00-20-01.png");
@@ -24,8 +24,9 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     imgWidth = testSz.getWidth()/15;
     imgHeight = testSz.getHeight()/15;
     testQ.clear(); 
+    lengthOfDeck = numOfImgToLoad;
     for(int i =0; i < numOfImgToLoad; i++){
-        testQ.push_back(move(unique_ptr<oneImage>(new oneImage)));
+        testQ.push_back(move(shared_ptr<oneImage>(new oneImage)));
         string temp = nextFileToLoad;
         testQ.back()->setup(temp, crpT, crpB);
         nextMoment();
@@ -48,14 +49,25 @@ bool fileManager::check(int xPos, int thresh, int interval){
     }
     else {
         // take out the one that just disapeared from the right
-        testQ.pop_back();
+        ofLog()<< "about to pop one out:";
+        ofLog()<<"test q"<< testQ.size();
+        //if(testQ.front()->isLoaded){
+        //testQ.back()->destroyEverything();
+        testQ.at(lengthOfDeck-1)->destroyEverything();
+
+        //testQ.erase(testQ.end()-1);
+        ofLog()<< "just removed one";
+        ofLog()<<"after removing: "<< testQ.size();
         // insert the one to the left
 
-        testQ.push_front(move(unique_ptr<oneImage>(new oneImage)));
+        testQ.push_front(move(shared_ptr<oneImage>(new oneImage)));
+        ofLog()<< "just added one";
         testQ.front()->setup(nextFileToLoad, crpT, crpB);
+        ofLog()<<"setup complete";
         nextMoment();
         ofLog() << "adding one to the front: " << testQ.size();
         return true;
+        //}
     }
     
     /*
@@ -248,7 +260,7 @@ void fileManager::insertMomentCheck(string momentPath){
     string nameOfMomentCur = temp.at(temp.size()-1);
     int momentIdCur = ofToInt(ofSplitString(nameOfMomentCur, "_").at(0));
     
-    for(int i=0; i < testQ.size(); i++){
+    for(int i=0; i < lengthOfDeck; i++){
         string fileName = testQ.at(i)->filePath;
         string dayId = ofSplitString(fileName, "_").at(0);
         if (dayId == dayIdCur){
@@ -258,7 +270,7 @@ void fileManager::insertMomentCheck(string momentPath){
             
             if (momentId == momentIdCur-1){
                 // put it after I in the deque
-                testQ.insert(testQ.begin()+i+1,move(unique_ptr<oneImage>(new oneImage)) );
+                testQ.insert(testQ.begin()+i+1,move(shared_ptr<oneImage>(new oneImage)) );
                 testQ.at(i+1)->setup(momentPath, crpT, crpB);
                 // also take one off the end to compensate so this doesn't grow the deck beyond what it should be
                 testQ.pop_back();

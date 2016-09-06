@@ -8,6 +8,7 @@
 
 //
 //  Day.cpp
+
 //  greyBlend
 //
 //  Created by Caroline Record on 5/16/16.
@@ -92,7 +93,7 @@ void DayFade::makeMsk(int posImg, int width){
     gradientMask = msk.getTexture();
     
     // now fill in the start and end positions for each image
-    for (int i=0; i < manager.testQ.size()/divNumImgs; i++){
+    for (int i=0; i < manager.lengthOfDeck/divNumImgs; i++){
         manager.testQ.at(i)->startDay = posMsk;
         manager.testQ.at(i)->endDay = posMsk + interval*2;
         posMsk += interval;
@@ -134,7 +135,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
     
     
     // go through each image there is to draw
-    for (int i = 0; i < manager.testQ.size(); i++){
+    for (int i = 0; i < manager.lengthOfDeck; i++){
         //if ( manager.testQ.at(i)->isLoaded){
         int mskPosNew = (interval)*i + mskPos;
         
@@ -143,7 +144,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
         
         // time moving clock wise
         bool addingNew =  manager.check(mskPosNew,rightCropPos, interval);
-        
+       // ofLog()<<"got to the other side";
         if(addingNew){
             mskPos -= interval;
             mskPosNew = (interval)*i + mskPos;

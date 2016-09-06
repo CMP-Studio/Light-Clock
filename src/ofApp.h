@@ -91,6 +91,8 @@ class ofApp : public ofBaseApp{
     ofxLabel currentMomentParams;
     ofxIntSlider delayTime;
     ofxIntSlider curMomentLength;
+    ofxFloatSlider volumeMoment;
+    ofxFloatSlider volumeTicking;
 
     
     bool showGui;
@@ -103,7 +105,7 @@ class ofApp : public ofBaseApp{
     
     Flocking flock2;
     
-    //rotationSensing rotSense;
+    rotationSensing rotSense;
     
     ofImage fullRes;
 

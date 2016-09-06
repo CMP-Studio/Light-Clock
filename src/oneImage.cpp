@@ -8,6 +8,17 @@
 
 #include "oneImage.h"
 
+void oneImage::destroyEverything(){
+    ofLog()<<"the prestend destruction";
+    stopThread();
+    img.clear();
+    image.clear();
+    //this->~ofThread();
+    //this->~oneImage();
+    //pTp.clear();
+    //pBttm.clear();
+    filePath.clear();
+}
 
 
 void oneImage::setup(string fPath, int cropBottom, int cropTop, bool toCrop){

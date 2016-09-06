@@ -12,6 +12,7 @@
 #include "ofxOpticalFlowFarneback.h"
 #include "ofxOpenCv.h"
 #include "ofxGui.h"
+//#include "ofxV4L2Settings.h"
 
 class rotationSensing : public ofBaseApp {
   
