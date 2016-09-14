@@ -1,0 +1,43 @@
+<group>
+	<crop_left_right>4098</crop_left_right>
+	<crop_top>317</crop_top>
+
+	<crop_bottom>1745</crop_bottom>
+	<Cam_Up_Down>540</Cam_Up_Down>
+	<Cam_Zoom>68</Cam_Zoom>
+
+	<spin_max_speed>1404</spin_max_speed>
+	<Sound_frequency>2910</Sound_frequency>
+<group/>
+<Cam_Y>0</Cam_Y>
+	<Cam_Z>0</Cam_Z>
+	<Cam_X>0</Cam_X>
+<latent_state/>
+	<Image_movement_range>-0.306122, 0.306122</Image_movement_range>
+	<speed_of_image>29</speed_of_image>
+	<Mask_movement_range>-1, 1.16327</Mask_movement_range>
+	<speed_of_msk>7</speed_of_msk>
+<Brightness>0.87</Brightness>
+	<Contrast>0.9</Contrast>
+	<Saturation>0.93</Saturation>
+<interval_size>104</interval_size>
+	<Current_Moment/>
+	<delay>0</delay>
+	<dur>59000</dur>
+<moment_vol>0.47</moment_vol>
+	<clicking_vol>0.15</clicking_vol>
+<Sampling_density>2</Sampling_density>
+	<Flow_threshold>15</Flow_threshold>
+	<CW_velocity>0.8</CW_velocity>
+	<CW_de-acceleration>0.11</CW_de-acceleration>
+	<CCW_velocity>0.8</CCW_velocity>
+	<CCW_de-acceleration>0.11</CCW_de-acceleration>
+	<X>377</X>
+	<Y>249</Y>
+	<Pyramid_scale>0.35</Pyramid_scale>
+	<Pyramid_levels>5</Pyramid_levels>
+	<Window_size>10</Window_size>
+	<Iterations_per_level>1</Iterations_per_level>
+	<Expansion_area>3</Expansion_area>
+	<Expansion_sigma>2.25</Expansion_sigma>
+</group>

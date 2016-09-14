@@ -12,10 +12,10 @@ class oneImage: public ofThread{
 public:
     
     oneImage(){
-        ofLog()<< "calling empty constructor";
+       // ofLog()<< "calling empty constructor";
     }
 
-
+/*
     ~oneImage(){
         ofLog()<<"the destructor is being called";
         stopThread();
@@ -24,8 +24,9 @@ public:
         //filePath.clear();
 
     };
+    */
 
-
+    bool closeThread();
     
     //ofxThreadedImageLoader loader;
     
@@ -45,9 +46,10 @@ public:
     bool isLoading;
     bool isLoaded;
     
+    /*
     int startDay;
     int endDay;
-
+*/
 private:
     
     bool isCrop;

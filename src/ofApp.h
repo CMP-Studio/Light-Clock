@@ -6,6 +6,7 @@
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
 #include "rotationSensing.h"
+#include "ofxCsv.h"
 //#include "oneImage.h"
 
 
@@ -39,10 +40,11 @@ class ofApp : public ofBaseApp{
     
     float wrapCurrentMoment(float Xpos);
 
+    ofShader gaussianBlurX;
+    ofShader gaussianBlurY;
     ofFbo currentMoment;
+    ofFbo currentMomentMaskFirstPass;
     ofFbo currentMomentMask;
-    
-
     
     DayFade day;
 
@@ -58,7 +60,6 @@ class ofApp : public ofBaseApp{
 
     ofShader brcosa;
     ofFbo filteredText;
-
 
     
     ofxPanel gui;
@@ -86,6 +87,9 @@ class ofApp : public ofBaseApp{
     ofxFloatSlider brightness;
     ofxFloatSlider contrast;
     ofxFloatSlider saturation;
+
+    ofxFloatSlider cwTerminalVelocity;
+    ofxFloatSlider ccwTerminalVelocity;
 
     // adjust the current moment
     ofxLabel currentMomentParams;
@@ -115,7 +119,11 @@ class ofApp : public ofBaseApp{
     
     bool isLatent; 
     int timeSinceInteract;
-    
+    int anchorImgPos;
+    int anchorMskPos;
+    float noiseSeedImg;
+    float noiseSeedMsk;
+
     bool isMuteMode;
     
     
@@ -136,7 +144,12 @@ class ofApp : public ofBaseApp{
     
     int timeToWaitRight;
     int timeToWaitLeft;
-    
+
+    ofxCsv analytics;
+    int currentHour;
+    int amountOfActivity;
+    int startTimeOfInteraction;
+
     
     
 };

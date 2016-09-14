@@ -9,7 +9,7 @@
 #include "oneImage.h"
 
 void oneImage::destroyEverything(){
-    ofLog()<<"the prestend destruction";
+    //ofLog()<<"the prestend destruction";
     stopThread();
     img.clear();
     image.clear();
@@ -22,6 +22,12 @@ void oneImage::destroyEverything(){
 
 
 void oneImage::setup(string fPath, int cropBottom, int cropTop, bool toCrop){
+    //clean up from what was in here before
+    stopThread();
+    img.clear();
+    image.clear();
+    image.update();
+
     crpTp = cropTop;
     crpBttm = cropBottom; 
     filePath = fPath;
@@ -36,7 +42,7 @@ void oneImage::reImageLoad(){
     ofLoadImage(img, filePath);
     // is it less than ten seconds. Do not recurse longer than that.
     
-    bool isTimeOut = (ofGetElapsedTimeMillis() - startTime) > 10000;
+    bool isTimeOut = (ofGetElapsedTimeMillis() - startTime) > 3000;
     if (!img.isAllocated() & !isTimeOut ){
         sleep(100);
         img.clear(); 
@@ -80,4 +86,9 @@ void oneImage::draw(int x, int y){
             image.draw( x, y);
         }
  
+}
+
+bool oneImage::closeThread(){
+   return isLoaded;
+
 }

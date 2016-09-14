@@ -17,12 +17,24 @@ class fileManager{
         void update();
         void draw(int index, int x, int y);
         bool check(int xPos, int thresh, int interval);
+        void close();
         int crpT;
         int crpB;
-        deque<shared_ptr<oneImage>> testQ;
+        //deque<shared_ptr<oneImage>> testQ;
         // the current moment
+        vector<unique_ptr<oneImage>> poolOfThreads;
+        deque<int> indexOfThreads;
+
+
+
+
         oneImage curMoment;
         int lengthOfDeck;
+
+        int numMomentsToGoThrough;
+        int amountOfskiping;
+        int endIndexForMoments;
+
 
     private:
     

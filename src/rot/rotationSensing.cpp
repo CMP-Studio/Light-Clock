@@ -26,15 +26,24 @@ void rotationSensing::setup() {
   // setup gui
   gui.setup();
   gui.setPosition(50, 400);
-  
+
+  // setup camera settings and related gui
+  overheadCameraSettingsGui.setup("panel","settings.xml",0,0);
+  overheadCameraSettings.setup("/dev/video0");
+  overheadCameraSettingsGui.add(overheadCameraSettings.parameters);
+  overheadCameraSettingsGui.setPosition(300, 400);
+
   // interaction constants
   gui.add(samplingDensity.setup("Sampling density", 2, 1, 10));
   gui.add(flowThreshold.setup("Flow threshold", 15, 0, 30));
-  gui.add(cwFlowConstant.setup("CW velocity", 0.8, 0.0, 2.0));
-  gui.add(cwAcceleration.setup("CW de-acceleration", 0.3, 0.0, 2.0));
-  gui.add(ccwFlowConstant.setup("CCW velocity", 0.8, 0.0, 2.0));
-  gui.add(ccwAcceleration.setup("CCW de-acceleration", 0.3, 0.0, 2.0));
-  
+  gui.add(cwFlowConstant.setup("CW velocity", 0.7, 0.0, 2.0));
+  gui.add(cwAcceleration.setup("CW de-acceleration", 0.15, 0.0, 2.0));
+  gui.add(ccwFlowConstant.setup("CCW velocity", 0.5, 0.0, 2.0));
+  gui.add(ccwAcceleration.setup("CCW de-acceleration", 0.18, 0.0, 2.0));
+
+  gui.add(interactionX.setup("x", 400, 0, 600));
+  gui.add(interactionY.setup("y", 250, 0, 600));
+
   // optical flow constants
   gui.add(pyramidScale.setup("Pyramid scale", 0.35, 0.0, .99));
   pyramidScale.addListener(this, &rotationSensing::setPyramidScale);
@@ -69,15 +78,14 @@ void rotationSensing::setup() {
     false,
     false
   );
-  
-  // setup interaction area
-  interactionX = videoFeed.getWidth()/2;
-  interactionY = videoFeed.getHeight()/2;
+
+ // interactionX = 400;
+//  interactionY = 250;
+
 }
 
 //--------------------------------------------------------------
 void rotationSensing::update() {
-  
   videoFeed.update();
   if(videoFeed.isFrameNew()) {
     
@@ -86,6 +94,7 @@ void rotationSensing::update() {
               interactionY-interactionRadius,
               2*interactionRadius,
               2*interactionRadius);
+    feed.rotate90(1);
     
     // grab frame
     videoFrameColor.setFromPixels(feed);
@@ -107,6 +116,8 @@ void rotationSensing::update() {
     
     // calculate velocities based on optical flow
     double count = 0.0;
+    double cwFlowCount= 0.0;
+    double ccwFlowCount = 0.0;
     double cwFlowSum = 0.0;
     double ccwFlowSum = 0.0;
     
@@ -135,8 +146,10 @@ void rotationSensing::update() {
             
             if(projectedFlow > 0){
               ccwFlowSum += abs(projectedFlow);
-            } else {
+              ccwFlowCount += 1.0;
+            } else if (projectedFlow < 0){
               cwFlowSum += abs(projectedFlow);
+              cwFlowCount += 1.0;
             }
             count += 1.0;
           }
@@ -146,8 +159,12 @@ void rotationSensing::update() {
     
     // now average flow in both directions and translate to velocity
     if (count > 0.0){
-      cwVelocity = max(cwVelocity, cwFlowConstant * cwFlowSum / count);
-      ccwVelocity = max(ccwVelocity, ccwFlowConstant * ccwFlowSum / count);
+      if ((cwFlowCount / count) > 0.33) {
+        cwVelocity = max(cwVelocity, cwFlowConstant * cwFlowSum / count);
+      }
+      if ((ccwFlowCount / count) > 0.33) {
+        ccwVelocity = max(ccwVelocity, ccwFlowConstant * ccwFlowSum / count);
+      }
     }
   }
   // Update velocity
@@ -166,7 +183,7 @@ void rotationSensing::draw() {
   ofSetColor(255);
   
   // draw video feed
-  videoFeed.draw(0, 0, videoFeed.getWidth(), videoFeed.getHeight());
+  videoFrameGrayscale.draw(interactionX-interactionRadius, interactionY-interactionRadius, videoFrameGrayscale.getWidth(), videoFrameGrayscale.getHeight());
   
   // draw crosshairs and bounding box
   ofSetColor(255);
@@ -206,8 +223,10 @@ void rotationSensing::draw() {
   ofSetColor(255);
   ofPopMatrix();
   
-  // Gui
+  // Guis
   gui.draw();
+  overheadCameraSettingsGui.draw();
+
 }
 
 void rotationSensing::saveSettings(){
@@ -239,13 +258,6 @@ void rotationSensing::grabNewBackground() {
 }
 
 //--------------------------------------------------------------
-//*  INTERACTION CENTER SETTER *//
-void rotationSensing::setInteractionCenter(int x, int y){
-  saveSettings();
-  interactionX = x;
-  interactionY = y;
-}
-
 //*  OPTICAL FLOW SETTERS *//
 void rotationSensing::setPyramidScale(float &scale){
   opticalFlow.setPyramidScale((double)scale);

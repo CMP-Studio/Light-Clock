@@ -1,17 +1,58 @@
 #include "ofApp.h"
+/*
+#include "ofxCsv.h"
 
+//.h
+
+ofxCsv analytics;
+int currentHour;
+int amountOfActivityMillis;
+int startTimeOfInteraction;
+
+// setUp
+
+// load in analytics
+analytics.loadFile(ofToDataPath("analytics.csv"));
+currentHour = ofGetHours();
+amountOfActivity =0;
+
+
+// update
+
+if isLatent is true but it is active now then set the interaction start time
+
+if((!isLatent)&((ofGetElapsedTimeMillis()- timeSinceInteract) >= 5000)){
+        isLatent = true;
+        int timePassed = ofGetElapsedTimeMillis()- startTimeOfInteraction;
+        amountOfActivity += timePassed - 5000;
+    }
+
+
+//to update the csv file
+
+int row = analytics.numRows;
+analytics.setString(row, 0, ofGetTimestampString());
+analytics.setString(row, 1, amountOfAtivity);
+analytics.saveFile(ofToDataPath("analytics.csv"));
+amountOfActivity =0; \
+*/
 //--------------------------------------------------------------
 void ofApp::setup(){
+    //ofHideCursor();
+    //analytics.loadFile(ofToDataPath("analytics.csv"));
+    currentHour = ofGetHours();
+    amountOfActivity =0;
+
 
     if(ofIsGLProgrammableRenderer()) {
         brcosa.load("shader_brcosa/shadersGL3/shader");
+        gaussianBlurX.load("shader_gaussianBlur/shadersGL3/shaderBlurX");
+        gaussianBlurY.load("shader_gaussianBlur/shadersGL3/shaderBlurY");
     }
-
 
     //ofSetLogLevel(OF_LOG_VERBOSE);
     // ofSetFrameRate(25);
     isMuteMode = false;
-
     
     //ofSetWindowShape(ofGetScreenWidth(), ofGetScreenHeight());
     //ofSetVerticalSync(true);
@@ -19,14 +60,16 @@ void ofApp::setup(){
     usingFlow=false;
     rotSense.setup();
     
-    ofLog()<< "get width: " << ofGetWindowWidth();
+    //ofLog()<< "get width: " << ofGetWindowWidth();
 
     gui.setup();
     gui.setPosition(50, 50);
     
     // load a random image to get the size that we are working with
     ofImage testSz;
-    testSz.load("/media/caroline/Storage/pano/009_2016-09-03_N/003_00-18-45.tif");
+   testSz.load("/media/caroline/Storage/pano/009_2016-09-03_N/003_00-18-45.tif");
+   // testSz.load("/home/caroline/Desktop/008_00-43-01_R.tif");
+
     int width = testSz.getWidth();
     int height = testSz.getHeight();
     
@@ -36,7 +79,7 @@ void ofApp::setup(){
     //intervalSize
     gui.add(intervalSize.setup("interval size",60,10,600));
     
-    gui.add(reCropEveryThing.setup("Re-initialize Crop"));
+    //gui.add(reCropEveryThing.setup("Re-initialize Crop"));
     
     gui.add(camZoom.setup("Cam Zoom",90,10,180));
     gui.add(camUpDown.setup("Cam Y",0,-width,width));
@@ -56,11 +99,13 @@ void ofApp::setup(){
     gui.add(brightness.setup("Brightness", 1, 0, 2));
     gui.add(contrast.setup("Contrast", 1, 0, 2));
     gui.add(saturation.setup("Saturation", 1, 0, 2));
+
+    gui.add(cwTerminalVelocity.setup("cw term. vel.", 15.0, 0.0, 50.0));
+    gui.add(ccwTerminalVelocity.setup("ccw term. vel.", 15.0, 0.0, 50.0));
+
     gui.add(volumeMoment.setup("moment vol", 1, 0, 1));
     gui.add(volumeTicking.setup("clicking vol", 1, 0, 1));
 
-
-    
 
 
     reCropEveryThing.addListener(this, &ofApp::cropTrigger);
@@ -108,6 +153,7 @@ void ofApp::setup(){
     flock2.setup(testSz.getWidth(), testSz.getHeight());
     
     currentMoment.allocate( testSz.getWidth(), testSz.getHeight() );
+    currentMomentMaskFirstPass.allocate(testSz.getWidth(), testSz.getHeight() );
     currentMomentMask.allocate(testSz.getWidth(), testSz.getHeight() );
     isWaitForMoment = false;
     
@@ -128,31 +174,38 @@ void ofApp::setup(){
     
     timeToWaitRight =0;
     timeToWaitLeft =0;
+    ////ofLog()<<"got to the end of setup!!!";
+
+    noiseSeedImg =0.0f;
+    noiseSeedMsk =0.0f;
+    ofHideCursor();
 }
 
 void ofApp::camZoomChanged(int &camZoom){
     ofLog()<< "zoom called";
     
     cam.setFov(camZoom);
+     ofHideCursor();
 }
 
 void ofApp::camZposChanged(int &camZpos){
-    ofLog()<< "camera moved back";
+    //ofLog()<< "camera moved back";
     ofVec3f startPos = cam.getPosition();
     cam.setPosition(startPos.x, startPos.y, camZpos);
 }
 
 void ofApp::camXposChanged(int &camXpos){
-    ofLog()<< "camera moved back";
+    //ofLog()<< "camera moved back";
     ofVec3f startPos = cam.getPosition();
     cam.setPosition(camXpos, startPos.y,startPos.z );
 }
 
 
 void ofApp::camPosChanged(int &camYpos){
-    ofLog()<< "camera zoomed";
+    //ofLog()<< "camera zoomed";
     ofVec3f startPos = cam.getPosition();
     cam.setPosition(startPos.x,  camYpos, startPos.z );
+
 }
 
 
@@ -160,13 +213,13 @@ void ofApp::camPosChanged(int &camYpos){
 void ofApp::cropTrigger(){
     
     int num1 = cropTop;
-    ofLog() << "cropTop: " << ofToString(num1);
+    //ofLog() << "cropTop: " << ofToString(num1);
     int num2 = cropBottom;
-    ofLog() << "cropBottom: " << ofToString(num2);
+    //ofLog() << "cropBottom: " << ofToString(num2);
     int num3 = cropLeftRight;
-    ofLog() << "cropLeftRight: " << ofToString(num3);
+    //ofLog() << "cropLeftRight: " << ofToString(num3);
     
-    ofLog()<<"ping";
+    //ofLog()<<"ping";
     //for(int i=0; i < days.size(); i++){
     day.addCroppedImages(cropTop,cropBottom,cropLeftRight,intervalSize);
     //}
@@ -177,73 +230,68 @@ void ofApp::cropTrigger(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    if(flock2.isSequenceTwo){
 
-    currentMoment.begin();
-        ofClear(0);
-        float drawImgPos = wrapCurrentMoment( imgPosContinuous);
-        ofLog()<< "Image position: " << imgPosContinuous;
-        ofLog()<< "Image position wrapped: " << drawImgPos;
-        if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
-            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop );
-            day.manager.curMoment.image.draw( drawImgPos *-1 +  currentMoment.getWidth(),cropTop);
+
+        //ofHideCursor();
+        if(currentHour != ofGetMinutes()){
+            /*
+            //to update the csv file
+            int row = analytics.getNumRows();
+            analytics.
+            analytics.setString(row, 0, ofGetTimestampString());
+            analytics.setString(row, 1, amountOfAtivity);
+            analytics.saveFile(ofToDataPath("analytics.csv"));
+            amountOfActivity =0;
+            currentHour = ofGetMinutes();
+            */
         }
-        else{
-            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop);
-        }
-    currentMoment.end();
 
-
-     currentMomentMask.begin();
-            ofClear(0);
-            float drawMskPos =  wrapCurrentMoment( mskPosContinuous);
-            if (drawMskPos + currentMomentMask.getWidth() > currentMomentMask.getWidth()){
-                flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMomentMask.getWidth() , currentMomentMask.getHeight() );
-                flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMomentMask.getWidth() ,0,currentMomentMask.getWidth() , currentMomentMask.getHeight());
-            }
-            else{
-                flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
-            }
-        currentMomentMask.end();
-
-        currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
-        currentMoment.draw(0,0);
-    }
-
-
-    if(usingFlow){
         rotSense.update();
-        day.imgPos += rotSense.getCwVelocity();
-        day.mskPos += rotSense.getCcwVelocity();
-        imgPosContinuous -= rotSense.getCwVelocity();
-        mskPosContinuous -= rotSense.getCcwVelocity();
+        float mskShift = (float) 2 * rotSense.getCwVelocity();
+        float imgShift = (float) 2 * rotSense.getCcwVelocity();
 
-        isLatent = false;
-        timeSinceInteract = ofGetElapsedTimeMillis();
-    }
+        if (mskShift > cwTerminalVelocity) {
+            mskShift = cwTerminalVelocity;
+        }
 
-    // Audio stuff - to hook up to sam's stuff
+        if (imgShift > ccwTerminalVelocity) {
+            imgShift = ccwTerminalVelocity;
+        }
 
-    timeToWaitRight = int(ofMap(1-rightSpin,0,1,2000-soundFrequency,1500));
-    if(ofGetElapsedTimeMillis()> (startTimeRight + timeToWaitRight)){
-        right.play();
-        startTimeRight = ofGetElapsedTimeMillis();
-        isLatent = false;
-        timeSinceInteract = ofGetElapsedTimeMillis();
-    }
-    
-    timeToWaitLeft = int(ofMap(1-leftSpin,0,1,2000-soundFrequency,1500));
-    if(ofGetElapsedTimeMillis()> (startTimeLeft + timeToWaitLeft)){
+        day.imgPos -= imgShift;
+        day.mskPos += mskShift;
+        //day.mskPos -= imgShift;
+        imgPosContinuous += imgShift;
+        mskPosContinuous -= mskShift;
+       //mskPosContinuous += imgShift;
+
+        timeToWaitRight = int(ofMap(imgShift,0,ccwTerminalVelocity, soundFrequency, 20));
+        if((ofGetElapsedTimeMillis()> (startTimeRight + timeToWaitRight)) && imgShift > 0){
+            if(isLatent){
+                startTimeOfInteraction = ofGetElapsedTimeMillis();
+            }
+            left.setVolume(ofMap(imgShift, 0, ccwTerminalVelocity, 0, volumeTicking));
             left.play();
-            startTimeLeft = ofGetElapsedTimeMillis();
+            startTimeRight = ofGetElapsedTimeMillis();
             isLatent = false;
             timeSinceInteract = ofGetElapsedTimeMillis();
-    }
+        }
 
-    
+        timeToWaitLeft = int(ofMap(mskShift,0,cwTerminalVelocity,soundFrequency, 20));
+        if((ofGetElapsedTimeMillis()> (startTimeLeft + timeToWaitLeft)) && mskShift > 0){
+
+                if(isLatent){
+                    startTimeOfInteraction = ofGetElapsedTimeMillis();
+                }
+                right.setVolume(ofMap(mskShift, 0, cwTerminalVelocity, 0, volumeTicking));
+                right.play();
+                startTimeLeft = ofGetElapsedTimeMillis();
+                isLatent = false;
+                timeSinceInteract = ofGetElapsedTimeMillis();
+        }
     
     if(day.currentMomentTrig){
-        ofLog()<< "trigger!! Timeese";
+        //ofLog()<< "trigger!! Timeese";
         isWaitForMoment = true;
         startCurMoment = ofGetElapsedTimeMillis();
         day.currentMomentTrig = false;
@@ -257,10 +305,15 @@ void ofApp::update(){
     }
     
     if((!isLatent)&((ofGetElapsedTimeMillis()- timeSinceInteract) >= 5000)){
+        cout << "NOT LATENT :)" << endl;
         isLatent = true;
+        anchorImgPos = day.imgPos;
+        anchorMskPos = day.mskPos;
+        int timePassed = ofGetElapsedTimeMillis()- startTimeOfInteraction;
+        amountOfActivity += timePassed - 5000;
     }
     else if (isLatent){
-        
+
         float noise1 =ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,rangeMskMove->x,rangeMskMove->y);
         noise1 = ofClamp(noise1, 0, 6);
         day.mskPos += noise1;
@@ -269,26 +322,95 @@ void ofApp::update(){
         float noise2 = ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
         day.imgPos -= noise2;
         imgPosContinuous += noise2;
-    
-    
+
+
+        /*
+        day.mskPos = ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,anchorMskPos + rangeMskMove->x,   anchorMskPos+ rangeMskMove->y);
+        mskPosContinuous = ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),1,0,anchorMskPos + rangeMskMove->x,   anchorMskPos + rangeMskMove->y);
+
+        day.imgPos = ofMap(ofNoise(1,ofGetElapsedTimef()/imgMoveSpeed),0,1,anchorImgPos + rangeImgMove->x,    anchorImgPos + rangeImgMove->y);
+        imgPosContinuous = ofMap(ofNoise(1,ofGetElapsedTimef()/imgMoveSpeed),1,0,anchorImgPos+ rangeImgMove->x,   anchorImgPos+ rangeImgMove->y);
+        */
+
+        /*
+        noiseSeedImg += 0.0001;
+        day.mskPos = ofMap(ofNoise(1,noiseSeedMsk),0,1,anchorMskPos + rangeMskMove->x,   anchorMskPos+ rangeMskMove->y);
+        mskPosContinuous = ofMap(ofNoise(1,noiseSeedMsk),1,0,anchorMskPos + rangeMskMove->x,   anchorMskPos + rangeMskMove->y);
+
+        noiseSeedMsk += 0.0001;
+        day.imgPos = ofMap(ofNoise(1,noiseSeedImg),0,1,anchorImgPos + rangeImgMove->x,    anchorImgPos + rangeImgMove->y);
+        imgPosContinuous = ofMap(ofNoise(1,noiseSeedImg),1,0,anchorImgPos+ rangeImgMove->x,   anchorImgPos+ rangeImgMove->y);
+        */
+
+
+/*
+        day.mskPos = ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,day.mskPos + rangeMskMove->x,    day.mskPos + rangeMskMove->y);
+        mskPosContinuous = ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,mskPosContinuous - rangeMskMove->x,    mskPosContinuous - rangeMskMove->y);
+
+        day.imgPos = ofMap(ofNoise(1,ofGetElapsedTimef()/imgMoveSpeed),0,1,day.imgPos + rangeImgMove->x,    day.imgPos + rangeImgMove->y);
+        imgPosContinuous = ofMap(ofNoise(1,ofGetElapsedTimef()/imgMoveSpeed),0,1,imgPosContinuous- rangeImgMove->x,   imgPosContinuous - rangeImgMove->y);
+        */
+
     }
     
     day.update();
     flock2.update();
  
     getText.begin();
-
+    ofPushMatrix();
+    ofScale(-1,1,1);
+    ofTranslate(getText.getWidth() * -1 , 0);
     ofEnableAlphaBlending();
     ofClear(0);
     ofBackground(0,0,255);
     
-    ofPushMatrix();
-    
-    ofScale(-1,1,1);
-    ofTranslate(getText.getWidth() * -1 , 0);
+
     
     day.draw(0,cropTop,cropLeftRight);
     
+    if(flock2.isSequenceTwo){
+
+    currentMoment.begin();
+        ofClear(0);
+        float drawImgPos = wrapCurrentMoment( imgPosContinuous);
+        //ofLog()<< "Image position: " << imgPosContinuous;
+        //ofLog()<< "Image position wrapped: " << drawImgPos;
+        if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
+            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop );
+            day.manager.curMoment.image.draw( drawImgPos *-1 +  currentMoment.getWidth(),cropTop);
+        }
+        else{
+            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop);
+        }
+    currentMoment.end();
+
+
+      currentMomentMaskFirstPass.begin();
+      gaussianBlurY.begin();
+      gaussianBlurY.setUniform1f("blurAmnt", 1.5); //blur amount between 0 and 10
+            ofClear(0);
+            float drawMskPos =  wrapCurrentMoment( mskPosContinuous);
+            if (drawMskPos + currentMomentMaskFirstPass.getWidth() > currentMomentMaskFirstPass.getWidth()){
+                flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMomentMaskFirstPass.getWidth() , currentMomentMaskFirstPass.getHeight() );
+                flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMomentMaskFirstPass.getWidth() ,0,currentMomentMaskFirstPass.getWidth() , currentMomentMaskFirstPass.getHeight());
+            }
+            else{
+                flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
+            }
+        gaussianBlurY.end();
+        currentMomentMaskFirstPass.end();
+
+        currentMomentMask.begin();
+        gaussianBlurX.begin();
+        gaussianBlurX.setUniform1f("blurAmnt", 1.5); //blur amount between 0 and 10
+        ofClear(0);
+        currentMomentMaskFirstPass.draw(0, 0);
+        gaussianBlurX.end();
+        currentMomentMask.end();
+
+        currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
+        currentMoment.draw(0,0);
+    }
 
 
     /*
@@ -297,7 +419,7 @@ void ofApp::update(){
     }
     */
     
-    ofPopMatrix();
+
     
     // draw circles at the crop positions
     if (showGui){
@@ -314,17 +436,25 @@ void ofApp::update(){
     else{
         ofHideCursor();
     }
-    
+    ofPopMatrix();
     getText.end();
 
     filteredText = getText;
+
+
     filteredText.begin();
+   // ofClear(0);
     brcosa.begin();
     brcosa.setUniform1f("brightness", brightness);
     brcosa.setUniform1f("contrast", contrast);
     brcosa.setUniform1f("saturation", saturation);
+    //ofPushMatrix();
+    //ofScale(-1,1,1);
+    //ofTranslate(getText.getWidth() * -1 , 0);
     getText.draw(0, 0);
+    //ofPopMatrix();
     brcosa.end();
+
     filteredText.end();
     
     //cam.setPosition(0,0,0 );
@@ -352,8 +482,12 @@ void ofApp::draw(){
 
     
     if(showGui){
+        cam.disableMouseInput();
         gui.draw();
         ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()),40, ofGetHeight()-40,0);
+    }
+    else{
+        cam.enableMouseInput();
     }
     if(usingFlow){
         rotSense.draw();
@@ -362,7 +496,7 @@ void ofApp::draw(){
         // draw video for the mute mode
 
         comingSoonVideo.update();
-        if(comingSoonVideo.isFrameNew()){
+        //if(comingSoonVideo.isFrameNew()){
             //ofBackground(31,29,29);
             int wid = ofGetWindowWidth();
             int proportionalHeight = (wid/comingSoonVideo.getWidth()) * comingSoonVideo.getHeight();
@@ -370,7 +504,7 @@ void ofApp::draw(){
             int yPos = (ofGetWindowHeight() - proportionalHeight)/2;
             //int yPos = 0;
             comingSoonVideo.draw(xPos, yPos, wid, proportionalHeight);
-        }
+        //}
     }
 
 }
@@ -400,6 +534,7 @@ void ofApp::keyPressed(int key){
 
 
     if (key == 'o'){
+        rotSense.saveSettings();
         usingFlow = !usingFlow;
     }
 
@@ -450,6 +585,10 @@ void ofApp::keyPressed(int key){
             moment.setVolume(volumeMoment);
         }
     }
+    else if(key =='s'){
+        ofxSaveCamera(cam, "ofEasyCamSettings.xml");
+        gui.saveToFile("guiSettings.xml");
+    }
 
 
 }
@@ -463,13 +602,16 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::exit(){
+
+    day.manager.close();
+
     ofxSaveCamera(cam, "ofEasyCamSettings.xml");
     gui.saveToFile("guiSettings.xml");
+
     
     
 
 }
-
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){

@@ -11,6 +11,10 @@
 
 void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     
+    lengthOfDeck = numOfImgToLoad;
+    numMomentsToGoThrough = 5;
+    amountOfskiping = 1;
+
     crpT = crpTop;
     crpB = crpBot;
     
@@ -23,15 +27,28 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     testSz.load(nextFileToLoad);
     imgWidth = testSz.getWidth()/15;
     imgHeight = testSz.getHeight()/15;
-    testQ.clear(); 
-    lengthOfDeck = numOfImgToLoad;
+    //testQ.clear();
+    //poolOfThreads.clear();
+    for(int i =0; i < numOfImgToLoad; i++){
+        //testQ.push_back(move(shared_ptr<oneImage>(new oneImage)));
+        poolOfThreads.push_back(move(unique_ptr<oneImage>(new oneImage)));
+        string temp = nextFileToLoad;
+        poolOfThreads.back()->setup(temp, crpT, crpB);
+        ////ofLog()<<"next file to load: " << nextFileToLoad;
+        nextMoment();
+        indexOfThreads.push_back(i);
+    }
+/*
     for(int i =0; i < numOfImgToLoad; i++){
         testQ.push_back(move(shared_ptr<oneImage>(new oneImage)));
         string temp = nextFileToLoad;
         testQ.back()->setup(temp, crpT, crpB);
+        //ofLog()<<"next file to load: " << nextFileToLoad;
         nextMoment();
     }
+    */
     posX = 0;
+
 }
 
 void fileManager::update(){
@@ -48,26 +65,41 @@ bool fileManager::check(int xPos, int thresh, int interval){
         return false;
     }
     else {
+        int indexOnTheMove = indexOfThreads.back();
+        if(poolOfThreads.at(indexOnTheMove)->isLoaded){
+        indexOfThreads.pop_back();
+        indexOfThreads.push_front(indexOnTheMove);
+
+        poolOfThreads.at(indexOnTheMove)->setup(nextFileToLoad, crpT, crpB);
+        //ofLog()<<"setup complete";
+        nextMoment();
+        return true;
+        }
+        else{
+            return false;
+        }
+        /*
         // take out the one that just disapeared from the right
-        ofLog()<< "about to pop one out:";
-        ofLog()<<"test q"<< testQ.size();
+        //ofLog()<< "about to pop one out:";
+        //ofLog()<<"test q"<< testQ.size();
         //if(testQ.front()->isLoaded){
         //testQ.back()->destroyEverything();
         testQ.at(lengthOfDeck-1)->destroyEverything();
 
         //testQ.erase(testQ.end()-1);
-        ofLog()<< "just removed one";
-        ofLog()<<"after removing: "<< testQ.size();
+        //ofLog()<< "just removed one";
+        //ofLog()<<"after removing: "<< testQ.size();
         // insert the one to the left
 
         testQ.push_front(move(shared_ptr<oneImage>(new oneImage)));
-        ofLog()<< "just added one";
+        //ofLog()<< "just added one";
         testQ.front()->setup(nextFileToLoad, crpT, crpB);
-        ofLog()<<"setup complete";
+        //ofLog()<<"setup complete";
         nextMoment();
-        ofLog() << "adding one to the front: " << testQ.size();
+        //ofLog() << "adding one to the front: " << testQ.size();
         return true;
         //}
+        */
     }
     
     /*
@@ -87,7 +119,7 @@ bool fileManager::check(int xPos, int thresh, int interval){
      testQ.push_front(move(unique_ptr<oneImage>(new oneImage)));
      testQ.front()->setup(nextFileToLoad, crpT, crpB);
      nextMoment();
-     ofLog() << "adding one to the front: " << testQ.size();
+     //ofLog() << "adding one to the front: " << testQ.size();
      return true;
      
      }
@@ -112,8 +144,12 @@ bool fileManager::check(int xPos, int thresh, int interval){
 
 void fileManager::draw(int index, int x, int y){
     //test.draw(0,0,1000,1000);
-    testQ.at(index)->update();
-    testQ.at(index)->draw(x,y);
+    int indexOfImage = indexOfThreads.at(index);
+    poolOfThreads.at(indexOfImage)->update();
+    poolOfThreads.at(indexOfImage)->draw(x,y);
+
+   // testQ.at(index)->update();
+    //testQ.at(index)->draw(x,y);
 }
 
 
@@ -135,24 +171,49 @@ void fileManager::setUpDays(){
     indexDay =selectDay();
     moment.listDir(day.getPath(indexDay));
     moment.sort();
-    indexMoment = 0;
+
+
+    indexMoment = int(ofRandom(0,moment.size() - (numMomentsToGoThrough*amountOfskiping +1)));
+    indexMoment = ofClamp(indexMoment,0,moment.size());
+
     nextFileToLoad = moment.getPath(indexMoment);
-    ofLog()<< "how big" << moment.size();
+    //ofLog()<< "how big" << moment.size();
 }
 
 int fileManager::selectDay(){
+
+    // defines the next day to load.
+    // and defines the starting position within the moment
+
+    //int indexOfDay;
+
+    //have it be limited so it won't load in a empty day
     dayCount ++;
-    if(dayCount%3==0){
+    // how many files are in this folder
+
+    if(dayCount% 12==0){
         lastWeather = currentDayWeather;
         return day.size()-1;
     }
     else{
         if (mapOfDays.size() <= 0){
             // fill back up with days
-            ofLog() << "went through all of them";
+            //ofLog() << "went through all of them";
             makeUnusedDaysMap();
         }
         map<int, string>::iterator it = mapOfDays.begin();
+
+        // if you just repopulated the list then pick a random one to start off
+        if(mapOfDays.size() == numOfDays){
+            int randomDay = int(ofRandom(mapOfDays.size()-1));
+            it = mapOfDays.begin();
+            advance(it, randomDay);
+            int toReturnOne = it->first;
+            lastWeather = it->second;
+            mapOfDays.erase(it);
+            return toReturnOne;
+        }
+
         while(it != mapOfDays.end()){
             if (lastWeather != it->second){
                 lastWeather= it->second;
@@ -191,30 +252,52 @@ void fileManager::makeUnusedDaysMap(){
 
 void fileManager::nextMoment(){
     // there are more moments in this day
-    if(indexMoment <= (moment.size()-2)){
-        indexMoment ++;
-        ofLog()<< indexMoment;
+    // if it is under the amount we want to traverse or it is at the end
+    if((indexMoment <= (moment.size()-(amountOfskiping+1))) & (indexMoment <= endIndexForMoments)){
+        indexMoment += amountOfskiping;
+        //ofLog()<< "index of moment:" << indexMoment;
         
     }
     // no more moments in this day
     // go to the next day
     else {
-        indexMoment =0;
+        //ofLog()<< "I am loading in a new day";
+        //indexMoment =0;
         indexDay = selectDay();
         moment.listDir(day.getPath( indexDay ));
+
+        // here is where I define where the starting point of this is
+        //if my day is greater than 230 and is not the current day
+        // then apply night avoidance rules
+        //& (indexDay != day.size()-1)
+        if((moment.size()>= 200)){
+            // night avoidance rules
+            int endBuffer = (numMomentsToGoThrough*amountOfskiping +1);
+            int rainBuffer = endBuffer + 60;
+            indexMoment = int(ofRandom(80,moment.size() - rainBuffer ));
+           // indexMoment = int(ofClamp(indexMoment,0,moment.size()));
+            //ofLog() << "I AM THRESHOLDING FOR THE RAIN";
+        }
+        else {
+            indexMoment = int(ofRandom(0,moment.size() - (numMomentsToGoThrough*amountOfskiping +1)));
+            indexMoment = ofClamp(indexMoment,0,moment.size());
+
+        }
+        endIndexForMoments = indexMoment +numMomentsToGoThrough*amountOfskiping;
         moment.sort();
     }
     // check if the file has a flag on it
     string nextPotentialFile = moment.getPath(indexMoment);
     vector <string> temp = ofSplitString( nextPotentialFile, "_");
     string endId = temp.at(temp.size()-1);
+    //ofLog()<< "endID: " << endId;
     endId = endId[0];
-    ofLog() << endId;
+    //ofLog() << endId;
     if (endId != "E"){
         nextFileToLoad = nextPotentialFile;
     }
     else {
-        ofLog()<< "do not load this file";
+        //ofLog()<< "do not load this file";
     }
 }
 
@@ -222,7 +305,7 @@ void fileManager::checkNewDay(){
     dirToCheck.listDir(startPath);
     // not necessary to sort because it is only to get a count
     if(numOfDays < dirToCheck.size()){
-        ofLog() << "new day";
+        //ofLog() << "new day";
         setUpDays();
     }
 }
@@ -241,8 +324,23 @@ void fileManager::checkNewMoment(){
     }
 }
 
+
+void fileManager::close(){
+    for(int i =0; i < lengthOfDeck; i++){
+        // close them here..
+        int indexOf = indexOfThreads.at(i);
+        bool ready = poolOfThreads.at(indexOf)->isLoaded;
+        if (!ready){
+            sleep(1000);
+            close();
+        }
+    }
+}
+
 void fileManager::insertMomentCheck(string momentPath){
     
+
+    /*
     // a new moment was just added
     // if the current day is the one being processed then re-initialize the list so it will include that new image
     if(indexDay == day.size()-1){
@@ -253,7 +351,7 @@ void fileManager::insertMomentCheck(string momentPath){
     // loop through all the days currently in the deque
     
     // what is folder ID of the current day?
-    ofLog()<< momentPath;
+    //ofLog()<< momentPath;
     // 005_2016-08-19_R/013_00-20-01.png
     string dayIdCur = ofSplitString(momentPath,"_").at(0);
     vector<string> temp = ofSplitString(momentPath, "/");
@@ -277,10 +375,10 @@ void fileManager::insertMomentCheck(string momentPath){
                 
                 break;
             }
-            ofLog()<< momentId;
+            //ofLog()<< momentId;
         }
     }
-    /*
+
      deque<unique_ptr<oneImage>>::iterator it = testQ.begin();
      while(it != testQ.end()){
      // are any of them from the current day
