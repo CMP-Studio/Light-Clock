@@ -16,6 +16,8 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     
     startPath = "sampleImages/sample";
     
+    momentsToTraverse = 10;
+    
     setUpDays();
     //test.setup("005_2016-08-19_R/016_00-20-01.png");
     
@@ -31,6 +33,8 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
         nextMoment();
     }
     posX = 0;
+    
+    
 }
 
 void fileManager::update(){
@@ -48,7 +52,8 @@ bool fileManager::check(int xPos, int thresh, int interval){
     }
     else {
         // take out the one that just disapeared from the right
-        testQ.pop_back();
+        ///testQ.pop_back();
+        testQ.erase(testQ.end()-1);
         // insert the one to the left
 
         testQ.push_front(move(unique_ptr<oneImage>(new oneImage)));
@@ -123,7 +128,8 @@ void fileManager::setUpDays(){
     indexDay =selectDay();
     moment.listDir(day.getPath(indexDay));
     moment.sort();
-    indexMoment = 0;
+    indexMoment = int (ofRandom(0, moment.size() - (momentsToTraverse +1)));
+    indexMoment = ofClamp(indexMoment, 0, moment.size());
     nextFileToLoad = moment.getPath(indexMoment);
     ofLog()<< "how big" << moment.size();
 }
@@ -140,7 +146,23 @@ int fileManager::selectDay(){
             ofLog() << "went through all of them";
             makeUnusedDaysMap();
         }
+        //// is it full? - aka at the beginning or just filled up
+        // choose a random one
         map<int, string>::iterator it = mapOfDays.begin();
+        
+        if (mapOfDays.size() == numOfDays){
+            int randomDay = int(ofRandom(mapOfDays.size()-1));
+            it = mapOfDays.begin();
+            advance(it, randomDay);
+            int toReturnTwo = it->first;
+            lastWeather = it->second;
+            mapOfDays.erase(it);
+            return toReturnTwo;
+        }
+        
+        
+     
+        
         while(it != mapOfDays.end()){
             if (lastWeather != it->second){
                 lastWeather= it->second;

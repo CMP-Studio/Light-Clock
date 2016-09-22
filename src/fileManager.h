@@ -22,6 +22,7 @@ class fileManager{
         deque<unique_ptr<oneImage>> testQ;
         // the current moment
         oneImage curMoment;
+        int momentsToTraverse;
     
     private:
     
