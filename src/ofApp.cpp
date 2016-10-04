@@ -38,7 +38,11 @@ amountOfActivity =0; \
 */
 //--------------------------------------------------------------
 void ofApp::setup(){
-    //ofHideCursor();
+    
+    
+    
+    
+    ofHideCursor();
     analytics.load(ofToDataPath("analytics.csv"));
     //analytics.loadFile(ofToDataPath("analytics.csv"));
     currentHour = ofGetHours();
@@ -59,7 +63,7 @@ void ofApp::setup(){
     //ofSetVerticalSync(true);
     
     usingFlow=false;
-    rotSense.setup();
+    //rotSense.setup();
     
     //ofLog()<< "get width: " << ofGetWindowWidth();
 
@@ -68,9 +72,9 @@ void ofApp::setup(){
     
     // load a random image to get the size that we are working with
     ofImage testSz;
-   testSz.load("/media/caroline/Storage/pano/009_2016-09-03_N/003_00-18-45.tif");
-   // testSz.load("/home/caroline/Desktop/008_00-43-01_R.tif");
-
+    testSz.load("/media/caroline/Storage/pano/009_2016-09-03_N/003_00-18-45.tif");
+    //testSz.load("/Users/carolinerecord/Documents/of_v0.9.2_osx_release/apps/myApps/blendedImagery/bin/data/sampleImages/sample/005_2016-08-19_N/285_23-48-21.tif");
+    
     int width = testSz.getWidth();
     int height = testSz.getHeight();
     
@@ -257,10 +261,11 @@ void ofApp::update(){
             amountOfActivity =0;
             currentHour = ofGetMinutes();
         }
+
         rotSense.update();
         float mskShift = (float) 2 * rotSense.getCwVelocity();
         float imgShift = (float) 2 * rotSense.getCcwVelocity();
-
+       
         if (mskShift > cwTerminalVelocity) {
             mskShift = cwTerminalVelocity;
         }
@@ -300,6 +305,7 @@ void ofApp::update(){
                 isLatent = false;
                 timeSinceInteract = ofGetElapsedTimeMillis();
         }
+         
     
     if(day.currentMomentTrig){
         //ofLog()<< "trigger!! Timeese";
@@ -502,7 +508,7 @@ void ofApp::draw(){
         cam.enableMouseInput();
     }
     if(usingFlow){
-        rotSense.draw();
+        //rotSense.draw();
     }
     } else{
         // draw video for the mute mode
@@ -546,7 +552,7 @@ void ofApp::keyPressed(int key){
 
 
     if (key == 'o'){
-        rotSense.saveSettings();
+        //rotSense.saveSettings();
         usingFlow = !usingFlow;
     }
 

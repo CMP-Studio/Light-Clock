@@ -29,6 +29,10 @@ class fileManager{
 
 
         oneImage curMoment;
+
+        int momentsToTraverse;
+    
+
         int lengthOfDeck;
 
         int numMomentsToGoThrough;
@@ -71,7 +75,10 @@ class fileManager{
     int imgHeight;
     
     
-    int posX; 
+    int posX;
+    
+    // create a current day flag!
+    bool isCurrentDay;
 
 
     

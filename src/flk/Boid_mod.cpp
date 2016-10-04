@@ -35,7 +35,7 @@ Boid_mod::Boid_mod(int wid, int height) {
     fboWidth = wid;
     fboHeight = height;
     
-    loc.set( ofRandom(1, fboWidth), fboHeight/2  + ofRandom(-100, 100));
+    loc.set( ofRandom(1, fboWidth), fboHeight/2 + 200  + ofRandom(-100, 100));
     loc2 = loc;
     setup();
 }
@@ -161,9 +161,9 @@ ofVec2f Boid_mod::steer(ofVec2f target, bool slowdown) {
 
 void Boid_mod::draw() {
     // Draw a triangle rotated in the direction of velocity
-	float angle = (float)atan2(-vel.y, vel.x);
-    float theta =  -1.0*angle;
-	float heading2D = ofRadToDeg(theta)+90;
+	//float angle = (float)atan2(-vel.y, vel.x);
+    //float theta =  -1.0*angle;
+	//float heading2D = ofRadToDeg(theta)+90;
     ofSetColor(255,0,0);
 	
     
@@ -174,8 +174,8 @@ void Boid_mod::draw() {
         ofPushMatrix();
         
         ofTranslate(loc.x, loc.y);
-        ofRotateZ(heading2D);
-        ofRotateZ(180);
+       // ofRotateZ(heading2D);
+        //ofRotateZ(180);
         customBoid.draw();
         
         ofPopMatrix();
@@ -186,8 +186,8 @@ void Boid_mod::draw() {
         ofPushMatrix();
         
         ofTranslate(loc2.x, loc2.y);
-        ofRotateZ(heading2D);
-        ofRotateZ(180);
+        //ofRotateZ(heading2D);
+        //ofRotateZ(180);
         customBoid.draw();
         
         ofPopMatrix();
@@ -199,8 +199,8 @@ void Boid_mod::draw() {
         ofPushMatrix();
         
         ofTranslate(loc.x, loc.y);
-        ofRotateZ(heading2D);
-        ofRotateZ(180);
+        //ofRotateZ(heading2D);
+        //ofRotateZ(180);
         customBoid.draw();
         
         ofPopMatrix();

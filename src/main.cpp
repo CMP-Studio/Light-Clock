@@ -3,14 +3,17 @@
 
 //========================================================================
 int main( ){
-/*
 
+
+    
+    /*
     ofGLFWWindowSettings settings;
     settings.windowMode = OF_WINDOW;
    // settings.multiMonitorFullScreen = true;
     settings.setGLVersion(3,2);
     ofCreateWindow(settings);
-*/
+    */ 
+
 
 ofGLWindowSettings settings;
 	settings.setGLVersion(3,2);
@@ -21,7 +24,6 @@ ofGLWindowSettings settings;
     //settings.windowMode(OF_GAME_MODE);
 	ofCreateWindow(settings);
     //ofSetupOpenGL(1500, 500, OF_WINDOW);
-
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN

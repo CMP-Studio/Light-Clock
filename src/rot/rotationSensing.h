@@ -12,7 +12,7 @@
 #include "ofxOpticalFlowFarneback.h"
 #include "ofxOpenCv.h"
 #include "ofxGui.h"
-#include "ofxV4L2Settings.h"
+//#include "ofxV4L2Settings.h"
 
 class rotationSensing : public ofBaseApp {
   
@@ -37,7 +37,7 @@ public:
   
 
   ofxPanel overheadCameraSettingsGui;
-  ofxV4L2Settings overheadCameraSettings;
+  //ofxV4L2Settings overheadCameraSettings;
 
   //* GUI + SETTINGS *//
   ofxPanel gui;\

@@ -18,7 +18,10 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     crpT = crpTop;
     crpB = crpBot;
     
-    startPath = "/media/caroline/Storage/pano/";
+    //startPath = "/media/caroline/Storage/pano/";
+    startPath = "/Users/carolinerecord/Documents/of_v0.9.2_osx_release/apps/myApps/blendedImagery/bin/data/sampleImages/sample/";
+    
+    momentsToTraverse = 10;
     
     setUpDays();
     //test.setup("005_2016-08-19_R/016_00-20-01.png");
@@ -48,6 +51,7 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     }
     */
     posX = 0;
+    isCurrentDay = false;
 
 }
 
@@ -80,6 +84,9 @@ bool fileManager::check(int xPos, int thresh, int interval){
         }
         /*
         // take out the one that just disapeared from the right
+
+        ///testQ.pop_back();
+        testQ.erase(testQ.end()-1);
         //ofLog()<< "about to pop one out:";
         //ofLog()<<"test q"<< testQ.size();
         //if(testQ.front()->isLoaded){
@@ -171,17 +178,19 @@ void fileManager::setUpDays(){
     indexDay =selectDay();
     moment.listDir(day.getPath(indexDay));
     moment.sort();
+    indexMoment = int (ofRandom(0, moment.size() - (momentsToTraverse +1)));
+    indexMoment = ofClamp(indexMoment, 0, moment.size());
 
 
-    indexMoment = int(ofRandom(0,moment.size() - (numMomentsToGoThrough*amountOfskiping +1)));
-    indexMoment = ofClamp(indexMoment,0,moment.size());
+
+    //indexMoment = int(ofRandom(0,moment.size() - (numMomentsToGoThrough*amountOfskiping +1)));
 
     nextFileToLoad = moment.getPath(indexMoment);
     //ofLog()<< "how big" << moment.size();
 }
 
 int fileManager::selectDay(){
-
+   
     // defines the next day to load.
     // and defines the starting position within the moment
 
@@ -190,30 +199,41 @@ int fileManager::selectDay(){
     //have it be limited so it won't load in a empty day
     dayCount ++;
     // how many files are in this folder
+    
+    // cannot select the most recent day until it has a certain number of moments in it!
+    bool isBigEnough = true;
+    dirToCheck.listDir(day.getPath(day.size()-1));
+    if (dirToCheck.size() < (numMomentsToGoThrough*amountOfskiping +3)){
+        isBigEnough = false;
+    }
 
-    if(dayCount% 12==0){
+    if((dayCount % 10==0)& (isBigEnough)){
+        isCurrentDay = true;
         lastWeather = currentDayWeather;
         return day.size()-1;
     }
     else{
+        isCurrentDay = false;
         if (mapOfDays.size() <= 0){
             // fill back up with days
             //ofLog() << "went through all of them";
             makeUnusedDaysMap();
         }
+        // is it full? - aka at the beginning or just filled up
+        // choose a random one
         map<int, string>::iterator it = mapOfDays.begin();
-
-        // if you just repopulated the list then pick a random one to start off
-        if(mapOfDays.size() == numOfDays){
-            int randomDay = int(ofRandom(mapOfDays.size()-1));
+        if (mapOfDays.size() == numOfDays){
+            // do the - 1.1 because you want to never do the most recent day
+            // as that day is manageed above
+            int randomDay = int(ofRandom(mapOfDays.size()-1.1));
             it = mapOfDays.begin();
             advance(it, randomDay);
-            int toReturnOne = it->first;
+            int toReturnTwo = it->first;
             lastWeather = it->second;
             mapOfDays.erase(it);
-            return toReturnOne;
+            return toReturnTwo;
         }
-
+        
         while(it != mapOfDays.end()){
             if (lastWeather != it->second){
                 lastWeather= it->second;
@@ -225,7 +245,7 @@ int fileManager::selectDay(){
         }
         // there was not one available with different weather
         // so just go with a random one
-        int randomDay = int(ofRandom(mapOfDays.size()-1));
+        int randomDay = int(ofRandom(mapOfDays.size()-1.1));
         it = mapOfDays.begin();
         advance(it, randomDay);
         int toReturnTwo = it->first;
@@ -265,11 +285,16 @@ void fileManager::nextMoment(){
         //indexMoment =0;
         indexDay = selectDay();
         moment.listDir(day.getPath( indexDay ));
-
         // here is where I define where the starting point of this is
         //if my day is greater than 230 and is not the current day
         // then apply night avoidance rules
-        //& (indexDay != day.size()-1)
+        // if it is the current day then do the most recent images - so you are more likely
+        // to see your self
+        if(isCurrentDay){
+            ofLog() << "currently displaying current day";
+            // set the start day to be as close to the current day as possible.
+            indexMoment = moment.size() - (numMomentsToGoThrough*amountOfskiping +1);
+        }
         if((moment.size()>= 200)){
             // night avoidance rules
             int endBuffer = (numMomentsToGoThrough*amountOfskiping +1);

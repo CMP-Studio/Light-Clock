@@ -11,22 +11,9 @@
 class oneImage: public ofThread{
 public:
     
-    oneImage(){
-       // ofLog()<< "calling empty constructor";
-    }
+    //oneImage();
+    //virtual ~oneImage(){ };
 
-/*
-    ~oneImage(){
-        ofLog()<<"the destructor is being called";
-        stopThread();
-        img.clear();
-        image.clear();
-        //filePath.clear();
-
-    };
-    */
-
-    bool closeThread();
     
     //ofxThreadedImageLoader loader;
     
@@ -37,8 +24,6 @@ public:
     void update();
     // recursive image load for images that are forming themselves.
     void reImageLoad();
-
-    void destroyEverything();
     
     string filePath;
     ofPixels img;
@@ -46,10 +31,9 @@ public:
     bool isLoading;
     bool isLoaded;
     
-    /*
     int startDay;
     int endDay;
-*/
+
 private:
     
     bool isCrop;
