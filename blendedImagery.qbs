@@ -15,10 +15,12 @@ Project{
             'src/main.cpp',
             'src/ofApp.cpp',
             'src/ofApp.h',
-            'src/singleDay.cpp',
-            'src/singleDay.h',
             'src/dayFade.cpp',
             'src/dayFade.h',
+            'src/oneImage.cpp',
+            'src/oneImage.h',
+            'src/fileManager.cpp',
+            'src/fileManager.h',
             'src/rot/rotationSensing.h',
             'src/rot/rotationSensing.cpp',
             'src/flk/Boid_mod.cpp',
@@ -42,12 +44,14 @@ Project{
              'ofxEasing',
              'ofxCameraSaveLoad',
              'ofxOpticalFlowFarneback',
+             'ofxV4L2Settings',
+             'ofxCsv',
          ]
 
         // additional flags for the project. the of module sets some
         // flags by default to add the core libraries, search paths...
         // this flags can be augmented through the following properties:
-        of.pkgConfigs: []       // list of additional system pkgs to include
+        of.pkgConfigs: ['libv4l2']       // list of additional system pkgs to include
         of.includePaths: []     // include search paths
         of.cFlags: []           // flags passed to the c compiler
         of.cxxFlags: []         // flags passed to the c++ compiler

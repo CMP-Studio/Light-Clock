@@ -5,7 +5,8 @@
 #include "ofxGui.h"
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
-#include "rotationSensing.h"
+//#include "rotationSensing.h"
+#include "ofxCsv.h"
 //#include "oneImage.h"
 
 
@@ -39,10 +40,11 @@ class ofApp : public ofBaseApp{
     
     float wrapCurrentMoment(float Xpos);
 
+    ofShader gaussianBlurX;
+    ofShader gaussianBlurY;
     ofFbo currentMoment;
+    ofFbo currentMomentMaskFirstPass;
     ofFbo currentMomentMask;
-    
-
     
     DayFade day;
 
@@ -54,7 +56,11 @@ class ofApp : public ofBaseApp{
     ofMaterial material;
     
     ofFbo getText;
-        
+
+
+    ofShader brcosa;
+    ofFbo filteredText;
+
     
     ofxPanel gui;
     ofxIntSlider cropLeftRight;
@@ -77,10 +83,21 @@ class ofApp : public ofBaseApp{
     ofxVec2Slider rangeMskMove;
     ofxIntSlider mskMoveSpeed;
     
+
+    ofxFloatSlider brightness;
+    ofxFloatSlider contrast;
+    ofxFloatSlider saturation;
+
+    ofxFloatSlider cwTerminalVelocity;
+    ofxFloatSlider ccwTerminalVelocity;
+
     // adjust the current moment
     ofxLabel currentMomentParams;
     ofxIntSlider delayTime;
     ofxIntSlider curMomentLength;
+    ofxFloatSlider volumeMoment;
+    ofxFloatSlider volumeTicking;
+
     
     bool showGui;
     
@@ -102,7 +119,11 @@ class ofApp : public ofBaseApp{
     
     bool isLatent; 
     int timeSinceInteract;
-    
+    int anchorImgPos;
+    int anchorMskPos;
+    float noiseSeedImg;
+    float noiseSeedMsk;
+
     bool isMuteMode;
     
     
@@ -123,7 +144,12 @@ class ofApp : public ofBaseApp{
     
     int timeToWaitRight;
     int timeToWaitLeft;
-    
+
+    ofxCsv analytics;
+    int currentHour;
+    int amountOfActivity;
+    int startTimeOfInteraction;
+
     
     
 };

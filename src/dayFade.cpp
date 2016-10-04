@@ -8,6 +8,7 @@
 
 //
 //  Day.cpp
+
 //  greyBlend
 //
 //  Created by Caroline Record on 5/16/16.
@@ -44,7 +45,7 @@ void DayFade::setup( string dirName, int numDay, int crpTop, int crpBottom, int 
 void DayFade::addCroppedImages( int crpTop, int crpBottom, int cropLeftRight, int intervl){
     interval = intervl;
     int sz = int(cropLeftRight/interval);
-    ofLog()<< "how big deck should be " << sz; 
+    //ofLog()<< "how big deck should be " << sz;
     manager.setup(sz, crpBottom,crpTop);
     
     //might be irrelevant eventually
@@ -91,12 +92,15 @@ void DayFade::makeMsk(int posImg, int width){
     msk.end();
     gradientMask = msk.getTexture();
     
+    /*
     // now fill in the start and end positions for each image
-    for (int i=0; i < manager.testQ.size()/divNumImgs; i++){
+    for (int i=0; i < manager.lengthOfDeck; i++){
+        //manager.testQ.at(i)->startDay = posMsk;
+        //manager.testQ.at(i)->endDay = posMsk + interval*2;
         manager.testQ.at(i)->startDay = posMsk;
         manager.testQ.at(i)->endDay = posMsk + interval*2;
         posMsk += interval;
-    }
+    }*/
 
 }
 
@@ -134,7 +138,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
     
     
     // go through each image there is to draw
-    for (int i = 0; i < manager.testQ.size(); i++){
+    for (int i = 0; i < manager.lengthOfDeck; i++){
         //if ( manager.testQ.at(i)->isLoaded){
         int mskPosNew = (interval)*i + mskPos;
         
@@ -143,7 +147,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
         
         // time moving clock wise
         bool addingNew =  manager.check(mskPosNew,rightCropPos, interval);
-        
+       // //ofLog()<<"got to the other side";
         if(addingNew){
             mskPos -= interval;
             mskPosNew = (interval)*i + mskPos;
@@ -199,7 +203,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
 // This keeps xPos within imageWidth
 float DayFade::wrapIt(float Xpos){
     float wrappedMsk = Xpos - mskPos;
-    ofLog() << imgWidth;
+    //ofLog() << imgWidth;
     // If starting position is less than the beginning of the image
     if (wrappedMsk <  0 ){
         // Add as many imageWidths are needed to get back inside the image

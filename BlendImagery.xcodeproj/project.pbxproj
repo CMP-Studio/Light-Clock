@@ -34,6 +34,8 @@
 		0BC2024E1D64176300C72DD7 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC201751D64176300C72DD7 /* ofxCvImage.cpp */; };
 		0BC2024F1D64176300C72DD7 /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BC201771D64176300C72DD7 /* ofxCvShortImage.cpp */; };
 		0BC202501D64176300C72DD7 /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BC202461D64176300C72DD7 /* opencv.a */; };
+		0BE281191D959E3C0051BEAA /* ofxCsv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BE281151D959E3C0051BEAA /* ofxCsv.cpp */; };
+		0BE2811A1D959E3C0051BEAA /* ofxCsvRow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BE281171D959E3C0051BEAA /* ofxCsvRow.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 /* End PBXBuildFile section */
 
@@ -287,6 +289,10 @@
 		0BC202321D64176300C72DD7 /* videostab.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = videostab.hpp; sourceTree = "<group>"; };
 		0BC202461D64176300C72DD7 /* opencv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = opencv.a; sourceTree = "<group>"; };
 		0BC202481D64176300C72DD7 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		0BE281151D959E3C0051BEAA /* ofxCsv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCsv.cpp; sourceTree = "<group>"; };
+		0BE281161D959E3C0051BEAA /* ofxCsv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCsv.h; sourceTree = "<group>"; };
+		0BE281171D959E3C0051BEAA /* ofxCsvRow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCsvRow.cpp; sourceTree = "<group>"; };
+		0BE281181D959E3C0051BEAA /* ofxCsvRow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCsvRow.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* BlendImageryDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlendImageryDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
@@ -845,6 +851,26 @@
 			path = license;
 			sourceTree = "<group>";
 		};
+		0BE281131D959E3C0051BEAA /* ofxCsv */ = {
+			isa = PBXGroup;
+			children = (
+				0BE281141D959E3C0051BEAA /* src */,
+			);
+			name = ofxCsv;
+			sourceTree = "<group>";
+		};
+		0BE281141D959E3C0051BEAA /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0BE281151D959E3C0051BEAA /* ofxCsv.cpp */,
+				0BE281161D959E3C0051BEAA /* ofxCsv.h */,
+				0BE281171D959E3C0051BEAA /* ofxCsvRow.cpp */,
+				0BE281181D959E3C0051BEAA /* ofxCsvRow.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxCsv/src;
+			sourceTree = "<group>";
+		};
 		6948EE371B920CB800B5AC1A /* local_addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -860,6 +886,7 @@
 				0BA18EDC1D5C17B100783235 /* ofxEasing */,
 				0BC2015F1D6416D900C72DD7 /* ofxOpticalFlowFarneback */,
 				0BC201671D64176300C72DD7 /* ofxOpenCv */,
+				0BE281131D959E3C0051BEAA /* ofxCsv */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1024,7 +1051,9 @@
 				0BC201631D6416D900C72DD7 /* ofxOpticalFlowFarneback.cpp in Sources */,
 				0BC2024E1D64176300C72DD7 /* ofxCvImage.cpp in Sources */,
 				0BC2024A1D64176300C72DD7 /* ofxCvContourFinder.cpp in Sources */,
+				0BE2811A1D959E3C0051BEAA /* ofxCsvRow.cpp in Sources */,
 				0BA18ED81D5C16F000783235 /* Boid_mod.cpp in Sources */,
+				0BE281191D959E3C0051BEAA /* ofxCsv.cpp in Sources */,
 				0BC202491D64176300C72DD7 /* ofxCvColorImage.cpp in Sources */,
 				0BA18ED91D5C16F000783235 /* Flocking.cpp in Sources */,
 				0BA18EB91D552FAD00783235 /* ofxToggle.cpp in Sources */,

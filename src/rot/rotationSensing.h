@@ -12,10 +12,11 @@
 #include "ofxOpticalFlowFarneback.h"
 #include "ofxOpenCv.h"
 #include "ofxGui.h"
+//#include "ofxV4L2Settings.h"
 
 class rotationSensing : public ofBaseApp {
   
-  // #define USE_USB_CAMERA // uncomment this line to use USB camera
+  #define USE_USB_CAMERA // uncomment this line to use USB camera
   
 public:
   //* LIFECYCLE *//
@@ -34,8 +35,13 @@ public:
   //* VIDEO *//
   void grabNewBackground();
   
+
+  ofxPanel overheadCameraSettingsGui;
+  //ofxV4L2Settings overheadCameraSettings;
+
   //* GUI + SETTINGS *//
-  ofxPanel gui;
+  ofxPanel gui;\
+
   // interaction constants
   ofxIntSlider samplingDensity;
   ofxIntSlider flowThreshold;
@@ -52,9 +58,14 @@ public:
   ofxFloatSlider expansionSigma;
   ofxButton flowFeedback;
   ofxButton gaussianFiltering;
+
+
+  // interaction center constants
+  ofxFloatSlider interactionX;
+  ofxFloatSlider interactionY;
   
   // Set center
-  void setInteractionCenter(int x, int y);
+ // void setInteractionCenter(int x, int y);
   
 private:
   //* STREAM *//
@@ -84,6 +95,7 @@ private:
   ofxOpticalFlowFarneback opticalFlow;
 
   //* GUI + SETTINGS *//
+
   void setPyramidScale(float &scale);
   void setPyramidLevels(int &levels);
   void setWindowSize(int &size);
@@ -91,7 +103,5 @@ private:
   void setExpansionArea(int &area);
   void setExpansionSigma(float &sigma);
   
-  int interactionX;
-  int interactionY;
-  int interactionRadius = 150;  
+  int interactionRadius = 150;
 };
