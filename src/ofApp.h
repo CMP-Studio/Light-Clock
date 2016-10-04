@@ -7,6 +7,7 @@
 #include "Flocking.h"
 #include "rotationSensing.h"
 #include "ofxCsv.h"
+#include "ofxGoogleAnalytics.h"
 //#include "oneImage.h"
 
 
@@ -151,5 +152,5 @@ class ofApp : public ofBaseApp{
     int startTimeOfInteraction;
 
     
-    
+    ofxGoogleAnalytics ga;
 };

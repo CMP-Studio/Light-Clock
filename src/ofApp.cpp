@@ -39,6 +39,7 @@ amountOfActivity =0; \
 //--------------------------------------------------------------
 void ofApp::setup(){
     //ofHideCursor();
+    analytics.load(ofToDataPath("analytics.csv"));
     //analytics.loadFile(ofToDataPath("analytics.csv"));
     currentHour = ofGetHours();
     amountOfActivity =0;
@@ -179,6 +180,15 @@ void ofApp::setup(){
     noiseSeedImg =0.0f;
     noiseSeedMsk =0.0f;
     ofHideCursor();
+
+    // setup up google analytics
+    ga.setShouldReportFramerates(true);
+    ga.setFramerateReportInterval(600);
+    ga.setEnabled(true);
+    ga.setRandomizeUUID(false);
+    ga.setSendToGoogleInterval(0.0);
+
+    ga.setup("UA-84486442-1", "Light Clock","0.1");
 }
 
 void ofApp::camZoomChanged(int &camZoom){
@@ -230,22 +240,23 @@ void ofApp::cropTrigger(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+        ga.update();
 
         //ofHideCursor();
         if(currentHour != ofGetMinutes()){
-            /*
+
+           //a.sendCustomTimeMeasurement("interaction","interacation Duration", amountOfActivity);
+
             //to update the csv file
-            int row = analytics.getNumRows();
-            analytics.
-            analytics.setString(row, 0, ofGetTimestampString());
-            analytics.setString(row, 1, amountOfAtivity);
-            analytics.saveFile(ofToDataPath("analytics.csv"));
+            ofxCsvRow row;
+            row.insertString(0, ofGetTimestampString());
+            row.insertInt(1, amountOfActivity);
+            analytics.addRow(row);
+
+            analytics.save(ofToDataPath("analytics.csv"));
             amountOfActivity =0;
             currentHour = ofGetMinutes();
-            */
         }
-
         rotSense.update();
         float mskShift = (float) 2 * rotSense.getCwVelocity();
         float imgShift = (float) 2 * rotSense.getCcwVelocity();
@@ -310,6 +321,7 @@ void ofApp::update(){
         anchorImgPos = day.imgPos;
         anchorMskPos = day.mskPos;
         int timePassed = ofGetElapsedTimeMillis()- startTimeOfInteraction;
+        ga.sendCustomTimeMeasurement("interaction duration", "dur",timePassed-5000);
         amountOfActivity += timePassed - 5000;
     }
     else if (isLatent){
@@ -557,6 +569,7 @@ void ofApp::keyPressed(int key){
     }
     else if (key == 'h'){
         showGui = !showGui; 
+        ga.sendEvent("keyboard","gui", 555);
     }
     else if(key == 'm'){
         moment.play();

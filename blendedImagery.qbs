@@ -46,6 +46,8 @@ Project{
              'ofxOpticalFlowFarneback',
              'ofxV4L2Settings',
              'ofxCsv',
+             'ofxGoogleAnalytics',
+             'ofxSimpleHttp',
          ]
 
         // additional flags for the project. the of module sets some
