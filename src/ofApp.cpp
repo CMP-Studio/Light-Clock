@@ -183,6 +183,8 @@ void ofApp::setup(){
     noiseSeedImg =0.0f;
     noiseSeedMsk =0.0f;
     ofHideCursor();
+    
+    imageCount = 0;
 }
 
 void ofApp::camZoomChanged(int &camZoom){
@@ -462,6 +464,9 @@ void ofApp::update(){
     brcosa.end();
 
     filteredText.end();
+    
+    
+   // ofSaveImage(filteredText, imageCount + ".png");
     
     //cam.setPosition(0,0,0 );
      sphere.mapTexCoordsFromTexture( filteredText.getTexture() );

@@ -150,6 +150,6 @@ class ofApp : public ofBaseApp{
     int amountOfActivity;
     int startTimeOfInteraction;
 
-    
+    int imageCount; 
     
 };
