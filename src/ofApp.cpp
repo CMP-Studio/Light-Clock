@@ -185,6 +185,7 @@ void ofApp::setup(){
     noiseSeedMsk =0.0f;
     ofHideCursor();
 
+
     // setup up google analytics
     ga.setShouldReportFramerates(true);
     ga.setFramerateReportInterval(600);
@@ -193,6 +194,7 @@ void ofApp::setup(){
     ga.setSendToGoogleInterval(0.0);
 
     ga.setup("UA-84486442-1", "Light Clock","0.1");
+
 }
 
 void ofApp::camZoomChanged(int &camZoom){
@@ -474,6 +476,9 @@ void ofApp::update(){
     brcosa.end();
 
     filteredText.end();
+    
+    
+   // ofSaveImage(filteredText, imageCount + ".png");
     
     //cam.setPosition(0,0,0 );
      sphere.mapTexCoordsFromTexture( filteredText.getTexture() );
