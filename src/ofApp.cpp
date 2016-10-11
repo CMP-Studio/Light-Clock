@@ -63,7 +63,7 @@ void ofApp::setup(){
     //ofSetVerticalSync(true);
     
     usingFlow=false;
-    //rotSense.setup();
+    rotSense.setup();
     
     //ofLog()<< "get width: " << ofGetWindowWidth();
 
@@ -508,7 +508,7 @@ void ofApp::draw(){
         cam.enableMouseInput();
     }
     if(usingFlow){
-        //rotSense.draw();
+        rotSense.draw();
     }
     } else{
         // draw video for the mute mode
@@ -552,7 +552,7 @@ void ofApp::keyPressed(int key){
 
 
     if (key == 'o'){
-        //rotSense.saveSettings();
+        rotSense.saveSettings();
         usingFlow = !usingFlow;
     }
 

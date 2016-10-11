@@ -5,7 +5,7 @@
 #include "ofxGui.h"
 #include "ofxCameraSaveLoad.h"
 #include "Flocking.h"
-//#include "rotationSensing.h"
+#include "rotationSensing.h"
 #include "ofxCsv.h"
 #include "ofxGoogleAnalytics.h"
 //#include "oneImage.h"
@@ -110,7 +110,7 @@ class ofApp : public ofBaseApp{
     
     Flocking flock2;
     
-    //rotationSensing rotSense;
+    rotationSensing rotSense;
     
     ofImage fullRes;
 

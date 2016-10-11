@@ -18,8 +18,8 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     crpT = crpTop;
     crpB = crpBot;
     
-    //startPath = "/media/caroline/Storage/pano/";
-    startPath = "/Users/carolinerecord/Documents/of_v0.9.2_osx_release/apps/myApps/blendedImagery/bin/data/sampleImages/sample/";
+    startPath = "/media/caroline/Storage/pano/";
+    //startPath = "/Users/carolinerecord/Documents/of_v0.9.2_osx_release/apps/myApps/blendedImagery/bin/data/sampleImages/sample/";
     
     momentsToTraverse = 10;
     
