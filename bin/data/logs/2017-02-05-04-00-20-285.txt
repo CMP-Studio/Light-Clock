@@ -1,0 +1,157 @@
+
+
+--------------------------------------- 2017-02-05-04-00-20-285
+[ error ] ofShader: setupShaderFromFile(): couldn't load GL_VERTEX_SHADER shader  from "shader_gausssianBlur/shadersGL3/shaderBlurX.vert"
+[ error ] ofShader: setupShaderFromFile(): couldn't load GL_FRAGMENT_SHADER shader  from "shader_gausssianBlur/shadersGL3/shaderBlurX.frag"
+[ error ] ofShader: bindDefaults(): trying to link GLSL program, but no shaders created yet
+[ error ] ofShader: linkProgram(): trying to link GLSL program, but no shaders created yet
+[notice ] testPing
+[notice ] PING I AM IN
+[notice ] ofGstVideoGrabber: Probing devices with udev...
+[notice ] ofGstVideoGrabber: Found device 199e:8302, getting capabilities...
+[notice ] ofGstVideoGrabber: detected v4l2 device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: driver: uvcvideo, version: 263203
+[notice ] ofGstVideoGrabber: Capabilities: 0x84200001
+[notice ] ofGstVideoGrabber: initGrabber(): selected device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: initGrabber(): selected format: 640x480 video/x-raw RGB framerate: 15/1
+[notice ] ofGstUtils: setPipelineWithSink(): gstreamer pipeline: v4l2src name=video_source device=/dev/video0 ! video/x-raw,format=RGB,width=640,height=480,framerate=15/1    ! appsink name=ofappsink enable-last-sample=0 caps="video/x-raw, format=RGB, width=640, height=480"
+[ error ] ofxV4L2Settings: error couldn0t get menu option 1Invalid argument
+[ error ] ofxV4L2Settings: error couldn0t get menu option 3Invalid argument
+[notice ] zoom called
+[notice ] other side 2
+[warning] ofxGoogleAnalytics: Loaded UUID for this app: 991da089-fd60-49fc-a58a-afc437137ddf
+[notice ] ofxGoogleAnalytics: Reporting my CPU 'Unknown CPU'
+[notice ] ofxGoogleAnalytics: Reporting my Computer Model 'Unknown Model'
+[notice ] ofxGoogleAnalytics: Reporting my Computer GPU 'GeForce GTX 1070/PCIe/SSE2'
+[notice ] ofxGoogleAnalytics: Reporting my OF version '0.9.3-stable'
+[notice ] ofxGoogleAnalytics: Reporting my computer platform 'Linux 64'
+[notice ] ofxGoogleAnalytics: Benchmarks took 1.20406seconds
+[notice ] other side 3
+[notice ] ofxCvColorImage: setFromPixels(): allocating to match dimensions: 0 0
+[notice ] ofxCvGrayscaleImage: operator=: allocating to match dimensions: 300 300
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/001_2016-08-26_N/186_15-30-02.tif
+[notice ] 2017-02-05-04-01-49-039
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/006_2016-08-31_C/146_12-11-16.tif
+[notice ] 2017-02-05-04-01-49-061
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/006_2016-08-31_C/147_12-16-17.tif
+[notice ] 2017-02-05-04-01-49-077
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/006_2016-08-31_C/148_12-21-20.tif
+[notice ] 2017-02-05-04-01-49-095
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/006_2016-08-31_C/149_12-26-25.tif
+[notice ] 2017-02-05-04-01-49-112
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/006_2016-08-31_C/150_12-31-30.tif
+[notice ] 2017-02-05-04-01-49-128
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/006_2016-08-31_C/151_12-36-35.tif
+[notice ] 2017-02-05-04-01-49-146
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/006_2016-08-31_C/152_12-41-40.tif
+[notice ] 2017-02-05-04-01-49-163
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/002_2016-08-27_N/107_08-59-45.tif
+[notice ] 2017-02-05-04-01-49-180
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/002_2016-08-27_N/108_09-04-48.tif
+[notice ] 2017-02-05-04-01-49-198
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/002_2016-08-27_N/109_09-09-52.tif
+[notice ] 2017-02-05-04-01-49-214
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/002_2016-08-27_N/110_09-14-55.tif
+[notice ] 2017-02-05-04-01-49-229
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/002_2016-08-27_N/111_09-19-59.tif
+[notice ] 2017-02-05-04-01-49-245
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/002_2016-08-27_N/113_09-25-03.tif
+[notice ] 2017-02-05-04-01-49-261
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/002_2016-08-27_N/114_09-30-07.tif
+[notice ] 2017-02-05-04-01-49-290
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/014_2016-09-08_C/182_15-13-41.tif
+[notice ] 2017-02-05-04-01-49-329
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/014_2016-09-08_C/183_15-18-47.tif
+[notice ] 2017-02-05-04-01-49-356
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/014_2016-09-08_C/184_15-23-54.tif
+[notice ] 2017-02-05-04-01-49-381
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/014_2016-09-08_C/185_15-29-02.tif
+[notice ] 2017-02-05-04-01-49-412
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/014_2016-09-08_C/186_15-34-09.tif
+[notice ] 2017-02-05-04-01-49-446
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/014_2016-09-08_C/187_15-39-15.tif
+[notice ] 2017-02-05-04-01-49-470
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/014_2016-09-08_C/188_15-44-21.tif
+[notice ] 2017-02-05-04-01-49-497
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/003_2016-08-28_N/216_18-00-55.tif
+[notice ] 2017-02-05-04-01-49-522
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/003_2016-08-28_N/217_18-06-01.tif
+[notice ] 2017-02-05-04-01-49-546
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/003_2016-08-28_N/218_18-11-07.tif
+[notice ] 2017-02-05-04-01-49-571
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/003_2016-08-28_N/219_18-16-14.tif
+[notice ] 2017-02-05-04-01-49-597
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/003_2016-08-28_N/220_18-21-19.tif
+[notice ] 2017-02-05-04-01-49-623
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/003_2016-08-28_N/221_18-26-25.tif
+[notice ] 2017-02-05-04-01-49-647
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/003_2016-08-28_N/222_18-31-29.tif
+[notice ] 2017-02-05-04-01-49-672
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/015-2_2016-09-09_R/266_22-11-25.tif
+[notice ] 2017-02-05-04-01-49-699
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/015-2_2016-09-09_R/267_22-16-30.tif
+[notice ] 2017-02-05-04-01-49-724
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/015-2_2016-09-09_R/269_22-26-38.tif
+[notice ] 2017-02-05-04-01-49-751
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/015-2_2016-09-09_R/270_22-31-41.tif
+[notice ] 2017-02-05-04-01-49-775
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/015-2_2016-09-09_R/271_22-36-45.tif
+[notice ] 2017-02-05-04-01-49-801
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/015-2_2016-09-09_R/272_22-41-49.tif
+[notice ] 2017-02-05-04-01-49-825
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/015-2_2016-09-09_R/274_22-51-57.tif
+[notice ] 2017-02-05-04-01-49-851
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/005_2016-08-30_N/112_09-24-21.tif
+[notice ] 2017-02-05-04-01-49-875
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/005_2016-08-30_N/113_09-29-23.tif
+[notice ] 2017-02-05-04-01-49-902
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/005_2016-08-30_N/114_09-34-26.tif
+[notice ] 2017-02-05-04-01-49-927
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/005_2016-08-30_N/116_09-44-32.tif
+[notice ] 2017-02-05-04-01-58-388
+[notice ] successful load
+[notice ] /media/caroline/Storage/pano/005_2016-08-30_N/115_09-39-29.tif
+[notice ] 2017-02-05-04-01-58-401
+[notice ] begin exit
+[notice ] ofCamera saved successfully!: 
+[notice ] ofEasyCam saved successfully!: 

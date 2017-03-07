@@ -99,6 +99,15 @@ class ofApp : public ofBaseApp{
     ofxFloatSlider volumeMoment;
     ofxFloatSlider volumeTicking;
 
+    // overlayVariables
+     ofxFloatSlider overlayScale;
+     ofxIntSlider delayPostLatent;
+     ofxIntSlider delayBetween;
+     ofxFloatSlider spaceStartVel;
+     ofxFloatSlider timeStartVel;
+     ofxColorSlider figureColor;
+     ofxColorSlider textColor;
+     ofxIntSlider yTextPos;
     
     bool showGui;
     
@@ -117,7 +126,7 @@ class ofApp : public ofBaseApp{
     bool isFullResTest;
 
 
-    
+    bool isActive;
     bool isLatent; 
     int timeSinceInteract;
     int anchorImgPos;
@@ -151,8 +160,28 @@ class ofApp : public ofBaseApp{
     int amountOfActivity;
     int startTimeOfInteraction;
 
-
-    
     ofxGoogleAnalytics ga;
 
+    // the overlay
+    ofFbo mskVidFade;
+    ofFbo colorOfFigure; 
+    ofVideoPlayer mskVid;
+
+    int startWaitOverlay;
+    int timeToWaitOverlay;
+    bool isOverlay;
+    bool isWaitingOverlay;
+    bool isPerson;
+    ofTrueTypeFont overlayText;
+
+    // test moving forward
+    bool isMoveForwardAuto;
+    // new current moment
+    bool isNewCurMoment;
+    bool isInMoment;
+    int startTimeFadeUp;
+    int startTimeFadeDown;
+
+
+    ofSoundPlayer singleClick;
 };

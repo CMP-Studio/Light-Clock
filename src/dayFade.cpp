@@ -136,7 +136,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
     }
      */
     
-    
+    //ofLog()<< "the mask position:" << mskPos;
     // go through each image there is to draw
     for (int i = 0; i < manager.lengthOfDeck; i++){
         //if ( manager.testQ.at(i)->isLoaded){
@@ -146,7 +146,7 @@ void DayFade::draw(int x, int y, int rightCropPos ){
         //bool addingNew =  manager.check(mskPosNew,-1);
         
         // time moving clock wise
-        bool addingNew =  manager.check(mskPosNew,rightCropPos, interval);
+       bool addingNew =  manager.check(mskPosNew,rightCropPos, interval);
        // //ofLog()<<"got to the other side";
         if(addingNew){
             mskPos -= interval;
@@ -157,8 +157,15 @@ void DayFade::draw(int x, int y, int rightCropPos ){
                ofClear(0);
 
                 // position the image within the slice
+               /*float decimal = imgPos - int(imgPos);
+               imgPos = int(imgPos) % imgWidth;
+               imgPos += decimal;
+               imgPos -= imgWidth;
+               */
                 float XpositionToDraw  = -mskPosNew + imgPos;
                 // wrap  imgPos so it doesn't go beyond the bounds of the image width
+
+
                 if (XpositionToDraw < -imgWidth){
                     imgPos += imgWidth;
                     XpositionToDraw  = -mskPosNew + imgPos;
@@ -167,10 +174,16 @@ void DayFade::draw(int x, int y, int rightCropPos ){
                     imgPos -= imgWidth;
                     XpositionToDraw  = -mskPosNew + imgPos;
                 }
-        
+
+
+
+
+
                 // draw the image twice if need this is needed to create the wrap
-        
-                // the left edge of the image is showing
+                if(i ==0){
+                    //ofLog()<< "xPos to draw: " << XpositionToDraw;
+                    // the left edge of the image is showing
+                }
                 if (XpositionToDraw > 0){
                     // draw it in its regular position.
                     manager.draw(i,XpositionToDraw,0);

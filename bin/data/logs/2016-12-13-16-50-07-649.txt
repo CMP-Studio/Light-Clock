@@ -1,0 +1,64 @@
+
+
+--------------------------------------- 2016-12-13-16-50-07-649
+[notice ] testPing
+[notice ] PING I AM IN
+[notice ] ofGstVideoGrabber: Probing devices with udev...
+[notice ] ofGstVideoGrabber: Found device 199e:8302, getting capabilities...
+[notice ] ofGstVideoGrabber: detected v4l2 device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: driver: uvcvideo, version: 263192
+[notice ] ofGstVideoGrabber: Capabilities: 0x84200001
+[notice ] ofGstVideoGrabber: initGrabber(): selected device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: initGrabber(): selected format: 640x480 video/x-raw RGB framerate: 15/1
+[notice ] ofGstUtils: setPipelineWithSink(): gstreamer pipeline: v4l2src name=video_source device=/dev/video0 ! video/x-raw,format=RGB,width=640,height=480,framerate=15/1    ! appsink name=ofappsink enable-last-sample=0 caps="video/x-raw, format=RGB, width=640, height=480"
+[ error ] ofxV4L2Settings: error couldn0t get menu option 1Invalid argument
+[ error ] ofxV4L2Settings: error couldn0t get menu option 3Invalid argument
+[notice ] zoom called
+[notice ] 39
+[notice ] 0
+[notice ] 1
+[notice ] 2
+[notice ] 3
+[notice ] 4
+[notice ] 5
+[notice ] 6
+[notice ] 7
+[notice ] 8
+[notice ] 9
+[notice ] 10
+[notice ] 11
+[notice ] 12
+[notice ] 13
+[notice ] 14
+[notice ] 15
+[notice ] 16
+[notice ] 17
+[notice ] 18
+[notice ] 19
+[notice ] 20
+[notice ] 21
+[notice ] 22
+[notice ] 23
+[notice ] 24
+[notice ] 25
+[notice ] 26
+[notice ] 27
+[notice ] 28
+[notice ] 29
+[notice ] 30
+[notice ] 31
+[notice ] 32
+[notice ] 33
+[notice ] 34
+[notice ] 35
+[notice ] 36
+[notice ] 37
+[notice ] 38
+[notice ] other side
+[notice ] other side 2
+[warning] ofxGoogleAnalytics: Loaded UUID for this app: 991da089-fd60-49fc-a58a-afc437137ddf
+[notice ] ofxGoogleAnalytics: Reporting my CPU 'Unknown CPU'
+[notice ] ofxGoogleAnalytics: Reporting my Computer Model 'Unknown Model'
+[notice ] ofxGoogleAnalytics: Reporting my Computer GPU 'GeForce GTX 1070/PCIe/SSE2'
+[notice ] ofxGoogleAnalytics: Reporting my OF version '0.9.3-stable'
+[notice ] ofxGoogleAnalytics: Reporting my computer platform 'Linux 64'

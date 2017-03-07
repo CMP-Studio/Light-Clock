@@ -1,0 +1,75 @@
+
+
+--------------------------------------- 2016-12-06-21-45-13-872
+[notice ] testPing
+[notice ] PING I AM IN
+[notice ] ofGstVideoGrabber: Probing devices with udev...
+[notice ] ofGstVideoGrabber: Found device 199e:8302, getting capabilities...
+[notice ] ofGstVideoGrabber: detected v4l2 device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: driver: uvcvideo, version: 263192
+[notice ] ofGstVideoGrabber: Capabilities: 0x84200001
+[notice ] ofGstVideoGrabber: initGrabber(): selected device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: initGrabber(): selected format: 640x480 video/x-raw RGB framerate: 15/1
+[notice ] ofGstUtils: setPipelineWithSink(): gstreamer pipeline: v4l2src name=video_source device=/dev/video0 ! video/x-raw,format=RGB,width=640,height=480,framerate=15/1    ! appsink name=ofappsink enable-last-sample=0 caps="video/x-raw, format=RGB, width=640, height=480"
+[ error ] ofxV4L2Settings: error couldn0t get menu option 1Invalid argument
+[ error ] ofxV4L2Settings: error couldn0t get menu option 3Invalid argument
+[notice ] zoom called
+[warning] ofxGoogleAnalytics: Loaded UUID for this app: 991da089-fd60-49fc-a58a-afc437137ddf
+[notice ] ofxGoogleAnalytics: Reporting my CPU 'Unknown CPU'
+[notice ] ofxGoogleAnalytics: Reporting my Computer Model 'Unknown Model'
+[notice ] ofxGoogleAnalytics: Reporting my Computer GPU 'GeForce GTX 1070/PCIe/SSE2'
+[notice ] ofxGoogleAnalytics: Reporting my OF version '0.9.3-stable'
+[notice ] ofxGoogleAnalytics: Reporting my computer platform 'Linux 64'
+[notice ] ofxGoogleAnalytics: Benchmarks took 1.20227seconds
+[notice ] ofxCvColorImage: setFromPixels(): allocating to match dimensions: 0 0
+[notice ] ofxCvGrayscaleImage: operator=: allocating to match dimensions: 300 300
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/260_21-43-19.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/267_22-18-13.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/268_22-23-12.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/269_22-28-11.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/270_22-33-10.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/271_22-38-09.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/273_22-48-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/274_22-53-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/282_23-33-01.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/284_23-42-59.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/286_23-53-02.tif
+[notice ] New moment found: /media/caroline/Storage/pano/103_2016-12-06_R/287_23-57-57.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/002_00-12-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/003_00-17-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/004_00-22-53.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/005_00-27-53.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/007_00-37-51.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/008_00-42-50.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/009_00-47-49.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/013_01-07-47.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/014_01-12-47.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/015_01-17-46.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/021_01-47-46.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/022_01-52-42.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/023_01-57-42.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/026_02-12-39.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/027_02-17-37.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/028_02-22-37.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/029_02-27-36.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/030_02-32-36.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/034_02-52-32.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/035_02-57-30.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/036_03-02-29.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/039_03-17-26.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/040_03-22-25.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/041_03-27-25.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/042_03-32-23.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/044_03-42-23.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/046_03-52-19.tif
+[notice ] New moment found: /media/caroline/Storage/pano/104_2016-12-07_C/047_03-57-18.tif
+[notice ] begin exit
+[notice ] ofCamera saved successfully!: 
+[notice ] ofEasyCam saved successfully!: 
+[notice ] end exit
+[notice ] ofxGoogleAnalytics: Closing session for good! 0 requests pending executing...
+[notice ] ofxGoogleAnalytics: all pending requests executed!

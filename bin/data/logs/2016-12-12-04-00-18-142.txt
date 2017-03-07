@@ -1,0 +1,60 @@
+
+
+--------------------------------------- 2016-12-12-04-00-18-142
+[notice ] testPing
+[notice ] PING I AM IN
+[notice ] ofGstVideoGrabber: Probing devices with udev...
+[notice ] ofGstVideoGrabber: Found device 199e:8302, getting capabilities...
+[notice ] ofGstVideoGrabber: detected v4l2 device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: driver: uvcvideo, version: 263192
+[notice ] ofGstVideoGrabber: Capabilities: 0x84200001
+[notice ] ofGstVideoGrabber: initGrabber(): selected device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: initGrabber(): selected format: 640x480 video/x-raw RGB framerate: 15/1
+[notice ] ofGstUtils: setPipelineWithSink(): gstreamer pipeline: v4l2src name=video_source device=/dev/video0 ! video/x-raw,format=RGB,width=640,height=480,framerate=15/1    ! appsink name=ofappsink enable-last-sample=0 caps="video/x-raw, format=RGB, width=640, height=480"
+[ error ] ofxV4L2Settings: error couldn0t get menu option 1Invalid argument
+[ error ] ofxV4L2Settings: error couldn0t get menu option 3Invalid argument
+[notice ] zoom called
+[warning] ofxGoogleAnalytics: Loaded UUID for this app: 991da089-fd60-49fc-a58a-afc437137ddf
+[notice ] ofxGoogleAnalytics: Reporting my CPU 'Unknown CPU'
+[notice ] ofxGoogleAnalytics: Reporting my Computer Model 'Unknown Model'
+[notice ] ofxGoogleAnalytics: Reporting my Computer GPU 'GeForce GTX 1070/PCIe/SSE2'
+[notice ] ofxGoogleAnalytics: Reporting my OF version '0.9.3-stable'
+[notice ] ofxGoogleAnalytics: Reporting my computer platform 'Linux 64'
+[notice ] ofxGoogleAnalytics: Benchmarks took 1.21504seconds
+[notice ] ofxCvColorImage: setFromPixels(): allocating to match dimensions: 0 0
+[notice ] ofxCvGrayscaleImage: operator=: allocating to match dimensions: 300 300
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/048_04-04-53.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/052_04-24-46.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/053_04-29-46.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/057_04-49-42.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/059_04-59-38.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/060_05-04-37.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/062_05-14-36.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/065_05-29-33.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/067_05-39-31.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/070_05-54-27.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/071_05-59-26.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/072_06-04-25.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/073_06-09-24.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/074_06-14-23.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/077_06-29-19.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/078_06-34-18.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/079_06-39-18.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/081_06-49-24.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/083_06-59-14.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/086_07-14-11.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/087_07-19-10.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/088_07-24-09.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/089_07-29-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/090_07-34-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/091_07-39-05.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/092_07-44-04.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/093_07-49-03.tif
+[notice ] New moment found: /media/caroline/Storage/pano/109_2016-12-12_C/094_07-54-02.tif
+[notice ] begin exit
+[notice ] ofCamera saved successfully!: 
+[notice ] ofEasyCam saved successfully!: 

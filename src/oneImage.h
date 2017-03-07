@@ -24,7 +24,8 @@ public:
     void update();
     // recursive image load for images that are forming themselves.
     void reImageLoad();
-    
+    void giveUpSafely();
+
     string filePath;
     ofPixels img;
     ofImage image;
@@ -33,6 +34,10 @@ public:
     
     int startDay;
     int endDay;
+
+    // use instead of isLoaded because of dud images
+    bool isReady;
+    bool isQuit;
 
 private:
     

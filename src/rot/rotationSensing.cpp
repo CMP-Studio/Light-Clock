@@ -12,15 +12,21 @@
 
 //--------------------------------------------------------------
 void rotationSensing::setup() {
-  
+
+  ofLog()<< "testPing";
   // setup camera
 #ifndef USE_USB_CAMERA
   videoFeed.load(videoSource);
   videoFeed.play();
 #endif
 #ifdef USE_USB_CAMERA
+  ofLog()<< "PING I AM IN";
+  videoFeed.setVerbose(true);
+  videoFeed.listDevices();
+  //videoFeed.setDeviceID();
   videoFeed.setDesiredFrameRate(10);
   videoFeed.initGrabber(640, 480);
+
 #endif
   
   // setup gui
@@ -146,10 +152,10 @@ void rotationSensing::update() {
             
             if(projectedFlow > 0){
               ccwFlowSum += abs(projectedFlow);
-              ccwFlowCount += 1.0;
+             // ccwFlowCount += 1.0;
             } else if (projectedFlow < 0){
               cwFlowSum += abs(projectedFlow);
-              cwFlowCount += 1.0;
+             // cwFlowCount += 1.0;
             }
             count += 1.0;
           }
@@ -159,11 +165,13 @@ void rotationSensing::update() {
     
     // now average flow in both directions and translate to velocity
     if (count > 0.0){
-      if ((cwFlowCount / count) > 0.33) {
+      if (cwFlowSum > ccwFlowSum) {
         cwVelocity = max(cwVelocity, cwFlowConstant * cwFlowSum / count);
+        ccwVelocity = ccwVelocity / 1.5;
       }
-      if ((ccwFlowCount / count) > 0.33) {
+      else {
         ccwVelocity = max(ccwVelocity, ccwFlowConstant * ccwFlowSum / count);
+        cwVelocity = cwVelocity / 1.5;
       }
     }
   }

@@ -69,7 +69,7 @@ class fileManager{
     void nextMoment();
     
     oneImage test;
-    
+
     // the deque
     int imgWidth;
     int imgHeight;
@@ -80,6 +80,8 @@ class fileManager{
     // create a current day flag!
     bool isCurrentDay;
 
-
+    // check if it is caught on an image
+    string lastFileName;
+    int numOfTimesStuck;
     
 };

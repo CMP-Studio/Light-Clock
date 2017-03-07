@@ -32,14 +32,18 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     imgHeight = testSz.getHeight()/15;
     //testQ.clear();
     //poolOfThreads.clear();
+    //ofLog()<< numOfImgToLoad;
     for(int i =0; i < numOfImgToLoad; i++){
         //testQ.push_back(move(shared_ptr<oneImage>(new oneImage)));
+        //ofLog()<< i;
         poolOfThreads.push_back(move(unique_ptr<oneImage>(new oneImage)));
         string temp = nextFileToLoad;
+        //ofLog()<< "I am requesting it to load an image start";
         poolOfThreads.back()->setup(temp, crpT, crpB);
-        ////ofLog()<<"next file to load: " << nextFileToLoad;
+        //ofLog()<<"next file to load: " << nextFileToLoad;
         nextMoment();
         indexOfThreads.push_back(i);
+        //sleep(5);
     }
 /*
     for(int i =0; i < numOfImgToLoad; i++){
@@ -52,6 +56,9 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     */
     posX = 0;
     isCurrentDay = false;
+
+    lastFileName = "";
+    numOfTimesStuck = 0;
 
 }
 
@@ -70,17 +77,31 @@ bool fileManager::check(int xPos, int thresh, int interval){
     }
     else {
         int indexOnTheMove = indexOfThreads.back();
-        if(poolOfThreads.at(indexOnTheMove)->isLoaded){
-        indexOfThreads.pop_back();
-        indexOfThreads.push_front(indexOnTheMove);
-
-        poolOfThreads.at(indexOnTheMove)->setup(nextFileToLoad, crpT, crpB);
-        //ofLog()<<"setup complete";
-        nextMoment();
-        return true;
+        if(poolOfThreads.at(indexOnTheMove)->isReady){
+            lastFileName = "";
+            numOfTimesStuck = 0;
+            indexOfThreads.pop_back();
+            indexOfThreads.push_front(indexOnTheMove);
+            //ofLog()<< "I am requesting it to load an image";
+            poolOfThreads.at(indexOnTheMove)->setup(nextFileToLoad, crpT, crpB);
+            //ofLog()<<"setup complete";
+            nextMoment();
+            return true;
         }
         else{
+            //ofLog()<< "failing because the index on the move isn't loaded";
+            string curFilePath = poolOfThreads.at(indexOnTheMove)->filePath;
+            if(lastFileName == curFilePath){
+                numOfTimesStuck ++;
+                if (numOfTimesStuck > 5){
+                    //ofLog()<< "got the mouse";
+                    poolOfThreads.at(indexOnTheMove)->isQuit =true;
+                }
+            }
+            numOfTimesStuck ++;
+            lastFileName = curFilePath;
             return false;
+
         }
         /*
         // take out the one that just disapeared from the right
@@ -224,7 +245,7 @@ int fileManager::selectDay(){
         map<int, string>::iterator it = mapOfDays.begin();
         if (mapOfDays.size() == numOfDays){
             // do the - 1.1 because you want to never do the most recent day
-            // as that day is manageed above
+            // as that day is managed above
             int randomDay = int(ofRandom(mapOfDays.size()-1.1));
             it = mapOfDays.begin();
             advance(it, randomDay);
@@ -291,7 +312,7 @@ void fileManager::nextMoment(){
         // if it is the current day then do the most recent images - so you are more likely
         // to see your self
         if(isCurrentDay){
-            ofLog() << "currently displaying current day";
+            //ofLog() << "currently displaying current day";
             // set the start day to be as close to the current day as possible.
             indexMoment = moment.size() - (numMomentsToGoThrough*amountOfskiping +1);
         }
@@ -344,6 +365,7 @@ void fileManager::checkNewMoment(){
         numOfMoments = dirToCheck.size();
         // new Image - so draw it.
         string currentMomentPath =dirToCheck.getPath(dirToCheck.size()-1);
+        ofLog() << "New moment found: " + currentMomentPath;
         curMoment.setup(currentMomentPath, crpT, crpB);
         insertMomentCheck(currentMomentPath);
     }

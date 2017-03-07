@@ -1,0 +1,413 @@
+
+
+--------------------------------------- 2016-11-18-04-00-18-353
+[notice ] testPing
+[notice ] PING I AM IN
+[notice ] ofGstVideoGrabber: Probing devices with udev...
+[notice ] ofGstVideoGrabber: Found device 199e:8302, getting capabilities...
+[notice ] ofGstVideoGrabber: detected v4l2 device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: driver: uvcvideo, version: 263189
+[notice ] ofGstVideoGrabber: Capabilities: 0x84200001
+[notice ] ofGstVideoGrabber: initGrabber(): selected device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: initGrabber(): selected format: 640x480 video/x-raw RGB framerate: 15/1
+[notice ] ofGstUtils: setPipelineWithSink(): gstreamer pipeline: v4l2src name=video_source device=/dev/video0 ! video/x-raw,format=RGB,width=640,height=480,framerate=15/1    ! appsink name=ofappsink enable-last-sample=0 caps="video/x-raw, format=RGB, width=640, height=480"
+[ error ] ofxV4L2Settings: error couldn0t get menu option 1Invalid argument
+[ error ] ofxV4L2Settings: error couldn0t get menu option 3Invalid argument
+[notice ] zoom called
+[warning] ofxGoogleAnalytics: Loaded UUID for this app: 991da089-fd60-49fc-a58a-afc437137ddf
+[notice ] ofxGoogleAnalytics: Reporting my CPU 'Unknown CPU'
+[notice ] ofxGoogleAnalytics: Reporting my Computer Model 'Unknown Model'
+[notice ] ofxGoogleAnalytics: Reporting my Computer GPU 'GeForce GTX 1070/PCIe/SSE2'
+[notice ] ofxGoogleAnalytics: Reporting my OF version '0.9.3-stable'
+[notice ] ofxGoogleAnalytics: Reporting my computer platform 'Linux 64'
+[notice ] ofxGoogleAnalytics: Benchmarks took 1.20835seconds
+[notice ] ofxCvColorImage: setFromPixels(): allocating to match dimensions: 0 0
+[notice ] ofxCvGrayscaleImage: operator=: allocating to match dimensions: 300 300
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/052_04-20-33.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/053_04-25-32.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/055_04-35-30.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/057_04-45-29.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/058_04-50-29.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/061_05-05-27.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/064_05-20-25.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/065_05-25-25.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/066_05-30-24.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/067_05-35-23.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/068_05-40-24.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/073_06-05-19.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/075_06-15-17.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/080_06-40-13.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/081_06-45-13.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/082_06-50-12.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/083_06-55-12.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/084_07-00-10.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/085_07-05-08.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/086_07-10-08.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/087_07-15-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/088_07-20-06.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/089_07-25-04.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/090_07-30-05.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/091_07-35-04.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/092_07-40-04.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/093_07-45-03.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/094_07-50-01.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/095_07-55-01.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/097_08-05-00.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/098_08-14-59.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/099_08-19-57.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/100_08-24-57.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/101_08-29-56.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/102_08-34-56.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/103_08-39-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/104_08-44-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/105_08-49-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/106_08-54-54.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/107_08-59-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/108_09-04-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/109_09-09-53.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/110_09-14-52.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/111_09-19-52.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/112_09-24-53.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/113_09-29-52.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/114_09-34-52.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/115_09-39-51.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/116_09-44-52.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/117_09-49-52.tif
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/118_09-54-52.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/119_09-59-53.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/120_10-04-53.tif
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/121_10-09-53.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/122_10-14-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/123_10-19-54.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/124_10-24-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/125_10-29-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/126_10-34-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/127_10-39-56.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/128_10-44-57.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/129_10-49-58.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/130_10-54-58.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/132_11-00-00.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/133_11-05-00.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/134_11-10-01.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/135_11-15-03.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/136_11-20-03.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/137_11-25-05.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/138_11-30-06.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/139_11-35-08.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/140_11-40-09.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/141_11-45-11.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/142_11-50-12.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/143_11-55-14.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/144_12-00-15.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/145_12-05-18.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/146_12-10-19.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/147_12-15-21.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/148_12-20-22.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/149_12-25-25.tif
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/151_12-35-30.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/152_12-40-31.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/153_12-45-33.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/154_12-50-36.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/155_12-55-38.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/156_13-00-40.tif
+[notice ] start time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/157_13-05-42.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/158_13-10-45.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/159_13-15-46.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/160_13-20-49.tif
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/161_13-25-52.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/162_13-30-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/163_13-35-56.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/164_13-40-58.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/165_13-46-01.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/166_13-51-04.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/167_13-56-07.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/168_14-01-09.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/169_14-06-12.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/170_14-11-14.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/171_14-16-17.tif
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/172_14-21-20.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/174_14-31-26.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/175_14-36-28.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/176_14-41-32.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/177_14-46-34.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/178_14-51-37.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/179_14-56-40.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/180_15-01-43.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/181_15-06-45.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/182_15-11-49.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/183_15-16-51.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/184_15-21-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/186_15-32-02.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/187_15-37-04.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/188_15-42-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/189_15-47-10.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/190_15-52-12.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/191_15-57-16.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/192_16-02-18.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/193_16-07-21.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/194_16-12-23.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/195_16-17-27.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/196_16-22-29.tif
+[notice ] start time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/197_16-27-33.tif
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/198_16-32-35.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/199_16-37-38.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/200_16-42-40.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/201_16-47-44.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/202_16-52-46.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/203_16-57-49.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/204_17-02-51.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/205_17-07-54.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/206_17-12-57.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/207_17-18-00.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/208_17-23-02.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/209_17-28-04.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/211_17-38-09.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/212_17-43-14.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/215_17-58-20.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/218_18-13-27.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/219_18-18-29.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/220_18-23-31.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/221_18-28-33.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/224_18-43-40.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/225_18-48-41.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/226_18-53-43.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/228_19-03-48.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/229_19-08-49.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/230_19-13-51.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/234_19-33-57.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/235_19-38-59.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/239_19-59-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/240_20-04-08.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/241_20-09-09.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/242_20-14-11.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/244_20-24-16.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/246_20-34-18.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/247_20-39-19.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/248_20-44-21.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/249_20-49-23.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/250_20-54-23.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/251_20-59-25.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/252_21-04-26.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/253_21-09-28.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/255_21-19-31.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/256_21-24-32.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/257_21-29-34.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/258_21-34-35.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/259_21-39-36.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/260_21-44-37.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/263_21-59-53.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/266_22-14-44.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/268_22-24-46.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/269_22-29-48.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/272_22-44-51.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/276_23-04-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/277_23-09-56.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/278_23-14-58.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/280_23-24-59.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/282_23-30-00.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/283_23-35-01.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/284_23-40-02.tif
+[notice ] New moment found: /media/caroline/Storage/pano/085_2016-11-18_N/284_23-40-02.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/000_00-00-05.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/002_00-10-07.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/004_00-20-10.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/005_00-25-11.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/007_00-35-14.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/012_01-00-19.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/016_01-20-27.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/018_01-30-23.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/022_01-50-26.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/023_01-55-26.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/024_02-00-27.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/028_02-20-39.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/030_02-30-30.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/031_02-35-31.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/032_02-40-32.tif
+[notice ] start time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/034_02-50-34.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/036_03-00-35.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/038_03-10-36.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/040_03-20-37.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/042_03-30-38.tif
+[notice ] New moment found: /media/caroline/Storage/pano/086_2016-11-19_C/047_03-55-46.tif
+[notice ] begin exit
+[notice ] ofCamera saved successfully!: 
+[notice ] ofEasyCam saved successfully!: 
+[notice ] end exit
+[notice ] ofxGoogleAnalytics: Closing session for good! 0 requests pending executing...
+[notice ] ofxGoogleAnalytics: all pending requests executed!

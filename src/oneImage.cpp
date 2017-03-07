@@ -18,20 +18,25 @@ void oneImage::setup(string fPath, int cropBottom, int cropTop, bool toCrop){
     isLoading = true;
     isLoaded = false;
     isCrop = true;
+    isReady = false;
+    isQuit = false;
 }
 
 
 void oneImage::reImageLoad(){
+
+
     ofLoadImage(img, filePath);
     // is it less than ten seconds. Do not recurse longer than that.
     
-    bool isTimeOut = (ofGetElapsedTimeMillis() - startTime) > 10000;
+    bool isTimeOut = (ofGetElapsedTimeMillis() - startTime) > 2000;
     if (!img.isAllocated() & !isTimeOut ){
         sleep(100);
         img.clear(); 
         reImageLoad();
     }
-    
+
+
 }
 
 
@@ -56,6 +61,15 @@ void oneImage::update(){
             image.update();
             isLoading = false;
             isLoaded = true;
+            isReady = true;
+            img.clear();
+            stopThread();
+            //ofLog()<<"successful load";
+            //ofLog()<< filePath;
+            //ofLog()<< ofGetTimestampString();
+        }
+        else{
+            isReady = true;
             img.clear();
             stopThread();
         }
@@ -69,4 +83,9 @@ void oneImage::draw(int x, int y){
             image.draw( x, y);
         }
  
+}
+
+void oneImage::giveUpSafely(){
+    //stopThread();
+    //isReady=true;
 }

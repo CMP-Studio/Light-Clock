@@ -41,7 +41,9 @@ void ofApp::setup(){
     
     
     
-    
+    string timeStamp = ofGetTimestampString();
+    //ofLogToFile("logs/" + timeStamp + ".txt");
+
     ofHideCursor();
     analytics.load(ofToDataPath("analytics.csv"));
     //analytics.loadFile(ofToDataPath("analytics.csv"));
@@ -51,8 +53,9 @@ void ofApp::setup(){
 
     if(ofIsGLProgrammableRenderer()) {
         brcosa.load("shader_brcosa/shadersGL3/shader");
-        gaussianBlurX.load("shader_gaussianBlur/shadersGL3/shaderBlurX");
+        //gaussianBlurX.load("shader_gausssianBlur/shadersGL3/shaderBlurX");
         gaussianBlurY.load("shader_gaussianBlur/shadersGL3/shaderBlurY");
+        ofLog()<< "loading shader";
     }
 
     //ofSetLogLevel(OF_LOG_VERBOSE);
@@ -111,7 +114,15 @@ void ofApp::setup(){
     gui.add(volumeMoment.setup("moment vol", 1, 0, 1));
     gui.add(volumeTicking.setup("clicking vol", 1, 0, 1));
 
-
+    // overlay vars
+    gui.add(overlayScale.setup("overlay scale",1.0,0.0,4.0));
+    gui.add(delayPostLatent.setup("wait after latent", 30000,0,60000));
+    gui.add(delayBetween.setup("wait between Plays", 30000,0,60000));
+    gui.add(spaceStartVel.setup("space starting speed",10.0,0,30.0));
+    gui.add(timeStartVel.setup("Time starting speed",10.0,0.0,30.0));
+    gui.add(figureColor.setup("Figure Color",ofColor(0,0,0),ofColor(0,0), ofColor(255,255)));
+    gui.add(textColor.setup("Text Color", ofColor(255,255,255), ofColor(0,0), ofColor(255,255)));
+    gui.add(yTextPos.setup("Text y posistion",1000,0, ofGetHeight()*2 ));
 
     reCropEveryThing.addListener(this, &ofApp::cropTrigger);
     camZoom.addListener(this, &ofApp::camZoomChanged);
@@ -134,7 +145,7 @@ void ofApp::setup(){
 
     
     day.setup( "newImagery", 0, cropTop,cropBottom,cropLeftRight,intervalSize, testSz.getWidth(), testSz.getHeight());
-    
+    //ofLog()<<"other side";
     // set up 3D sphere
     sphere.setRadius(ofGetWidth());
     sphere.setPosition( 0,0,0 );
@@ -153,6 +164,8 @@ void ofApp::setup(){
     moment.setVolume(volumeMoment);
     gong.load("sounds/gong.mp3");
     //moment.load("sounds/gongMultiple.wav");
+    singleClick.load("sounds/theClickSound.wav");
+    singleClick.setVolume(volumeMoment);
     startCurMoment = 0;
     
     flock2.setup(testSz.getWidth(), testSz.getHeight());
@@ -168,7 +181,8 @@ void ofApp::setup(){
     
     timeSinceInteract = ofGetElapsedTimeMillis();
     isLatent = false;
-    
+    isActive = false;
+    ofLog()<<"other side 2";
     mskPosContinuous = 0;
     imgPosContinuous = 0;
     
@@ -195,6 +209,35 @@ void ofApp::setup(){
 
     ga.setup("UA-84486442-1", "Light Clock","0.1");
 
+    // the overlay
+    mskVid.load("SwipingAction3.mov");
+    mskVid.setLoopState(OF_LOOP_NONE);
+    //mskVid.play();
+    
+    colorOfFigure.allocate(mskVid.getWidth(), mskVid.getHeight());
+    colorOfFigure.begin();
+        ofClear(0,0,0,0);
+        //ofBackground(0, 0, 0);
+    colorOfFigure.end();
+    
+    mskVidFade.allocate(mskVid.getWidth(), mskVid.getHeight());
+    mskVidFade.begin();
+        ofClear(0,0,0,0);
+    mskVidFade.end();
+
+    //startWaitOverlay = ofGetElapsedTimeMillis();
+    isOverlay = false;
+    isWaitingOverlay = false;
+    timeToWaitOverlay = delayPostLatent;
+
+    overlayText.load("knockout.ttf", 40, true);
+    isPerson = true;
+    ofLog()<<"other side 3";
+
+    isMoveForwardAuto = true;
+    isNewCurMoment =true;
+    startTimeFadeDown =0;
+    startTimeFadeUp = 0;
 }
 
 void ofApp::camZoomChanged(int &camZoom){
@@ -246,6 +289,19 @@ void ofApp::cropTrigger(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+
+
+        if(isMoveForwardAuto){
+            day.mskPos +=8;
+            mskPosContinuous -=8;
+        }
+        //ofLog()<<"other side 4";
+        // ping Drew's server
+        if(ofGetElapsedTimeMillis()%(1000*60*8) <= 30){
+           // resp = ofLoadURL('http://studiostatus.carnegiemuseums.org/ping/light-clock');
+            ofHttpResponse resp = ofLoadURL("http://studiostatus.carnegiemuseums.org/ping/light-clock");
+        }
+
         ga.update();
 
         //ofHideCursor();
@@ -277,62 +333,124 @@ void ofApp::update(){
         }
 
         day.imgPos -= imgShift;
-        day.mskPos += mskShift;
+        day.imgPos += mskShift;
+        //day.mskPos += mskShift;
         //day.mskPos -= imgShift;
         imgPosContinuous += imgShift;
-        mskPosContinuous -= mskShift;
-       //mskPosContinuous += imgShift;
+        imgPosContinuous -= mskShift;
+        //mskPosContinuous -= mskShift;
 
-        timeToWaitRight = int(ofMap(imgShift,0,ccwTerminalVelocity, soundFrequency, 20));
-        if((ofGetElapsedTimeMillis()> (startTimeRight + timeToWaitRight)) && imgShift > 0){
+
+       // implment the rules of when it is latent!
+
+        bool isDay = (ofGetHours() > 6) | (ofGetHours() < 1);
+        if(isWaitingOverlay & (ofGetElapsedTimeMillis() - startWaitOverlay >= timeToWaitOverlay) & isDay){
+            // time to trigger the overlay to play
+            isOverlay = true;
+            //ofLog() << "playingvideo";
+
+            mskVid.play();
+            mskVid.setFrame(0);
+            //mskVid.update();
+
+            isWaitingOverlay = false;
+        }
+        else if(isOverlay){
+
+           // mskVid.update();
+            if(mskVid.getIsMovieDone()){
+                //ofLog() << "video done";
+                startWaitOverlay = ofGetElapsedTimeMillis();
+                timeToWaitOverlay = delayBetween;
+                isWaitingOverlay = true;
+                isOverlay = false;
+            }
+        }
+
+        timeToWaitRight = int(ofMap(imgShift,0,ccwTerminalVelocity, soundFrequency, 20));\
+         if((ofGetElapsedTimeMillis()> (startTimeRight + timeToWaitRight)) && imgShift > 0){
             if(isLatent){
+                ofLog()<< "start time";
                 startTimeOfInteraction = ofGetElapsedTimeMillis();
+                isActive = true;
             }
             left.setVolume(ofMap(imgShift, 0, ccwTerminalVelocity, 0, volumeTicking));
             left.play();
             startTimeRight = ofGetElapsedTimeMillis();
-            isLatent = false;
-            timeSinceInteract = ofGetElapsedTimeMillis();
         }
 
         timeToWaitLeft = int(ofMap(mskShift,0,cwTerminalVelocity,soundFrequency, 20));
         if((ofGetElapsedTimeMillis()> (startTimeLeft + timeToWaitLeft)) && mskShift > 0){
 
                 if(isLatent){
+                    ofLog()<< "start time";
                     startTimeOfInteraction = ofGetElapsedTimeMillis();
+                    isActive = true;
                 }
                 right.setVolume(ofMap(mskShift, 0, cwTerminalVelocity, 0, volumeTicking));
                 right.play();
                 startTimeLeft = ofGetElapsedTimeMillis();
-                isLatent = false;
-                timeSinceInteract = ofGetElapsedTimeMillis();
+
+        }
+
+
+        if((imgShift>0) | (mskShift >0) ){
+            isLatent = false;
+            isWaitingOverlay = false;
+            timeSinceInteract = ofGetElapsedTimeMillis();
+            if(isOverlay){
+                isOverlay =false;
+                //mskVid.setPaused(true);
+                //ofLog()<<"stopping video";
+            }
         }
          
-    
+    // new current image has arrived
     if(day.currentMomentTrig){
-        //ofLog()<< "trigger!! Timeese";
+        ofLog()<< "trigger!! Timeese";
         isWaitForMoment = true;
         startCurMoment = ofGetElapsedTimeMillis();
         day.currentMomentTrig = false;
     }
+    // time to start moment
     else if (isWaitForMoment & (ofGetElapsedTimeMillis() - startCurMoment >= delayTime ) ) {
-        flock2.setMinSize(0);
-        flock2.triggerSequenceTwo(curMomentLength);
-        moment.play();
+        if(isNewCurMoment){
+            singleClick.play();
+            startTimeFadeUp = ofGetElapsedTimeMillis();
+        }
+        else{
+            flock2.setMinSize(0);
+            flock2.triggerSequenceTwo(curMomentLength);
+            moment.play();
+            ofLog()<< "playing moment";
+        }
+        isInMoment = true;
         isWaitForMoment=false;
-
     }
     
     if((!isLatent)&((ofGetElapsedTimeMillis()- timeSinceInteract) >= 5000)){
-        cout << "NOT LATENT :)" << endl;
+        //cout << "NOT LATENT :)" << endl;
         isLatent = true;
+
+        // wait an additional bit before displaying the overlay
+        startWaitOverlay = ofGetElapsedTimeMillis();
+        timeToWaitOverlay = delayPostLatent;
+        isWaitingOverlay = true;
+        isOverlay = false;
+
         anchorImgPos = day.imgPos;
         anchorMskPos = day.mskPos;
-        int timePassed = ofGetElapsedTimeMillis()- startTimeOfInteraction;
-        ga.sendCustomTimeMeasurement("interaction duration", "dur",timePassed-5000);
-        amountOfActivity += timePassed - 5000;
+        if(isActive){
+            ofLog()<< "I'm in here - end time";
+            int timePassed = ofGetElapsedTimeMillis()- startTimeOfInteraction;
+            ga.sendCustomTimeMeasurement("interaction duration", "dur",timePassed-5000);
+            amountOfActivity += timePassed - 5000;
+            isActive= false;
+        }
     }
-    else if (isLatent){
+    else if (isLatent & !isOverlay){
+
+        /*
 
         float noise1 =ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,rangeMskMove->x,rangeMskMove->y);
         noise1 = ofClamp(noise1, 0, 6);
@@ -342,7 +460,7 @@ void ofApp::update(){
         float noise2 = ofMap(ofNoise(50, ofGetElapsedTimef()/imgMoveSpeed),0,1,rangeImgMove->x,rangeImgMove->y);
         day.imgPos -= noise2;
         imgPosContinuous += noise2;
-
+        */
 
         /*
         day.mskPos = ofMap(ofNoise(1,ofGetElapsedTimef()/mskMoveSpeed),0,1,anchorMskPos + rangeMskMove->x,   anchorMskPos+ rangeMskMove->y);
@@ -382,54 +500,128 @@ void ofApp::update(){
     ofTranslate(getText.getWidth() * -1 , 0);
     ofEnableAlphaBlending();
     ofClear(0);
-    ofBackground(0,0,255);
+    ofBackground(100);
     
 
     
     day.draw(0,cropTop,cropLeftRight);
-    
-    if(flock2.isSequenceTwo){
 
-    currentMoment.begin();
-        ofClear(0);
-        float drawImgPos = wrapCurrentMoment( imgPosContinuous);
-        //ofLog()<< "Image position: " << imgPosContinuous;
-        //ofLog()<< "Image position wrapped: " << drawImgPos;
-        if (drawImgPos + currentMoment.getWidth() > currentMoment.getWidth()){
-            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop );
-            day.manager.curMoment.image.draw( drawImgPos *-1 +  currentMoment.getWidth(),cropTop);
-        }
-        else{
-            day.manager.curMoment.image.draw( drawImgPos *-1,cropTop);
-        }
-    currentMoment.end();
+    if(isInMoment){
 
-
-      currentMomentMaskFirstPass.begin();
-      gaussianBlurY.begin();
-      gaussianBlurY.setUniform1f("blurAmnt", 1.5); //blur amount between 0 and 10
+        //ofLog()<< "is inside the moment sequence";
+        currentMoment.begin();
             ofClear(0);
-            float drawMskPos =  wrapCurrentMoment( mskPosContinuous);
-            if (drawMskPos + currentMomentMaskFirstPass.getWidth() > currentMomentMaskFirstPass.getWidth()){
-                flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMomentMaskFirstPass.getWidth() , currentMomentMaskFirstPass.getHeight() );
-                flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMomentMaskFirstPass.getWidth() ,0,currentMomentMaskFirstPass.getWidth() , currentMomentMaskFirstPass.getHeight());
+            float drawImgPos = wrapCurrentMoment( imgPosContinuous);
+            float tempPos = wrapCurrentMoment(day.imgPos *-1) ;
+           // ofLog()<< "Image position: " << imgPosContinuous;
+            //ofLog()<< "Image position wrapped: " << drawImgPos;
+            int timePassed;
+            timePassed = 10000;
+            if(isNewCurMoment){
+                 timePassed = ofGetElapsedTimeMillis() - startTimeFadeUp;
+            }
+
+            if((isNewCurMoment & timePassed >=1000)|(!isNewCurMoment)){
+            if (tempPos + currentMoment.getWidth() > currentMoment.getWidth()){
+                /*
+                day.manager.curMoment.image.draw( drawImgPos *-1,cropTop );
+                            day.manager.curMoment.image.draw( drawImgPos *-1 +  currentMoment.getWidth(),cropTop);
+                */
+                day.manager.curMoment.image.draw(tempPos *-1,cropTop );
+                day.manager.curMoment.image.draw(tempPos *-1+  currentMoment.getWidth(),cropTop);
+
             }
             else{
-                flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
+                day.manager.curMoment.image.draw( tempPos *-1,cropTop);
             }
-        gaussianBlurY.end();
-        currentMomentMaskFirstPass.end();
+            }
 
-        currentMomentMask.begin();
-        gaussianBlurX.begin();
-        gaussianBlurX.setUniform1f("blurAmnt", 1.5); //blur amount between 0 and 10
-        ofClear(0);
-        currentMomentMaskFirstPass.draw(0, 0);
-        gaussianBlurX.end();
-        currentMomentMask.end();
+            if(isNewCurMoment){
 
-        currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
-        currentMoment.draw(0,0);
+                int scaledAlpha;
+                if(timePassed < 1000){
+                    scaledAlpha = int(ofMap(timePassed,0,1000,0,255,true));
+
+                }
+                else if (timePassed < 1300){
+                    scaledAlpha = int(ofMap(timePassed,1000,1300,255,0,true));
+                }
+                ofEnableAlphaBlending();
+                ofSetColor(255,255,255,scaledAlpha);
+                ofDrawRectangle(0,0,currentMoment.getWidth(),currentMoment.getHeight());
+
+            }
+
+        currentMoment.end();
+
+
+          currentMomentMaskFirstPass.begin();
+            if(isNewCurMoment){
+                ofClear(0);
+                int scaledAlpha;
+                int timePassed = ofGetElapsedTimeMillis() - startTimeFadeUp;
+                if(timePassed < 20000){
+                //    scaledAlpha = ofMap(timePassed,0,2000,0,255,true);
+                //}
+                //else if (timePassed < 6000){
+                    scaledAlpha = 255;
+                }
+                else if (timePassed < 30000){
+                    scaledAlpha = ofMap(timePassed,20000,30000,255,0);
+                }
+                else{
+                    isInMoment = false;
+                }
+
+                ofSetColor(scaledAlpha);
+                ofDrawRectangle(0,0,currentMomentMaskFirstPass.getWidth(),currentMomentMaskFirstPass.getHeight() );
+            }
+            else if(flock2.isSequenceTwo){
+                gaussianBlurY.begin();
+                gaussianBlurY.setUniform1f("blurAmnt", 1.5); //blur amount between 0 and 10
+                ofClear(0);
+
+                //float drawMskPos =  wrapCurrentMoment( mskPosContinuous);
+                float drawMskPos =  wrapCurrentMoment( imgPosContinuous);
+
+                //ofLog()<< "msk position " << drawMskPos;
+                //ofLog()<<"the width first pass" << currentMomentMaskFirstPass.getWidth();
+                //ofLog()<<"the width curmoment" << currentMoment.getWidth();
+                if (drawMskPos + currentMomentMaskFirstPass.getWidth() > currentMomentMaskFirstPass.getWidth()){
+                    flock2.drawIntoMe.draw( drawMskPos *-1,0, currentMomentMaskFirstPass.getWidth() , currentMomentMaskFirstPass.getHeight() );
+                    flock2.drawIntoMe.draw( drawMskPos *-1 +  currentMomentMaskFirstPass.getWidth() ,0,currentMomentMaskFirstPass.getWidth() , currentMomentMaskFirstPass.getHeight());
+                }
+                else{
+                    flock2.drawIntoMe.draw( drawMskPos *-1,0,currentMoment.getWidth() , currentMoment.getHeight());
+                }
+                gaussianBlurY.end();
+             }
+            currentMomentMaskFirstPass.end();
+
+            currentMomentMask.begin();
+            //gaussianBlurX.begin();
+            //gaussianBlurX.setUniform1f("blurAmnt", 1.5); //blur amount between 0 and 10
+            ofClear(0);
+            currentMomentMaskFirstPass.draw(0, 0);
+            //gaussianBlurX.end();
+            currentMomentMask.end();
+
+            currentMoment.getTexture().setAlphaMask(currentMomentMask.getTexture());
+            currentMoment.draw(0,0);
+
+            /*
+            if(showGui){
+                currentMomentMask.draw(0,0);
+            }
+            else{
+                currentMomentMaskFirstPass.draw(0,0);
+            }
+            if(usingFlow){
+                currentMoment.draw(0,0);
+            }
+            */
+
+
     }
 
 
@@ -457,6 +649,8 @@ void ofApp::update(){
         ofHideCursor();
     }
     ofPopMatrix();
+
+
     getText.end();
 
     filteredText = getText;
@@ -502,7 +696,78 @@ void ofApp::draw(){
         //sphere.drawWireframe();
         getText.getTexture().unbind();
         cam.end();
+        // the overlay
 
+        colorOfFigure.begin();
+            ofClear(0,0,0,0);
+            ofBackground(figureColor);
+        colorOfFigure.end();
+
+        if(isOverlay & isPerson){
+        mskVid.update();
+        if(mskVid.isFrameNew()){
+
+            mskVidFade.begin();
+                mskVid.draw(0,0);
+                ofColor temp = figureColor;
+               // ofLog() << temp.a;
+                ofSetColor(0,temp.a);
+                ofDrawRectangle(0,0,mskVidFade.getWidth(), mskVidFade.getHeight());
+            mskVidFade.end();
+
+            colorOfFigure.getTexture().setAlphaMask(mskVidFade.getTexture());
+
+        }
+        colorOfFigure.draw(ofGetWidth()/2 - colorOfFigure.getWidth()*overlayScale/2, ofGetHeight() - colorOfFigure.getHeight()*overlayScale, colorOfFigure.getWidth()*overlayScale,colorOfFigure.getHeight()*overlayScale);
+
+        int frameNum = mskVid.getCurrentFrame();
+        int startSpace = 70;
+        int startRotSpace = 102;
+        int stopSpace = 165;
+        int startTime = 170;
+        int startRotTime = 200;
+        int stopTime = 266;
+        // falsly move the visualization along with the red guy.
+        ofSetColor(textColor);
+        if((frameNum > startTime)&(frameNum < stopTime)){
+            /*
+            if(frameNum > startRotTime){
+                float pos = ofMap(frameNum, startRotTime, stopTime, timeStartVel,0 );
+                day.mskPos += pos;
+                mskPosContinuous -= pos;
+            }
+
+            string txt = "Spin Time";
+            ofRectangle rect = overlayText.getStringBoundingBox(txt,0,0);
+            overlayText.drawString(txt, ofGetWidth()/2 - rect.getWidth()/2, yTextPos);
+            */
+
+
+            if(frameNum > startRotTime){
+                float pos = ofMap(frameNum, startRotTime, stopTime, timeStartVel,0 );
+                day.imgPos += pos;
+                imgPosContinuous -= pos;
+            }
+            string txt = "Spin Time";
+            ofRectangle rect = overlayText.getStringBoundingBox(txt,0,0);
+            overlayText.drawString(txt, ofGetWidth()/2 - rect.getWidth()/2, yTextPos);
+
+
+        }
+        else if((frameNum > startSpace)&(frameNum < stopSpace)){
+            if(frameNum > startRotSpace){
+                float pos = ofMap(frameNum, startRotSpace, stopSpace, spaceStartVel,0 );
+                day.imgPos -= pos;
+                imgPosContinuous += pos;
+            }
+
+            string txt = "Spin Space";
+            ofRectangle rect = overlayText.getStringBoundingBox(txt,0,0);
+            overlayText.drawString(txt, ofGetWidth()/2 - rect.getWidth()/2, yTextPos);
+        }
+        ofSetColor(255);
+
+        }
     
     if(showGui){
         cam.disableMouseInput();
@@ -526,7 +791,7 @@ void ofApp::draw(){
             int xPos = 0;
             int yPos = (ofGetWindowHeight() - proportionalHeight)/2;
             //int yPos = 0;
-            comingSoonVideo.draw(xPos, yPos, wid, proportionalHeight);
+        comingSoonVideo.draw(xPos, yPos, wid, proportionalHeight);
         //}
     }
 
@@ -535,7 +800,7 @@ void ofApp::draw(){
 
 
 float ofApp::wrapCurrentMoment(float Xpos){
-    
+
     float wrappedMsk = Xpos;
     // If starting position is less than the beginning of the image
     if (wrappedMsk <  0 ){
@@ -549,6 +814,14 @@ float ofApp::wrapCurrentMoment(float Xpos){
         //wrappedMsk = 0;
     }
     return wrappedMsk;
+
+    /*
+    float xDecimal = Xpos - int(Xpos);
+    Xpos = int(Xpos) % int(currentMoment.getWidth());
+    Xpos += xDecimal;
+    Xpos -= currentMoment.getWidth();
+    return Xpos;
+    */
 
 }
 
@@ -614,6 +887,13 @@ void ofApp::keyPressed(int key){
         gui.saveToFile("guiSettings.xml");
     }
 
+    else if(key == 'p'){
+        isPerson = !isPerson;
+    }
+    else if('i'){
+        //ofLog()<< "It has started";
+    }
+
 
 }
 
@@ -627,10 +907,12 @@ void ofApp::keyReleased(int key){
 //--------------------------------------------------------------
 void ofApp::exit(){
 
-    day.manager.close();
-
+    ofLog() << "begin exit";
+    rotSense.videoFeed.close();
     ofxSaveCamera(cam, "ofEasyCamSettings.xml");
     gui.saveToFile("guiSettings.xml");
+    day.manager.close();
+    ofLog() << "end exit";
 
     
     

@@ -1,0 +1,227 @@
+
+
+--------------------------------------- 2016-11-22-11-49-35-154
+[notice ] testPing
+[notice ] PING I AM IN
+[notice ] ofGstVideoGrabber: Probing devices with udev...
+[notice ] ofGstVideoGrabber: Found device 199e:8302, getting capabilities...
+[notice ] ofGstVideoGrabber: detected v4l2 device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: driver: uvcvideo, version: 263192
+[notice ] ofGstVideoGrabber: Capabilities: 0x84200001
+[notice ] ofGstVideoGrabber: initGrabber(): selected device: DFK 22AUC03
+[notice ] ofGstVideoGrabber: initGrabber(): selected format: 640x480 video/x-raw RGB framerate: 15/1
+[notice ] ofGstUtils: setPipelineWithSink(): gstreamer pipeline: v4l2src name=video_source device=/dev/video0 ! video/x-raw,format=RGB,width=640,height=480,framerate=15/1    ! appsink name=ofappsink enable-last-sample=0 caps="video/x-raw, format=RGB, width=640, height=480"
+[ error ] ofxV4L2Settings: error couldn0t get menu option 1Invalid argument
+[ error ] ofxV4L2Settings: error couldn0t get menu option 3Invalid argument
+[notice ] zoom called
+[warning] ofxGoogleAnalytics: Loaded UUID for this app: 991da089-fd60-49fc-a58a-afc437137ddf
+[notice ] ofxGoogleAnalytics: Reporting my CPU 'Unknown CPU'
+[notice ] ofxGoogleAnalytics: Reporting my Computer Model 'Unknown Model'
+[notice ] ofxGoogleAnalytics: Reporting my Computer GPU 'GeForce GTX 1070/PCIe/SSE2'
+[notice ] ofxGoogleAnalytics: Reporting my OF version '0.9.3-stable'
+[notice ] ofxGoogleAnalytics: Reporting my computer platform 'Linux 64'
+[notice ] ofxGoogleAnalytics: Benchmarks took 1.21546seconds
+[notice ] ofxCvColorImage: setFromPixels(): allocating to match dimensions: 0 0
+[notice ] ofxCvGrayscaleImage: operator=: allocating to match dimensions: 300 300
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] zoom called
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/142_11-51-46.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/143_11-56-42.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/144_12-01-43.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/145_12-06-41.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/146_12-11-40.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/147_12-16-38.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/148_12-21-37.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/149_12-26-35.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/150_12-31-34.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/151_12-36-32.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/152_12-41-30.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/153_12-46-30.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/154_12-51-28.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/155_12-56-26.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/156_13-01-24.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/157_13-06-24.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/158_13-11-22.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/159_13-16-21.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/160_13-21-19.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/161_13-26-18.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/162_13-31-16.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/163_13-36-15.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/164_13-41-15.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/165_13-46-13.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/166_13-51-12.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/167_13-56-10.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/168_14-01-09.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/169_14-06-08.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/170_14-11-08.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/171_14-16-06.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/172_14-21-04.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/173_14-26-03.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/174_14-31-02.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/175_14-36-01.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/176_14-41-00.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/177_14-45-59.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/178_14-50-57.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/179_14-55-56.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/180_15-00-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/181_15-05-55.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/183_15-15-53.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/184_15-20-52.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/185_15-25-50.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/186_15-30-50.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/187_15-35-48.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/188_15-40-47.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/189_15-45-45.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/190_15-50-45.tif
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/191_15-55-43.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/192_16-00-42.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/193_16-05-41.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/194_16-10-39.tif
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/195_16-15-38.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/196_16-20-37.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/197_16-25-36.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/198_16-30-34.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] New moment found: /media/caroline/Storage/pano/089_2016-11-22_C/199_16-35-33.tif
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] start time
+[notice ] I'm in here - end time
+[notice ] begin exit
+[notice ] ofCamera saved successfully!: 
+[notice ] ofEasyCam saved successfully!: 
+[notice ] end exit
+[notice ] ofxGoogleAnalytics: Closing session for good! 0 requests pending executing...
+[notice ] ofxGoogleAnalytics: all pending requests executed!
