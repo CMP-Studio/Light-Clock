@@ -29,7 +29,7 @@ void oneImage::reImageLoad(){
     ofLoadImage(img, filePath);
     // is it less than ten seconds. Do not recurse longer than that.
     
-    bool isTimeOut = (ofGetElapsedTimeMillis() - startTime) > 2000;
+    bool isTimeOut = (ofGetElapsedTimeMillis() - startTime) > 1000;
     if (!img.isAllocated() & !isTimeOut ){
         sleep(100);
         img.clear(); 

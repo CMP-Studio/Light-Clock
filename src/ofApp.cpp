@@ -55,7 +55,7 @@ void ofApp::setup(){
         brcosa.load("shader_brcosa/shadersGL3/shader");
         //gaussianBlurX.load("shader_gausssianBlur/shadersGL3/shaderBlurX");
         gaussianBlurY.load("shader_gaussianBlur/shadersGL3/shaderBlurY");
-        ofLog()<< "loading shader";
+       //ofLog()<< "loading shader";
     }
 
     //ofSetLogLevel(OF_LOG_VERBOSE);
@@ -182,7 +182,7 @@ void ofApp::setup(){
     timeSinceInteract = ofGetElapsedTimeMillis();
     isLatent = false;
     isActive = false;
-    ofLog()<<"other side 2";
+   //ofLog()<<"other side 2";
     mskPosContinuous = 0;
     imgPosContinuous = 0;
     
@@ -232,7 +232,7 @@ void ofApp::setup(){
 
     overlayText.load("knockout.ttf", 40, true);
     isPerson = true;
-    ofLog()<<"other side 3";
+   //ofLog()<<"other side 3";
 
     isMoveForwardAuto = true;
     isNewCurMoment =true;
@@ -241,7 +241,7 @@ void ofApp::setup(){
 }
 
 void ofApp::camZoomChanged(int &camZoom){
-    ofLog()<< "zoom called";
+   //ofLog()<< "zoom called";
     
     cam.setFov(camZoom);
      ofHideCursor();
@@ -292,8 +292,8 @@ void ofApp::update(){
 
 
         if(isMoveForwardAuto){
-            day.mskPos +=8;
-            mskPosContinuous -=8;
+            day.mskPos +=6;
+            mskPosContinuous -=6;
         }
         //ofLog()<<"other side 4";
         // ping Drew's server
@@ -370,7 +370,7 @@ void ofApp::update(){
         timeToWaitRight = int(ofMap(imgShift,0,ccwTerminalVelocity, soundFrequency, 20));\
          if((ofGetElapsedTimeMillis()> (startTimeRight + timeToWaitRight)) && imgShift > 0){
             if(isLatent){
-                ofLog()<< "start time";
+               //ofLog()<< "start time";
                 startTimeOfInteraction = ofGetElapsedTimeMillis();
                 isActive = true;
             }
@@ -383,7 +383,7 @@ void ofApp::update(){
         if((ofGetElapsedTimeMillis()> (startTimeLeft + timeToWaitLeft)) && mskShift > 0){
 
                 if(isLatent){
-                    ofLog()<< "start time";
+                   //ofLog()<< "start time";
                     startTimeOfInteraction = ofGetElapsedTimeMillis();
                     isActive = true;
                 }
@@ -407,7 +407,7 @@ void ofApp::update(){
          
     // new current image has arrived
     if(day.currentMomentTrig){
-        ofLog()<< "trigger!! Timeese";
+       //ofLog()<< "trigger!! Timeese";
         isWaitForMoment = true;
         startCurMoment = ofGetElapsedTimeMillis();
         day.currentMomentTrig = false;
@@ -422,7 +422,7 @@ void ofApp::update(){
             flock2.setMinSize(0);
             flock2.triggerSequenceTwo(curMomentLength);
             moment.play();
-            ofLog()<< "playing moment";
+           //ofLog()<< "playing moment";
         }
         isInMoment = true;
         isWaitForMoment=false;
@@ -441,7 +441,7 @@ void ofApp::update(){
         anchorImgPos = day.imgPos;
         anchorMskPos = day.mskPos;
         if(isActive){
-            ofLog()<< "I'm in here - end time";
+           //ofLog()<< "I'm in here - end time";
             int timePassed = ofGetElapsedTimeMillis()- startTimeOfInteraction;
             ga.sendCustomTimeMeasurement("interaction duration", "dur",timePassed-5000);
             amountOfActivity += timePassed - 5000;
@@ -513,7 +513,7 @@ void ofApp::update(){
             ofClear(0);
             float drawImgPos = wrapCurrentMoment( imgPosContinuous);
             float tempPos = wrapCurrentMoment(day.imgPos *-1) ;
-           // ofLog()<< "Image position: " << imgPosContinuous;
+           ////ofLog()<< "Image position: " << imgPosContinuous;
             //ofLog()<< "Image position wrapped: " << drawImgPos;
             int timePassed;
             timePassed = 10000;
@@ -710,7 +710,7 @@ void ofApp::draw(){
             mskVidFade.begin();
                 mskVid.draw(0,0);
                 ofColor temp = figureColor;
-               // ofLog() << temp.a;
+               ////ofLog() << temp.a;
                 ofSetColor(0,temp.a);
                 ofDrawRectangle(0,0,mskVidFade.getWidth(), mskVidFade.getHeight());
             mskVidFade.end();
@@ -907,12 +907,12 @@ void ofApp::keyReleased(int key){
 //--------------------------------------------------------------
 void ofApp::exit(){
 
-    ofLog() << "begin exit";
+   //ofLog() << "begin exit";
     rotSense.videoFeed.close();
     ofxSaveCamera(cam, "ofEasyCamSettings.xml");
     gui.saveToFile("guiSettings.xml");
     day.manager.close();
-    ofLog() << "end exit";
+   //ofLog() << "end exit";
 
     
     

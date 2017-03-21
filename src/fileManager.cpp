@@ -19,17 +19,16 @@ void fileManager::setup(int numOfImgToLoad,int crpTop, int crpBot){
     crpB = crpBot;
     
     startPath = "/media/caroline/Storage/pano/";
-    //startPath = "/Users/carolinerecord/Documents/of_v0.9.2_osx_release/apps/myApps/blendedImagery/bin/data/sampleImages/sample/";
+   // startPath = "/Users/carolinerecord/Documents/of_v0.9.2_osx_release/apps/myApps/blendedImagery/bin/data/samples/sample/";
     
-    momentsToTraverse = 10;
+    momentsToTraverse = 8;
     
     setUpDays();
     //test.setup("005_2016-08-19_R/016_00-20-01.png");
     
     ofImage testSz;
     testSz.load(nextFileToLoad);
-    imgWidth = testSz.getWidth()/15;
-    imgHeight = testSz.getHeight()/15;
+
     //testQ.clear();
     //poolOfThreads.clear();
     //ofLog()<< numOfImgToLoad;
@@ -192,7 +191,7 @@ void fileManager::setUpDays(){
     parts = ofSplitString(day.getPath(day.size()-1), "_");
     currentDayWeather = parts.at(parts.size()-1);
     makeUnusedDaysMap();
-    //moment.allowExt(".tif");
+    moment.allowExt("tif");
     moment.listDir(day.getPath(day.size()-1));
     // not necessary to sort bc I am just getting a count.
     numOfMoments = moment.size();
@@ -233,7 +232,19 @@ int fileManager::selectDay(){
         lastWeather = currentDayWeather;
         return day.size()-1;
     }
-    else{
+    else if (dayCount % 6 ==0){
+        return importantDays.at(importantDaysIndex.nextIndex());
+    }
+    else {
+        // which weather
+        int whichWeather = allWeatherIndex.nextIndex();
+        int theDayinThatWeather = allWeatherIndexes.at(whichWeather).nextIndex();
+        return allWeather.at(whichWeather).at(theDayinThatWeather);
+    }
+    
+        
+        
+        /*
         isCurrentDay = false;
         if (mapOfDays.size() <= 0){
             // fill back up with days
@@ -264,6 +275,7 @@ int fileManager::selectDay(){
             }
             it++;
         }
+        
         // there was not one available with different weather
         // so just go with a random one
         int randomDay = int(ofRandom(mapOfDays.size()-1.1));
@@ -274,21 +286,74 @@ int fileManager::selectDay(){
         mapOfDays.erase(it);
         return toReturnTwo;
     }
+         */
+    
 }
 
 void fileManager::makeUnusedDaysMap(){
     vector<string> theParts;
     
     // make that list of days
-    // minus one bc I do not want to intclude the current day in this list.
+    // minus one bc I do not want to include the current day in this list.
+    
+    vector<int> cloud;
+    vector<int> snow;
+    vector<int> nice;
+    vector<int> rain;
+    
     for(int i=0; i <day.size()-1; i++){
         theParts.clear();
         theParts = ofSplitString(day.getPath(i), "_");
         string weatherCode = theParts.at(theParts.size()-1);
-        if (weatherCode != "E"){
-            mapOfDays[i] = theParts.at(theParts.size()-1);
+
+        if(weatherCode == "I"){
+            importantDays.push_back(i);
+            
         }
+        else if (weatherCode == "C"){
+            cloud.push_back(i);
+        }
+        else if (weatherCode == "R"){
+            snow.push_back(i);
+        }
+        else if (weatherCode == "S"){
+            nice.push_back(i);
+        }
+        else if (weatherCode == "N"){
+            rain.push_back(i);
+        }
+        
     }
+    
+    importantDaysIndex.setup(importantDays.size());
+    
+    if(cloud.size()>0){
+        allWeather.push_back(cloud);
+        indexPicker temp;
+        temp.setup(cloud.size());
+        allWeatherIndexes.push_back(temp);
+    }
+    if(snow.size()>0){
+        allWeather.push_back(snow);
+        indexPicker temp;
+        temp.setup(snow.size());
+        allWeatherIndexes.push_back(temp);
+    }
+    if(nice.size()>0){
+        allWeather.push_back(nice);
+        indexPicker temp;
+        temp.setup(nice.size());
+        allWeatherIndexes.push_back(temp);
+    }
+    if(rain.size()>0){
+        allWeather.push_back(rain);
+        indexPicker temp;
+        temp.setup(rain.size());
+        allWeatherIndexes.push_back(temp);
+    }
+    
+    allWeatherIndex.setup(allWeather.size());
+    
 }
 
 void fileManager::nextMoment(){
@@ -365,7 +430,7 @@ void fileManager::checkNewMoment(){
         numOfMoments = dirToCheck.size();
         // new Image - so draw it.
         string currentMomentPath =dirToCheck.getPath(dirToCheck.size()-1);
-        ofLog() << "New moment found: " + currentMomentPath;
+       //ofLog() << "New moment found: " + currentMomentPath;
         curMoment.setup(currentMomentPath, crpT, crpB);
         insertMomentCheck(currentMomentPath);
     }

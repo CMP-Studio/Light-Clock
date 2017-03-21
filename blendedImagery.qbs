@@ -21,6 +21,8 @@ Project{
             'src/oneImage.h',
             'src/fileManager.cpp',
             'src/fileManager.h',
+            'src/indexPicker.cpp',
+            'src/indexPicker.h',
             'src/rot/rotationSensing.h',
             'src/rot/rotationSensing.cpp',
             'src/flk/Boid_mod.cpp',

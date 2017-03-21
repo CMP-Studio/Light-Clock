@@ -9,6 +9,7 @@
 
 #include "ofMain.h"
 #include "oneImage.h"
+#include "indexPicker.h"
 
 class fileManager{
     public:
@@ -56,6 +57,17 @@ class fileManager{
     string lastWeather;
     // maps of un-used days
     map<int,string> mapOfDays;
+    // make a list of images random, no repeats, varying off of weather and time
+    
+    
+    
+    // make a seperate list of important days.
+    vector<int> importantDays;
+    vector<vector<int>> allWeather;
+    vector<indexPicker> allWeatherIndexes;
+    indexPicker allWeatherIndex;
+    indexPicker importantDaysIndex;
+    
     // re-initialize list of unused days
     int dayCount;
     void makeUnusedDaysMap();
