@@ -1,6 +1,10 @@
 # Light-Clock
 Interactive installation at the Carnegie Museum of Art for the Hillman Photography Initiative. Allows you to spin through a 360 dynamic time lapse.
+![alt text](https://raw.githubusercontent.com/CMP-Studio/Light-Clock/master/clock.jpeg)
+Image courtesy of Carnegie Museum of Art. Photo by Bryan Conley.
 
+![alt text](https://raw.githubusercontent.com/CMP-Studio/Light-Clock/master/inSpace.jpg)
+![alt text](https://raw.githubusercontent.com/CMP-Studio/Light-Clock/master/spinGif.gif )
 # Description
 
 The Light Clock is actually comprised of two main components:
